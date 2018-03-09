@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 export class Service {
   options;
 
-  domain = "http://localhost:8080";
+  domain = "";
 
   constructor(
     private http: Http
@@ -17,10 +17,10 @@ export class Service {
   ) { }
 
   newcustomer(customer) {
-    return this.http.post(this.domain + '/customers/newcustomer', customer).map(res => res.json());
+    return this.http.post('customers/newcustomer', customer).map(res => res.json());
   }
   getallcustomers() {
-    return this.http.get(this.domain + '/customers/getallcustomers' , this.options).map(res => res.json());
+    return this.http.get('customers/getallcustomers' , this.options).map(res => res.json());
   }
   // getsinglecustomer(id) {
   //   return this.http.get(this.domain + '/customers/getsinglecustomer/' + id, this.options).map(res => res.json());

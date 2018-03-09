@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 const path = require('path');
 const customerrouter=require('./routers/customer.router')(router);
 const config = require('./config/database');
+const port=process.env.PORT||8080;
 //start connect database
 
 mongoose.Promise = global.Promise;
@@ -32,6 +33,6 @@ app.get('/', (req, res) => {
 });
 app.use('/customers', customerrouter);
 
-var server = app.listen(8080, function () {
+var server = app.listen(port, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });
