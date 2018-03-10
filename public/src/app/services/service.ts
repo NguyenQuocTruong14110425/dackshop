@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 export class Service {
   options;
 
-  domain = "";
+  //domain = "";
 
   constructor(
     private http: Http

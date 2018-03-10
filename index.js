@@ -34,5 +34,5 @@ app.get('/', (req, res) => {
 app.use('/customers', customerrouter);
 
 var server = app.listen(port, function () {
-    console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
+    console.log('Server listening on port'+ port );
 });
