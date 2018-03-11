@@ -9,7 +9,7 @@ export class Service {
   options;
 
   //domain = "";
-
+//igugu
   constructor(
     private http: Http
 
