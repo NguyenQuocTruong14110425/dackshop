@@ -1,0 +1,85 @@
+<div class="leftbody">
+  <!-- Sidebar -->
+<div class="sidebarclient">
+   <div class="init"></div>
+   <div class="components" id="style-scrollbar">
+     <div class="title">Branch</div>
+     <ul *ngFor="let branch of branchpost">
+       <input type="checkbox" value="" (click)="FilterCatalog(branch._id)">
+       <p>{{branch.branchName}}</p>
+     </ul>
+   </div>
+   <div class="components" id="style-scrollbar">
+     <div class="title">Catalog</div>
+     <ul *ngFor="let catalog of catalogpost">
+       <input type="checkbox"  value="" (click)="FilterProduct(catalog._id)">
+       <p>{{catalog.catalogName}}</p>
+     </ul>
+   </div>
+   <div class="components" id="style-scrollbar">
+       <div class="title">Price</div>
+       <div id="slidecontainer">
+           <input type="range" min="10" max="1000" [(ngModel)]="rangeprice" value="20" class="slider" id="myRange">
+           <p>Value: $<span id="demo">{{rangeprice}}</span></p>
+         </div>
+     </div>
+   <div class="components" id="style-scrollbar">
+     <div class="title">Size</div>
+     <div class="size" *ngFor="let product of productpost">
+         <button type="button" id="size" name="size" (click)="FilterSize(product.size)" class="btn">{{product.size}}</button>
+     </div>
+   </div>
+   <div class="components" id="style-scrollbar">
+     <div class="title">Color</div>
+     <div class="size" *ngFor="let product of productpost">
+       <button type="button" class="btn" (click)="FilterColor(product.color)" [ngStyle]="{'background':product.color}"></button>
+     </div>
+   </div>
+
+ </div>
+</div>
+<div class="rightcontent" ng-app="">
+   <div class="init"></div>
+   <div *ngIf="message">
+       <div [ngClass]="messageClass">
+         {{ searchmess }}
+       </div>
+     </div>
+   <div class="title">
+       search results for: {{value}}
+   </div>
+   <div class="numberresult">
+       {{searchmess}}
+   </div>
+   <form [formGroup]="formsearch">
+   <div class="col-lg-12">
+   <div class="input-group">
+       <input type="text" class="form-control" id="searchname" name="searchname" formControlName="searchname" [(ngModel)]="searchtext" placeholder="Search for..." aria-label="Search for...">
+       <span class="input-group-btn">
+           <a class="btn searchbtn" type="button">
+               <mat-icon>search</mat-icon>
+           </a>
+       </span>
+   </div>
+</div>
+</form>
+   <div class="pagepagin">
+   </div>
+       <div class="listproduct">
+           <a routerLink='/search'*ngFor="let product of productpost|productpipe:searchtext|filterprice:rangeprice">
+               <img src='https://drive.google.com/uc?id={{product.leftimage}}'/>	
+               <div class="nameproduct">
+                   {{product.nameproduct}}
+               </div>
+               <div class="price">
+                  ${{product.price}}
+               </div>
+               <div class="showaction">
+               <div class="description">
+               size:{{product.size}}
+               </div>
+               <button (click)="AddToCart(product._id)" class="btn">Buy</button>
+           </div>
+           </a>
+       </div>
+</div>

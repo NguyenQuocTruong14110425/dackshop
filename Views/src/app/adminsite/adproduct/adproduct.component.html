@@ -1,0 +1,260 @@
+<!-- Content -->
+
+<div id="content">
+  <!-- New Post Button -->
+  <div class="inner">
+    <div class="title">
+      <h2>List product</h2>
+    </div>
+    <div *ngIf="message">
+      <div [ngClass]="messageClass">
+        {{ message }}
+      </div>
+    </div>
+    <form [formGroup]="form" *ngIf="newProduct" (submit)="addproductSubmit()">
+      <div class="title">
+        <h2>Create product</h2>
+      </div>
+      <div class="col-md-12">
+        <div class="body">
+
+          <div class="components">
+            <h1>Name product</h1>
+            <div class="form-group">
+              <div [ngClass]="{'has-error':(form.controls.nameproduct.errors && form.controls.nameproduct.dirty),'has-success':!form.controls.nameproduct.errors}">
+                <input type="text" id="nameproduct" name="nameproduct" formControlName="nameproduct" class="form-control" placeholder="Enter name product">
+                <div id="message">
+                  <li class="error" *ngIf="form.controls.nameproduct.errors?.required && form.controls.nameproduct.dirty">This field is require</li>
+                  <li class="warring" *ngIf="(form.controls.nameproduct.errors?.minlength||form.controls.nameproduct.errors?.maxlength) && form.controls.nameproduct.dirty">
+                    Minimum characters:3, Maximum characters:30</li>
+                  <li class="notification" *ngIf="form.controls.nameproduct.errors?.validatenameproduct && form.controls.nameproduct.dirty">
+                    This must be a valid full name</li>
+                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="components">
+            <h1>Description</h1>
+            <div class="form-group">
+              <div [ngClass]="{'has-error':(form.controls.description.errors && form.controls.description.dirty),'has-success':!form.controls.description.errors}">
+                <input type="text" id="description" name="description" formControlName="description" class="form-control" placeholder="Enter description product">
+                <div id="message">
+                  <li class="error" *ngIf="form.controls.description.errors?.required && form.controls.description.dirty">This field is require</li>
+                  <li class="warring" *ngIf="(form.controls.description.errors?.minlength||form.controls.description.errors?.maxlength) && form.controls.description.dirty">
+                    Minimum characters:3, Maximum characters:50</li>
+                  <li class="notification" *ngIf="form.controls.description.errors?.validatedescriptionproduct && form.controls.description.dirty">
+                    This must be a description</li>
+                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Price</h1>
+            <div class="form-group">
+              <div [ngClass]="{'has-error':(form.controls.price.errors && form.controls.price.dirty),'has-success':!form.controls.price.errors}">
+                <input type="text" id="price" name="price" formControlName="price" class="form-control" placeholder="Enter price product">
+                <div id="message">
+                  <li class="error" *ngIf="form.controls.price.errors?.required && form.controls.price.dirty">This field is require</li>
+                  <li class="warring" *ngIf="(form.controls.price.errors?.minlength||form.controls.price.errors?.maxlength) && form.controls.price.dirty">
+                    Minimum characters:2, Maximum characters:10</li>
+                  <li class="notification" *ngIf="form.controls.price.errors?.validatepriceproduct && form.controls.price.dirty">
+                    This must be a number</li>
+                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Amount Product</h1>
+            <div class="form-group">
+              <div [ngClass]="{'has-error':(form.controls.amountproduct.errors && form.controls.amountproduct.dirty),'has-success':!form.controls.amountproduct.errors}">
+                <input type="number" min="0" id="amountproduct" name="amountproduct" formControlName="amountproduct" class="form-control"
+                  placeholder="Enter amountproduct product">
+                <div id="message">
+                  <li class="error" *ngIf="form.controls.amountproduct.errors?.required && form.controls.amountproduct.dirty">This field is require</li>
+                  <li class="warring" *ngIf="(form.controls.amountproduct.errors?.minlength||form.controls.amountproduct.errors?.maxlength) && form.controls.amountproduct.dirty">
+                    Minimum characters:2, Maximum characters:10</li>
+                  <li class="notification" *ngIf="form.controls.amountproduct.errors?.validatepriceproduct && form.controls.amountproduct.dirty">
+                    This must be a number</li>
+                  <li class="helpblock" *ngIf="amountproductMessage">{{ amountproductMessage }}</li>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Image</h1>
+            <div class="form-group">
+
+              <div>
+                <p>Path left image:</p>
+                <input id="leftimage" class="form-control" name="leftimage" formControlName="leftimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path left image zoom:</p>
+                <input id="leftimagezoom" class="form-control" name="leftimagezoom" formControlName="leftimagezoom" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path under image:</p>
+                <input id="underimage" class="form-control" name="underimage" formControlName="underimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path under image zoom:</p>
+                <input id="underimagezoom" class="form-control" name="underimagezoom" formControlName="underimagezoom" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path behind image:</p>
+                <input id="behindimage" class="form-control" name="behindimage" formControlName="behindimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path behind image zoom:</p>
+                <input id="behindimagezoom" class="form-control" name="behindimagezoom" formControlName="behindimagezoom" type="text" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rightbody">
+          <div class="components">
+            <h1>Catalog</h1>
+            <select id="catalog" class="form-control" name="catalog" formControlName="catalog">
+              <option></option>
+              <option *ngFor="let catalog of catalogposts">
+                {{catalog.catalogName}}
+              </option>
+            </select>
+          </div>
+          <div class="components">
+            <h1>Color</h1>
+            <div class="form-group">
+              <select id="color" class="form-control" name="color" formControlName="color">
+                <option>black</option>
+                <option>green</option>
+                <option>blue</option>
+                <option>white</option>
+                <option>pink</option>
+                <option>red</option>
+                <option>yellow</option>
+                <option>gray</option>
+                <option>orange</option>
+                <option>brown</option>
+                <option>cyan</option>
+                <option>grey</option>
+                <option>lightsteelblue</option>
+              </select>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Promotion</h1>
+            <div class="form-group">
+              <select id="checksale" class="form-control" name="checksale" formControlName="color">
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+              </select>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Size</h1>
+            <select id="size" class="size" class="form-control" name="size" formControlName="size">
+              <option>30</option>
+              <option>31</option>
+              <option>32</option>
+              <option>33</option>
+              <option>34</option>
+              <option>35</option>
+              <option>36</option>
+              <option>37</option>
+              <option>38</option>
+              <option>39</option>
+              <option>40</option>
+              <option>41</option>
+              <option>42</option>
+              <option>43</option>
+            </select>
+          </div>
+          <input type="submit" class="btn btn-primary" name="addproduct-submit" value="submit">
+          <button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+        </div>
+      </div>
+    </form>
+    <div class="inner">
+      <div class="col-md-12">
+        <div class="bodylist" *ngIf="!newProduct">
+          <button type="button" name="button" class="btn btn-warning" *ngIf="!newProduct" (click)="newProductForm()">New Product</button>
+          <br/>
+          <br/>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-2">ProductName</th>
+                <th class="col-md-3">Description</th>
+                <th class="col-md-1">Price</th>
+                <th class="col-md-1">Catalog</th>
+                <th class="col-md-1">Color</th>
+                <th class="col-md-1">Size</th>
+                <th class="col-md-1">Image</th>
+                <th class="col-md-1"></th>
+              </tr>
+            </thead>
+          </table>
+          <table class="table">
+
+            <tr>
+              <div *ngFor="let product of productposts">
+                <td class="col-md-2">{{product.nameproduct}}</td>
+                <td class="col-md-3">{{product.description}}</td>
+                <td class="col-md-1">{{product.price}}</td>
+                <td class="col-md-1">{{product.catalog}}</td>
+                <td class="col-md-1">{{product.color}}</td>
+                <td class="col-md-1">{{product.size}}</td>
+                <td class="col-md-1">
+                  <img src="https://drive.google.com/uc?id={{product.leftimage}}" alt="" />
+                </td>
+                <td class="col-md-1">
+                  <div>
+                    <a [routerLink]="['/edit-product/', product._id]">
+                      <mat-icon>settings</mat-icon>
+                    </a>
+                  </div>
+                  <div>
+                    <a data-toggle="modal" data-target="#deleteproduct">
+                      <mat-icon>delete</mat-icon>
+                    </a>
+                  </div>
+                </td>
+                <!-- Modal product -->
+                <div class="modal fade" id="deleteproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
+                      </div>
+                      <div class="modal-body">
+                        <h3 style="color:red;text-transform: lowercase;">Are you sure you want to delete the product {{product?.nameproduct}}?</h3>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onDeleteProductsubmit(product?._id)" data-dismiss="modal">Delete product</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cance</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tr>
+
+          </table>
+
+          <!-- Panel Outer Layer -->
+
+        </div>
+      </div>
+    </div>
+  </div>

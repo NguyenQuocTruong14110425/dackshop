@@ -1,0 +1,174 @@
+<div id="content">
+  <div class="inner">
+    <div class="title">
+      <h2>Active Menus</h2>
+    </div>
+    <div *ngIf="message">
+      <div [ngClass]="messageClass">
+        {{ message }}
+      </div>
+    </div>
+    <div class="components">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p>+ Add menus</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="listcatalog">
+          <form [formGroup]="form" (submit)="onCreateMenuSubmit()">
+            <div class="form-row align-items-center">
+              <div class="col-sm-2">
+                <p>Name menu</p>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="menuname" name="menuname" formControlName="menuname" aria-describedby="emailHelp"
+                  placeholder="Enter email">
+                  <div id="message">
+                    <li class="error" *ngIf="form.controls.menuname.errors?.required && form.controls.menuname.dirty">This field is require</li>
+                    <li class="warring" *ngIf="(form.controls.menuname.errors?.minlength||form.controls.menuname.errors?.maxlength) && form.controls.menuname.dirty">
+                      Minimum characters:3, Maximum characters:30</li>
+                    <li class="notification" *ngIf="form.controls.menuname.errors?.validateMenuname && form.controls.menuname.dirty">
+                      This must be a valid full name</li>
+                    </div>
+              </div>
+              <div class="col-sm-2">
+                <input type="submit" name="menu-submit" class="form-control btn btn-primary" value="Add">
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-expansion-panel>
+    </div>
+    <div class="components">
+      <h1>My List Menus</h1>
+      <div *ngFor="let menu of meupost">
+        <!-- menu list -->
+        <div class="listcatalog">
+          <div class="namecatalog">
+            <p>{{menu.menuname}}</p>
+          </div>
+          <div class="action">
+            <button (click)="GetListBranch(menu._id)">
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <button data-toggle="modal" data-target="#deletemenu" >
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button>
+                <mat-icon>settings</mat-icon>
+              </button>
+            <button [routerLink]="['/addbranchs/', menu._id]">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+             <!-- modal -->
+             <div class="modal fade" id="deletemenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
+                  </div>
+                  <div class="modal-body">
+                    <h3 style="color:red;text-transform: lowercase;">Are you sure you want to delete the mennu {{menu?.menuname}}?</h3>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="onDeleteMenuSubmit(menu._id)" data-dismiss="modal">Delete Catalog</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cance</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+                 <!-- end modal -->
+      </div>
+    </div>
+
+    <div class="components" *ngIf="Isbranch">
+      <h1>My List Branchs</h1>
+      <div *ngFor="let branch of branchpost"><!-- branch list -->
+        <div class="listcatalog">
+          <div class="namecatalog">
+              <p>{{branch.branchName}}</p>
+              <h2>{{branch.description}}</h2>
+          </div>
+          <div class="action">
+            <button (click)="GetListCatalog(branch._id)">
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <button data-toggle="modal" data-target="#deletebranch">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button>
+                <mat-icon>settings</mat-icon>
+              </button>
+            <button [routerLink]="['/addcatalogs/', branch._id]">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+        <!-- modal -->
+        <div class="modal fade" id="deletebranch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
+              </div>
+              <div class="modal-body">
+                <h3 style="color:red;text-transform: lowercase;">Are you sure you want to delete the branch {{branch?.branchName}}?</h3>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="onDeleteBranchsubmit(branch._id)" data-dismiss="modal">Delete Branch</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">cance</button>
+              </div>
+            </div>
+          </div>
+        </div>
+             <!-- end modal -->
+      </div>
+    </div>
+
+    <div class="components" *ngIf="Iscatalog" >
+      <h1>My List Catalogs</h1>
+      <div *ngFor="let catalog of catalogpost"> <!-- catalog list -->
+        <div class="listcatalog">
+          <div class="namecatalog">
+              <p>{{catalog.catalogName}}</p>
+          </div>
+          <div class="action">
+            <button>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <button>
+                <mat-icon>settings</mat-icon>
+              </button>
+            <button  data-toggle="modal" data-target="#deletecatalog" >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+              <!-- modal -->
+              <div class="modal fade" id="deletecatalog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
+                    </div>
+                    <div class="modal-body">
+                      <h3 style="color:red;text-transform: lowercase;">Are you sure you want to delete the catalog {{catalog?.catalogName}}?</h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" (click)="onDeleteCatalogsubmit(catalog._id)" data-dismiss="modal">Delete Catalog</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">cance</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                   <!-- end modal -->
+      </div>
+    </div>
+    
+
+</div>
+</div>

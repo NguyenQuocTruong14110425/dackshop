@@ -1,0 +1,146 @@
+<!-- Content -->
+<div id="content">
+  <div class="row show-hide-message">
+    <div [ngClass]="messageClass">
+      {{ message }}
+    </div>
+  </div>
+  <div class="inner">
+    <form *ngIf="!loading" (submit)="updateproductSubmit()">
+      <div class="title">
+        <h2>Update product</h2>
+      </div>
+        <div class="body">
+          <div class="components">
+            <h1>Name product</h1>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="product.nameproduct" id="nameproduct" name="nameproduct" class="form-control">
+            </div>
+          </div>
+
+          <div class="components">
+            <h1>Description</h1>
+            <div class="form-group">
+              <textarea class="form-control" [(ngModel)]="product.description" name="description" id="description" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="components">
+            <h1>Price</h1>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="product.price" id="price" name="price" class="form-control">
+            </div>
+          </div>
+          <div class="components">
+            <h1>Amount Product</h1>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="product.amount" id="price" name="price" class="form-control">
+              </div>
+            </div>
+          <div class="components">
+            <h1>Image</h1>
+            <div class="form-group">
+              <div>
+                <p>Path left image:</p>
+                <input id="leftimage" class="form-control" name="leftimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path left image zoom:</p>
+                <input id="leftimagezoom" class="form-control" name="leftimagezoom" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path under image:</p>
+                <input id="underimage" class="form-control" name="underimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path under image zoom:</p>
+                <input id="underimagezoom" class="form-control" name="underimagezoom"  type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path behind image:</p>
+                <input id="behindimage" class="form-control" name="behindimage" type="text" />
+              </div>
+              <br/>
+              <div>
+                <p>Path behind image zoom:</p>
+                <input id="behindimagezoom" class="form-control" name="behindimagezoom" type="text" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="rightbody">
+          <div class="components">
+            <h1>Catalog</h1>
+            <select id="catalog" class="form-control" name="catalog">
+              <option></option>
+              <option *ngFor="let catalog of catalogposts">
+                {{catalog.catalogName}}
+              </option>
+            </select>
+          </div>
+
+
+          <div class="components">
+            <h1>Color</h1>
+            <div class="form-group">
+              <select id="color" class="form-control" name="color">
+                <option>black</option>
+                <option>green</option>
+                <option>blue</option>
+                <option>white</option>
+                <option>pink</option>
+                <option>red</option>
+                <option>yellow</option>
+                <option>gray</option>
+                <option>orange</option>
+                <option>brown</option>
+                <option>cyan</option>
+                <option>grey</option>
+                <option>lightsteelblue</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="components">
+            <h1>Promotion</h1>
+            <div class="form-group">
+              <select id="checksale" class="form-control" name="checksale">
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="components">
+            <h1>Size</h1>
+            <select id="size" class="size" class="form-control" name="size" >
+              <option>30</option>
+              <option>31</option>
+              <option>32</option>
+              <option>33</option>
+              <option>34</option>
+              <option>35</option>
+              <option>36</option>
+              <option>37</option>
+              <option>38</option>
+              <option>39</option>
+              <option>40</option>
+              <option>41</option>
+              <option>42</option>
+              <option>43</option>
+            </select>
+          </div>
+          <div class="components">
+          <input type="submit" class="btn btn-primary" name="updateproduct-submit" value="Update">
+          <button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

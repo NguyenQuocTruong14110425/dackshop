@@ -1,0 +1,84 @@
+<div class = "col-md-2" id ="listproduct-filter">
+		
+</div>
+<div class ="col-md-10" id="listproduct-content">
+    <div class="init"></div>
+<div class="top-content">
+  <div>
+    <h2>LOGIN</h2>
+  </div>
+</div>
+
+<!-- Services -->
+<div class ="nav-section-dark home">
+<div class="services-container section-container">
+  <div class="container">
+  <div class="col-md-6">
+      <div id="space-login">
+      <h3>Fill in this form</h3>
+      <div id="login-conten">
+          <div class="row show-hide-message">
+              <div [ngClass]="messageClass">
+                {{ message }}
+              </div>
+            </div>
+          <form [formGroup]="form" (submit)="onLoginSubmit()">
+              <div class="form-group">
+                  <p>User Name</p>
+                  <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty),'has-success':!form.controls.username.errors}">
+                    <input type="text" name="username" class="form-control" id="username" autocomplete="off" aria-describedby="usernameHelp"
+                      placeholder="Enter username" formControlName="username">
+                      <div id="message">
+                      <li class="error" *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">this field is require</li>
+                      <li class="warring" *ngIf="(form.controls.username.errors?.minlength||form.controls.username.errors?.maxlength) && form.controls.username.dirty">
+                        Minimum characters:3, Maximum characters:15</li>
+                      <li class="notification" *ngIf="form.controls.username.errors?.validateUsername && form.controls.username.dirty">
+                        this must be a valid user name</li>
+                      <li class="helpblock" *ngIf="usernameMessage">{{ usernameMessage }}</li>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <p>Password</p>
+                  <div [ngClass]="{'has-error':(form.controls.password.errors && form.controls.password.dirty),'has-success':!form.controls.password.errors}">
+                    <input type="password" class="form-control" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password">
+                      <div id="message">
+                    <li class="error" *ngIf="form.controls.password.errors?.required && form.controls.password.dirty">this field is require</li>
+                    <li class="warring" *ngIf="(form.controls.password.errors?.minlength||form.controls.password.errors?.maxlength) && form.controls.password.dirty">
+                      Minimum characters:8, Maximum characters:35</li>
+                    <li class="notification" *ngIf="form.controls.password.errors?.validatePassword && form.controls.password.dirty">
+                      this must be a valid password</li>
+                      </div>
+                  </div>
+                </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3" id="login-button-style">
+                <input [disabled]="!form.valid" class="form-control btn btn-danger" type="submit" value="Login" />
+            </div>
+          </div>
+        </div>
+  </form>		
+</div>
+</div>								
+  </div>
+  <div class="col-md-6">
+    <div>
+      <h3>REGISTRATION</h3>
+    </div>
+    <div id="register-detail-font">
+      <p>Simply put, the Air Jordan 1 is the sneaker that started it all. Michael Jordan's first signature model was released in 1985, and is the only Air Jordádasdan model that sports a Nike Swoosh. The Air Jordan 1 violated the NBA's uniform policy, which led to Jordan being fined $5,000 a game, and became a topic of a popular Nike commercial. The Air Jordan 1 is still popular today, and has been released in more colorways than any other Air Jordan model.</p>			
+    </div>
+    <div class="form-group">
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3" id="login-button-style">
+            <input type="submit" routerLink='/register' class="form-control btn btn-primary" value="Sign up">
+          </div>
+        </div>
+      </div>
+  </div>
+
+</div>
+</div>
+</div>
+</div>

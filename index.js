@@ -2,13 +2,22 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
-var session = require('express-session');
-var bodyParser = require('body-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
-const customerrouter=require('./routers/customer.router')(router);
-const config = require('./config/database');
+const cors = require('cors');
+const MongoStore = require('connect-mongo')(session);
+const userRouter=require('./Web_Api/user.api')(router);
+const productRouter=require('./Web_Api/product.api')(router);
+const menuRouter=require('./Web_Api/menu.api')(router);
+const branchRouter=require('./Web_Api/branch.api')(router);
+const catalogRouter=require('./Web_Api/catalog.api')(router);
+const cartRouter=require('./Web_Api/cart.api')(router);
+const config = require('./Web_Config/Database');
 //start connect database
-
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
     if (err) {
@@ -25,13 +34,54 @@ mongoose.connect(config.uri, (err) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
-app.use(express.static(__dirname + '/public/dist'));
+app.use(express.static(__dirname + '/Views/dist/'));
 //default
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/dist/index.html'))
+    res.sendFile(path.join(__dirname + '/Views/dist/index.html'));
 });
-app.use('/customers', customerrouter);
+//session
+app.use(cookieParser());
+app.use(session({
+    secret: 'mysupersecret',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+app.use(function(req, res, next) {
+   req.session.cookie.maxAge = 180 * 60 * 1000; // 3 hours
+    next();
+});
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
+//
+app.use('/users', userRouter);
+app.use('/products', productRouter);
+app.use('/menus', menuRouter);
+app.use('/branchs', branchRouter);
+app.use('/catalogs', catalogRouter);
+app.use('/carts', catalogRouter);
 
+  var corsOptions = {
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+  app.use(cors(corsOptions))
+// app.use(cors({
+//     orgin: 'http://localhost:4200'
+// }));
+// catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//     var err = new Error('Not Found');
+//     err.status = 404;
+//     next(err);
+// });
+// development error handler
+// start server
 var server = app.listen(8080, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });

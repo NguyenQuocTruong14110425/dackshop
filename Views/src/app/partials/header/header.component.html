@@ -1,0 +1,205 @@
+<div class="menu-container">
+	<div class="logo">
+		<a href="#">
+			<img src="assets/images/logo.png">
+		</a>
+	</div>
+	<div class="menuright">
+		<li>
+			<a>
+				<div class="menu-mobile">
+					<mat-icon>more_vert</mat-icon>
+				</div>
+			</a>
+		</li>
+
+		<li>
+			<a>
+				<mat-icon>person</mat-icon>
+			</a>
+			<ul>
+				<li>
+					<a *ngIf="isLogin" routerLink='/profile'>
+						<button type="button" class="form-control">{{profiles?.username}}</button>
+					</a>
+					<a *ngIf="!isLogin" routerLink='/login'>
+						<button type="button" class="form-control">Login</button>
+					</a>
+				</li>
+
+				<li *ngIf="isLogin">
+					<a routerLink='/profile'>
+						<mat-icon>person</mat-icon>
+						<p>My Profile</p>
+					</a>
+				</li>
+
+				<li>
+					<a routerLink='/tracking'>
+						<mat-icon>shopping_basket</mat-icon>
+						<p>Tracking Order</p>
+					</a>
+				</li>
+				<li>
+					<a routerLink='/#'>
+						<mat-icon>card_giftcard</mat-icon>
+						<p>Gilt Card</p>
+					</a>
+				</li>
+				<li *ngIf="!isLogin">
+					<a routerLink='/register'>
+						<mat-icon>perm_device_information</mat-icon>
+						<p>Register</p>
+					</a>
+				</li>
+				<li>
+					<a routerLink='/menus'>
+						<mat-icon>supervisor_account</mat-icon>
+						<p>Admin</p>
+					</a>
+				</li>
+				<li *ngIf="isLogin">
+						<a  (click)="logout()">
+							<mat-icon>person_outline</mat-icon>
+							<p>logout</p>
+						</a>
+					</li>
+			</ul>
+		</li>
+		<li>
+			<a routerLink='/'>
+				<mat-icon>help_outline</mat-icon>
+			</a>
+		</li>
+		<div class="cart">
+			<a (on-mouseover)="getCart()">
+				<mat-icon>shopping_cart</mat-icon>
+			</a>
+			<ul>
+				<div class="title">
+					Shopping bag
+					<div class="buttonaction">
+						<a routerLink='/' (click)="removeAllCart()">
+							clear all item
+						</a>
+					</div>
+				</div>
+				<div class="content" id="style-scrollbar">
+					<li *ngFor="let cart of cartpost">
+						<a>
+							<img src='https://drive.google.com/uc?id={{cart.item.leftimage}}' />
+							<div class="buttonaction">
+								<a (click)="removeItemCart(cart.item._id)">
+									<mat-icon>delete</mat-icon>
+								</a>
+								<a (click)="increaseItemCart(cart.item._id)">
+									<mat-icon>keyboard_arrow_up</mat-icon>
+								</a>
+								<a (click)="reduceItemCart(cart.item._id)">
+									<mat-icon>keyboard_arrow_down</mat-icon>
+								</a>
+							</div>
+							<div class="titleproduct">
+								<div class="nameproduct">
+									{{cart.item.nameproduct}}
+								</div>
+								<div class="description">
+									{{cart.item.description}}
+								</div>
+								<div class="price">
+									{{cart.item.price}}
+								</div>
+								<div class="quantity">
+									{{cart.qty}}
+								</div>
+							</div>
+						</a>
+					</li>
+
+				</div>
+				<div class="total">
+					Subtotal:{{total}}
+				</div>
+				<div class="checkout">
+					<a type="button" class="btn" routerLink='/checkout'> checkout</a>
+				</div>
+			</ul>
+		</div>
+		<li>
+			<a routerLink='/'>
+				<mat-icon>notifications</mat-icon>
+			</a>
+		</li>
+		<div class="search">
+			<a routerLink='/search'>
+				<mat-icon>search</mat-icon>
+			</a>
+			<ul>
+				<div class="col-lg-12">
+					<form [formGroup]="formsearch">
+						<div class="col-lg-12">
+						<div class="input-group">
+							<input type="text" class="form-control" id="searchproduct" name="searchproduct" formControlName="searchproduct" [(ngModel)]="search" placeholder="Search for..." aria-label="Search for...">
+							<span class="input-group-btn">
+								<a class="btn searchbtn" type="button">
+									<mat-icon>search</mat-icon>
+								</a>
+							</span>
+						</div>
+					</div>
+					</form>
+				</div>
+				<div class="product" id="style-scrollbar">
+					<div class="title">Products</div>
+					<div *ngFor="let product of productpost|productpipe:search">
+						<a [routerLink]="['/detailproduct/', product._id]">
+							<img src='https://drive.google.com/uc?id={{product.leftimage}}' alt="" />
+							<div class="nameproduct">
+								{{product.nameproduct}}
+							</div>
+						</a>
+					</div>
+				</div>
+			</ul>
+		</div>
+	</div>
+	<div class="menu">
+		<ul>
+			<li *ngFor="let menu of menupost">
+				<a href="#" (mouseenter)="GetListBranch(menu._id)">{{menu.menuname}}</a>
+				<ul>
+					<li *ngFor="let branch of branchpost">
+						<a href="#" (mouseenter)="GetListCatalog(branch._id)">{{branch.branchName}}</a>
+						<ul>
+							<li *ngFor="let catalog of catalogposts">
+								<a href="#">{{catalog.catalogName}}</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a>NEW</a>
+				<ul>
+					<li>
+						<a href="#">NEW ARRICALS</a>
+						<ul>
+							<li>
+								<a href="#">Lidership</a>
+							</li>
+							<li>
+								<a href="#">History</a>
+							</li>
+							<li>
+								<a href="#">Locations</a>
+							</li>
+							<li>
+								<a href="#">Careers</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>

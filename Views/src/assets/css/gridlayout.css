@@ -1,0 +1,12 @@
+.leftbody
+{
+    padding-left: 5%;
+    float: left;
+    width: 20%;
+}
+.rightcontent
+{
+    padding-right: 2%;
+    float: left;
+    width: 78%;
+}

@@ -1,0 +1,55 @@
+<div id="content">
+  <div class="inner">
+    <div class="title">
+      <h2>Active Branchs</h2>
+    </div>
+    <div *ngIf="message">
+      <div [ngClass]="messageClass">
+        {{ message }}
+      </div>
+    </div>
+    <div class="body">
+      <form [formGroup]="formbranch" (submit)="onCreateBranchsubmit()">
+        <div class="components">
+          <h1>Name Branch</h1>
+          <input type="text" class="form-control" id="branchName" name="branchName" formControlName="branchName" placeholder="Enter name branch">
+        </div>
+        <div class="components">
+          <h1>Image branchName</h1>
+          <input type="text" class="form-control" id="image" name="image" formControlName="image" placeholder="Enter URL image branch">
+        </div>
+        <div class="components">
+          <h1>Description Branch</h1>
+          <input type="text" class="form-control" id="description" name="description" formControlName="description" placeholder="Enter Description branch">
+        </div>
+        <div class="components">
+          <input type="submit" name="branch-submit" class="form-control btn btn-primary" value="Add">
+        </div>
+      </form>
+    </div>
+    <div class="rightbody">
+      <div class="components">
+        <h1>My List Branch</h1>
+        <div *ngFor="let branch of branchpost">
+        <div class="listcatalog">
+            <div class="namecatalog">
+                <p>{{ branch.branchName }}</p>
+            </div>
+          <div class="action button">
+            <button>
+                <mat-icon>settings</mat-icon>
+              </button>
+              <button (click)="onDeleteBranchsubmit(branch._id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button  [routerLink]="['/addcatalogs/', branch._id]">
+                <mat-icon>add</mat-icon>
+              </button>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+    </div>
