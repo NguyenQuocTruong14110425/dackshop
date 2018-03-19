@@ -17,6 +17,9 @@ const branchRouter=require('./Web_Api/branch.api')(router);
 const catalogRouter=require('./Web_Api/catalog.api')(router);
 const cartRouter=require('./Web_Api/cart.api')(router);
 const config = require('./Web_Config/Database');
+const customerrouter=require('./routers/customer.router')(router);
+const config = require('./config/database');
+const port=process.env.PORT||8080;
 //start connect database
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
