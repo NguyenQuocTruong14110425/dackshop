@@ -17,20 +17,20 @@ export class CatalogService {
 
     //catalog
     GetAllCatalog() {
-        return this.http.get(this.domain + '/catalogs/allcatalog').map(res => res.json());
+        return this.http.get(this.domain + '/catalog/allcatalog/').map(res => res.json());
       }
       SearchCatalog(namecatalog) {
-        return this.http.get(this.domain + '/catalogs/searchcatalog/'+namecatalog).map(res => res.json());
+        return this.http.get(this.domain + '/catalog/searchcatalog/'+namecatalog).map(res => res.json());
       }
       GetListCatalog(idbranch) {
-        return this.http.get(this.domain + '/catalogs/listcatalog/'+idbranch).map(res => res.json());
+        return this.http.get(this.domain + '/catalog/all/'+idbranch).map(res => res.json());
       }
       createCatalog(idbranch,catalog) {
-        return this.http.post(this.domain + '/catalogs/addCatalog/' +idbranch, catalog).map(res => res.json());
+        return this.http.post(this.domain + '/catalog/add/' +idbranch, catalog).map(res => res.json());
       }
       deleteCatalog(id) {
         console.log(id);
-        return this.http.delete(this.domain + '/catalogs/deletecatalog/'+ id).map(res => res.json());
+        return this.http.delete(this.domain + '/catalog/delete/'+ id).map(res => res.json());
       }
       
     }

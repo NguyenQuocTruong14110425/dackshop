@@ -1,73 +1,80 @@
-const Menu = require('../Models/menu');
 const config = require('../Web_Config/database');
+const MenuService = require('./controllers/MenuService');
 var fs = require('fs');
-module.exports = (router) => {
-    router.post('/createmenu', (req, res) => {
-        if (!req.body.menuname) {
-            if (err.code === 11000) {
-                res.json({ success: false, message: 'menu name allready exists' });
-            }
-            else {
-                if (err.errors) {
-                    res.json({ success: false, message: err.message });
+const EnumConstant = require('../Web_Config/EnumConstant.js');
 
-                }
-                else {
-                    res.json({ success: false, message: 'The error occurred in the process of work', err });
-                }
-            }
-        }
-        else {
-            var NewMenu = new Menu();
-            NewMenu.menuname = req.body.menuname;
-            NewMenu.save((err, menus) => {
-                if (err) {
-                    res.json({ success: false, message: 'Cannot save the data' }); // Return error
-                }
-                else {
-                    res.json({ success: true, message: 'The data was saved successfully! Please look at the latest update your website!', menus: menus }); // Return sucess
-                }
-            });
-        }
-    });
-    router.get('/listmenu', function (req, res, next) {
-        Menu.find(function (err, menus) {
+module.exports = (router) => {
+    var Enum = new EnumConstant();
+    var mess = {} = Enum.DataMessage;
+
+    //Tìm tất cả menu và nhãn hiệu con nằm trong menu ||data:{dữ liệu trả về} message:{lỗi thông báo}
+    router.get('/menu/all/', (req, res) => {
+        MenuService.findAllMenu(function (err, Menus) {
             if (err) {
-                res.json({ success: false, message: err }); // Return error
-            }
-            else {
-                res.json({ success: true, message: 'The results in your system.', menus: menus }); // Return sucess
-            }
-        }).sort({ '_id': -1 }).populate('branchs');
-    });
-    //find one a menu
-    router.get('/findmenu/:id', (req, res) => {
-        Menu.findId({ _id: req.params.id }, (err, menus) => {
-            if (err) {
-                res.json({ success: false, message: err });
+                res.json({ message: err?err:mess.SearchFail });
             } else {
-                if (!user) {
-                    res.json({ success: false, message: 'Your Menu name is currently not available in the system' });
-                } else {
-                    res.json({ success: true, message: 'We found an results', menus: menus });
-                }
+                res.json({ message: mess.SearchSuccess, data: Menus });
             }
+
         });
     });
-    router.delete('/deletemenu/:id', function (req, res) {
-        if (!req.params.id) {
-            res.json({ success: false, message: 'There is no menu available!' });
-        }
-        else {
-            Menu.findByIdAndRemove({ _id: req.params.id }, function (err, menu) {
-                if (err) {
-                    res.json({ success: false, message: err }); // Return error
-                }
-                else {
-                    res.json({ success: true, message: "Menu " + menu.menuname + " was deleted" });
-                }
-            });
-        }
+    //Tìm menu theo id mắc định là  req.params.idparam ||data:{dữ liệu trả về} message:{lỗi thông báo}
+    router.get('/menu/detail/:idparam', (req, res) => {
+        MenuService.findMenuById(req.params.idparam, function (err, Menus) {
+            if (err) {
+                res.json({ message: err?err:mess.SearchFail });
+            } else {
+                res.json({ message: mess.SearchSuccess, data: Menus });
+            }
+
+        });
     });
+    // tạo mới một đối tượng menu vào database
+    // lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
+
+    router.post('/menu/add/', (req, res) => {
+        MenuService.addMenu(req.body, function (err, Menus) {
+            if (err) {
+                res.json({ message: err?err:mess.AddFail});
+            } else {
+                res.json({ message: mess.AddSuccess, data: Menus });
+            }
+
+        });
+    });
+    //cập nhật một đối tượng menu vào database theo id mắc định là  req.params.idparam
+    //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
+    //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
+    // router.put('/:idparam', MenuController.UpdateMenu);
+    router.put('/menu/update/:idparam', (req, res) => {
+        MenuService.updateMenu(req.params.idparam, req.body, function (err, Menus) {
+            if (err) {
+                res.json({ message: err?err:null});
+            } else {
+                MenuService.findMenuById(req.params.idparam, function (err, Menus) {
+                    if (err) {
+                        res.json({message: err?err:mess.SearchFail});
+                    } else {
+                        res.json({ message: mess.UpdateSuccess, data: Menus });
+                    }
+
+                });
+            }
+
+        });
+    });
+    //xóa một đối tượng menu vào database theo id mắc định là  req.params.idparam
+
+    router.delete('/menu/delete/:idparam', (req, res) => {
+        MenuService.removeMenu(req.params.idparam, function (err, Menus) {
+            if (err) {
+                res.json({message: err?err:mess.RemoveFail });
+            } else {
+                res.json({ message: mess.RemoveSuccess, data: Menus });
+            }
+
+        });
+    });
+
     return router;
 }

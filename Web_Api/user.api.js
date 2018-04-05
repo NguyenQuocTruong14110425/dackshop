@@ -1,204 +1,162 @@
-const User = require('../Models/user');
 const config = require('../Web_Config/database');
-
+const UserService = require('./controllers/UserService');
+var fs = require('fs');
+const EnumConstant = require('../Web_Config/EnumConstant.js');
 
 module.exports = (router) => {
-    router.post('/register', (req, res) => {
-        if (!req.body.email || !req.body.fullname ||  !req.body.username || !req.body.address || !req.body.numberphone||  !req.body.password) {
-            res.json({ success: false, message: 'you must enter input' });
+    var Enum = new EnumConstant();
+    var mess = {} = Enum.DataMessage;
+    //đăng ký tài khoản một user
+    router.post('/user/register', (req, res) => {
+        if (!req.body.Email || !req.body.UserName || !req.body.Password) {
+            res.json({ success: false, message: mess.NotInput });
         }
         else {
-            let user = new User({
-                email: req.body.email.toLowerCase(),
-                username: req.body.username.toLowerCase(),
-                fullname: req.body.fullname.toLowerCase(),
-                address: req.body.address.toLowerCase(),
-                numberphone: req.body.numberphone.toLowerCase(),
-                password: req.body.password
-            });
-            user.save((err) => {
+            UserService.addUser(req.body, function (err, Users) {
                 if (err) {
                     if (err.code === 11000) {
-                        res.json({ success: false, message: 'Username or e-mail allready exists' });
+                        res.json({ success: false, message: mess.UserExits });
                     }
                     else {
                         if (err.errors) {
-                            res.json({ success: false, message: err.message });
-                            
+                            res.json({ message: err ? err : mess.RegisterError });
+
                         }
                         else {
-                            res.json({ success: false, message: 'Could not save user. Error: ', err });
+                            res.json({ success: false, message: err ? err : mess.RegisterNotSave });
                         }
                     }
                 }
                 else {
-                    res.json({ success: true, message: 'user saved!' })
+                    res.json({ success: true, message: mess.RegisterSuccess, data: Users })
                 }
             });
         }
     });
-    router.put('/updateuser', (req, res) => {
-        if (!req.body.username) {
-            res.json({ success: false, message: 'no find username' });
-        }
-        else {
-            User.findOne({ username: req.body.username }, (err, user) => {
-                if (err) {
-                    res.json({ success: false, message: err });
-                } else {
-                    if (!user) {
-                        res.json({ success: false, message: 'false' });
+    //cập nhật thông tin một user
+    router.put('/user/update/:idparam', (req, res) => {
+        UserService.updateUser(req.params.idparam, req.body, function (err, Users) {
+            if (err) {
+                res.json({ message: err ? err : null });
+            } else {
+                UserService.findUserById(req.params.idparam, function (err, Users) {
+                    if (err) {
+                        res.json({ message: err ? err : mess.SearchFail });
+                    } else {
+                        res.json({ message: mess.UpdateSuccess, data: Users });
                     }
-                    else {
-                        user.email = req.body.email;
-                        user.password = req.body.password;
-                        user.address=req.body.address;
-                        user.numberphone=req.body.numberphone;
-                        user.fullname=req.body.fullname;
-                        user.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: 'can not save' });
-                            }
-                            else {
-                                res.json({ success: true, message: 'data is updated' });
-                            }
-                        });
-                    }
-                }
-            });
 
+                });
+            }
+
+        });
+    });
+    // xóa một user
+    router.delete('/user/delete/', (req, res) => {
+        UserService.removeUser(req.params.idparam, function (err, Users) {
+            if (err) {
+                res.json({ message: err ? err : mess.RemoveFail });
+            } else {
+                res.json({ message: mess.RemoveSuccess, data: Users });
+            }
+
+        });
+    });
+    //kiểm tra một email có tồn tại hay không
+    router.get('/user/checkemail/:email', (req, res) => {
+        if (!req.params.email) {
+            res.json({ success: false, message: mess.NotProvide });
+        } else {
+            UserService.checkEmail(req.params.email, function (err, Users) {
+                if (err) {
+                    res.json({ message: err });
+                } else {
+                    if (Users) {
+                        res.json({ success: false, message: mess.EmailTaken });
+                    } else {
+                        res.json({ success: true, message: mess.EmailAvalible, data: Users });
+                    }
+                }
+            });
         }
     });
-    // DELETES A USER FROM THE DATABASE
-    router.delete('/deleteuser', (req, res) => {
-        if (!req.body.username) {
-            res.json({ success: false, message: 'no find username' });
+    //kiểm tra một user name có tồn tại hay không
+    router.get('/user/checkusername/:username', (req, res) => {
+        if (!req.params.username) {
+            res.json({ success: false, message: mess.NotProvide });
+        } else {
+            UserService.checkUserName(req.params.username, function (err, Users) {
+                if (err) {
+                    res.json({ message: err });
+                } else {
+                    if (Users) {
+                        res.json({ success: false, message: mess.UserNameTaken });
+                    } else {
+                        res.json({ success: true, message: mess.UserNameAvalible, data: Users });
+                    }
+                }
+            });
+        }
+    });
+    //Tìm tất cả User và nhãn hiệu con nằm trong User ||data:{dữ liệu trả về} message:{lỗi thông báo}
+    router.get('/user/all/', (req, res) => {
+        UserService.findAllUser(function (err, Sizes) {
+            if (err) {
+                res.json({ message: err ? err : mess.SearchFail });
+            } else {
+                res.json({ message: mess.SearchSuccess, data: Sizes });
+            }
+
+        });
+    });
+    // tìm thông tin của một người
+    router.get('/user/profile/:idparam', (req, res) => {
+        UserService.findUserById(req.params.idparam, function (err, Sizes) {
+            if (err) {
+                res.json({ message: err ? err : mess.SearchFail });
+            } else {
+                res.json({ message: mess.SearchSuccess, data: Sizes });
+            }
+
+        });
+    });
+    //logout
+    router.get('/user/logout', function (req, res, next) {
+        if (!req.session.user) {
+            res.json({ success: false, message: mess.NotSignUser });
         }
         else {
-            User.findOneAndRemove({ username: req.body.username }, (err, user) => {
-                if (err) {
-                    res.json({ success: false, message: err });
-                }
-                else {
-                    if (!user) {
-                        res.json({ success: false, message: 'can not found username' });
-                    }
-                    else {
-                        res.json({ success: true, message: "User " + user.username + " was deleted" });
-                    }
-                }
-            });
+            req.session.destroy();
+            res.json({ success: true, message: mess.LogoutSuccess });
         }
     });
-    router.get('/checkEmail/:email', (req, res) => {
-        if (!req.params.email) {
-            res.json({ success: false, message: 'E-mail was not provided' });
+    //     /* ========
+    //   LOGIN ROUTE
+    //   ======== */
+    router.post('/user/login', (req, res) => {
+        // Check if username was provided
+        if (!req.body.UserName) {
+            res.json({ success: false, message: mess.NotProvide }); // Return error
         } else {
-            User.findOne({ email: req.params.email }, (err, user) => {
-                if (err) {
-                    res.json({ success: false, message: err });
-                } else {
-                    if (user) {
-                        res.json({ success: false, message: 'E-mail is already taken' });
+            // Check if password was provided
+            if (!req.body.Password) {
+                res.json({ success: false, message: mess.NotProvide }); // Return error
+            } else {
+                // Check if username exists in database
+                UserService.Login(req.body.UserName, req.body.Password, (err, Users) => {
+                    // Check if error was found
+                    if (err) {
+                        res.json({ success: false, message: err ? err : mess.LoginError }); // Return error
                     } else {
-                        res.json({ success: true, message: 'E-mail is avilable' });
+                        req.session.user = req.body.UserName;
+                        res.json({ success: true, message: mess.WellcomeUser, user: Users }); // Return success and token to frontend
                     }
-                }
-            });
+                });
+            }
         }
-    }); 
-    router.get('/checkUsername/:username', (req, res) => {
-        if (!req.params.username) {
-            res.json({ success: false, message: 'User Name was not provided' });
-        } else {
-            User.findOne({ username: req.params.username }, (err, user) => {
-                if (err) {
-                    res.json({ success: false, message: err });
-                } else {
-                    if (user) {
-                        res.json({ success: false, message: 'User name is already taken' });
-                    } else {
-                        res.json({ success: true, message: 'User name is avilable' });
-                    }
-                }
-            });
-        }
-    });  
-//find all list user
-    router.get('/listmember', (req, res) => {
-        User.find({}, (err, users) => {
-            if (err) {
-                res.json({ success: false, message: err });
-            } else {
-                if (!users) {
-                    res.json({ success: false, message: 'No User found.' });
-                } else {
-                    res.json({ success: true, users: users });
-                }
-            }
-        }).sort({ '_id': -1 });
     });
-    //find one a user
-    router.get('/profile', (req, res) => {
-        User.findOne({ username: req.session.user }, (err, users) => {
-            if (err) {
-                res.json({ success: false, message: err });
-            } else {
-                if (!users) {
-                    res.json({ success: false, message: 'User name is not found',users:{} });
-                } else {
-                    res.json({ success: true, users: users });
-                }
-            }
-        });
-    });
-//logout
-router.get('/logout', function (req, res, next) {
-    if (!req.session.user) {
-        res.json({ success: false, message: 'You have not signed in to any accounts yet' });
-    }
-    else
-    {
-    req.session.destroy();
-    res.json({ success: true, message: 'You have successfully logged out'});
-    }
-});
-    /* ========
-  LOGIN ROUTE
-  ======== */
-  router.post('/login', (req, res) => {
-    // Check if username was provided
-    if (!req.body.username) {
-      res.json({ success: false, message: 'No username was provided' }); // Return error
-    } else {
-      // Check if password was provided
-      if (!req.body.password) {
-        res.json({ success: false, message: 'No password was provided.' }); // Return error
-      } else {
-        // Check if username exists in database
-        User.findOne({ username: req.body.username.toLowerCase() }, (err, user) => {
-          // Check if error was found
-          if (err) {
-            res.json({ success: false, message: err }); // Return error
-          } else {
-            // Check if username was found
-            if (!user) {
-              res.json({ success: false, message: 'Username not found.' }); // Return error
-            } else {
-              const validPassword = user.comparePassword(req.body.password); // Compare password provided to password in database
-              // Check if password is a match
-              if (!validPassword) {
-                res.json({ success: false, message: 'Password invalid' }); // Return error
-              } else {
-                req.session.user=user.username;
-                res.json({ success: true, message: 'wellcome !',user: { username: user.username } }); // Return success and token to frontend
-              }
-            }
-          }
-        });
-      }
-    }
-  });
+
+
 
     return router;
 }

@@ -20,22 +20,22 @@ export class ProductService {
     return this.http.get(this.domain + '/products/searchproduct/'+nameproduct).map(res => res.json());
   }
   addproduct(product) {
-    return this.http.post(this.domain + '/products/createproduct/' , product).map(res => res.json());
+    return this.http.post(this.domain + '/product/add/' , product).map(res => res.json());
   }
   getAllProducts() {
-    return this.http.get(this.domain + '/products/getallproducts').map(res => res.json());
+    return this.http.get(this.domain + '/product/all/').map(res => res.json());
   }
   getSingleProduct(id) {
-    return this.http.get(this.domain + '/products/singleProduct/' + id).map(res => res.json());
+    return this.http.get(this.domain + '/product/detail/' + id).map(res => res.json());
   }
   editProduct(product) {
-    return this.http.put(this.domain + '/products/updateProduct/', product).map(res => res.json());
+    return this.http.put(this.domain + '/product/update/', product).map(res => res.json());
   }
   deleteProduct(id) {
-    return this.http.delete(this.domain + '/products/deleteproduct/'+ id).map(res => res.json());
+    return this.http.delete(this.domain + '/product/delete/'+ id).map(res => res.json());
   }
   getListProduct(idcatalog) {
-    return this.http.get(this.domain + '/products/listproduct/'+idcatalog).map(res => res.json());
+    return this.http.get(this.domain + '/product/allforcatalog/'+idcatalog).map(res => res.json());
   }
   filterSize(size) {
     return this.http.get(this.domain + '/products/filtersize/'+size).map(res => res.json());

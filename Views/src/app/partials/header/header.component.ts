@@ -56,120 +56,120 @@ export class HeaderComponent implements OnInit {
   }
   //get list catalog
   GetAllCatalog() {
-    this.catalogService.GetAllCatalog().subscribe(data => {
-      this.catalogpost = data.catalogs; // Assign array to use in HTML
+    this.catalogService.GetAllCatalog().subscribe(result => {
+      this.catalogpost = result.data; // Assign array to use in HTML
 
     });
   }
   AllProduct() {
-    this.productService.getAllProducts().subscribe(data => {
-        this.productpost = data.product;
+    this.productService.getAllProducts().subscribe(result => {
+        this.productpost = result.data;
     });
   }
   SearchProduct() {
-    this.productService.SearchProduct(this.formsearch.get('searchname').value).subscribe(data => {
-      if (!data.success) {
-        this.searchmess = data.message;
+    this.productService.SearchProduct(this.formsearch.get('searchname').value).subscribe(result => {
+      if (!result.success) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
-        this.productpost = data.products;
+        this.searchmess = result.message;
+        this.productpost = result.data;
       }
     });
   }
   SearchCatalog() {
-    this.catalogService.SearchCatalog(this.formsearch.get('searchname').value).subscribe(data => {
-      if (!data.success) {
-        this.searchmess = data.message;
+    this.catalogService.SearchCatalog(this.formsearch.get('searchname').value).subscribe(result => {
+      if (!result.success) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
-        this.catalogpost = data.catalogs;
+        this.searchmess = result.message;
+        this.catalogpost = result.data;
       }
     });
   }
   getCart() {
-    this.cartService.shoppingcart().subscribe(data => {
-      if (data.success==false) {
-        this.searchmess = data.message;
+    this.cartService.shoppingcart().subscribe(result => {
+      if (result.success==false) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
-        this.cartpost = data.products;
-        this.total=data.totalPrice;
+        this.searchmess = result.message;
+        this.cartpost = result.products;
+        this.total=result.totalPrice;
       }
     });
   }
   removeAllCart() {
-    this.cartService.RemoveAllCart().subscribe(data => {
-      if (data.success==false) {
-        this.searchmess = data.message;
+    this.cartService.RemoveAllCart().subscribe(result => {
+      if (result.success==false) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
+        this.searchmess = result.message;
         this.getCart();
       }
     });
   }
   removeItemCart(idProduct){
-    this.cartService.removeItemCart(idProduct).subscribe(data => {
-      if (data.success==false) {
-        this.searchmess = data.message;
+    this.cartService.removeItemCart(idProduct).subscribe(result => {
+      if (result.success==false) {
+        this.searchmess = result.message;
 
       } else {
-        this.searchmess = data.message;
+        this.searchmess = result.message;
         this.getCart();
       }
     });
   }
   //
   reduceItemCart(idProduct){
-    this.cartService.reduceItemCart(idProduct).subscribe(data => {
-      if (data.success==false) {
-        this.searchmess = data.message;
+    this.cartService.reduceItemCart(idProduct).subscribe(result => {
+      if (result.success==false) {
+        this.searchmess = result.message;
 
       } else {
-        this.searchmess = data.message;
+        this.searchmess = result.message;
         this.getCart();
       }
     });
   }
     //
     increaseItemCart(idProduct){
-      this.cartService.increaseItemCart(idProduct).subscribe(data => {
-        if (data.success==false) {
-          this.searchmess = data.message;
+      this.cartService.increaseItemCart(idProduct).subscribe(result => {
+        if (result.success==false) {
+          this.searchmess = result.message;
         } else {
-          this.searchmess = data.message;
+          this.searchmess = result.message;
           this.getCart();
         }
       });
     }
-  // Function to get all blogs from the database
+  // Function to get all blogs from the resultbase
   GetListMenu() {
-    // Function to GET all blogs from database
-    this.menuService.GetListMenu().subscribe(data => {
-      this.menupost = data.menus; // Assign array to use in HTML
+    // Function to GET all blogs from resultbase
+    this.menuService.GetListMenu().subscribe(result => {
+      this.menupost = result.data; // Assign array to use in HTML
 
     });
   }
   //get list branch
   GetListBranch(idmenu:string) {
 
-    this.branchService.GetListBranch(idmenu).subscribe(data => {
-      this.branchpost = data.branches; // Assign array to use in HTML
+    this.branchService.GetListBranch(idmenu).subscribe(result => {
+      this.branchpost = result.data; // Assign array to use in HTML
 
     });
   }
    //get list branch
    GetListCatalog(idbranch:string) {
-    this.catalogService.GetListCatalog(idbranch).subscribe(data => {
-      this.catalogposts = data.catalogs; // Assign array to use in HTML
+    this.catalogService.GetListCatalog(idbranch).subscribe(result => {
+      this.catalogposts = result.data; // Assign array to use in HTML
     });
   }
   getprofile(){
-    this.authService.profile().subscribe(data => {
-      if (!data.success) {
-        this.searchmess = data.message;
+    this.authService.profile().subscribe(result => {
+      if (!result.success) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
-        this.profiles=data.users;
+        this.searchmess = result.message;
+        this.profiles=result.users;
         this.isLogin=true;
       }
     });
@@ -177,11 +177,11 @@ export class HeaderComponent implements OnInit {
   };
   logout()
   {
-    this.authService.logout().subscribe(data => {
-      if (!data.success) {
-        this.searchmess = data.message;
+    this.authService.logout().subscribe(result => {
+      if (!result.success) {
+        this.searchmess = result.message;
       } else {
-        this.searchmess = data.message;
+        this.searchmess = result.message;
         this.isLogin=false;
         window.location.reload();
       }

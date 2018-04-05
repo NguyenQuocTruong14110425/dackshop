@@ -17,19 +17,19 @@ export class BranchService {
   
   //branch
   GetAllBranch() {
-    return this.http.get(this.domain + '/branchs/allbranch').map(res => res.json());
+    return this.http.get(this.domain + '/branch/allbranch').map(res => res.json());
   }
   SearchBranch(namebranch) {
-    return this.http.get(this.domain + '/branchs/searchbranch/'+namebranch).map(res => res.json());
+    return this.http.get(this.domain + '/branch/searchbranch/'+namebranch).map(res => res.json());
   }
   GetListBranch(idmenu) {
-    return this.http.get(this.domain + '/branchs/listbranch/'+idmenu).map(res => res.json());
+    return this.http.get(this.domain + '/branch/all/'+idmenu).map(res => res.json());
   }
   createBranch(idmenu,branch) {
-    return this.http.post(this.domain + '/branchs/addbranch/' +idmenu, branch).map(res => res.json());
+    return this.http.post(this.domain + '/branch/add/' +idmenu, branch).map(res => res.json());
   }
   deleteBranch(id) {
     console.log(id);
-    return this.http.delete(this.domain + '/branchs/deletebranch/'+ id).map(res => res.json());
+    return this.http.delete(this.domain + '/branch/delete/'+ id).map(res => res.json());
   }
 }

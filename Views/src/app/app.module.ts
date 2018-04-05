@@ -56,6 +56,7 @@ import {
   MatSlideToggleModule, MatSnackBarModule, MatTableModule, MatTabsModule, MatToolbarModule,
   MatTooltipModule, MatFormFieldModule, MatExpansionModule, MatStepperModule
 } from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 
 @NgModule({
@@ -101,6 +102,7 @@ import { CdkTableModule } from '@angular/cdk/table';
     HttpModule,
     AppRoutingModule,
     //material
+    BrowserAnimationsModule,
     CdkTableModule,
     MatAutocompleteModule,
     MatButtonModule,

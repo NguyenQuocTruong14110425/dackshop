@@ -10,16 +10,19 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 const MongoStore = require('connect-mongo')(session);
-const userRouter=require('./Web_Api/user.api')(router);
-const productRouter=require('./Web_Api/product.api')(router);
-const menuRouter=require('./Web_Api/menu.api')(router);
-const branchRouter=require('./Web_Api/branch.api')(router);
-const catalogRouter=require('./Web_Api/catalog.api')(router);
-const cartRouter=require('./Web_Api/cart.api')(router);
-const config = require('./Web_Config/Database');
-const customerrouter=require('./routers/customer.router')(router);
-const config = require('./config/database');
-const port=process.env.PORT||8080;
+const userRouter = require('./Web_Api/user.api')(router);
+const productRouter = require('./Web_Api/product.api')(router);
+const menuRouter = require('./Web_Api/menu.api')(router);
+const branchRouter = require('./Web_Api/branch.api')(router);
+const catalogRouter = require('./Web_Api/catalog.api')(router);
+const sizeRouter = require('./Web_Api/size.api')(router);
+const colorRouter = require('./Web_Api/color.api')(router);
+const shippingRouter = require('./Web_Api/shipping.api')(router);
+const promotionRouter = require('./Web_Api/promotion.api')(router);
+const orderRouter = require('./Web_Api/order.api')(router);
+const cartRouter = require('./Web_Api/cart.api')(router);
+const config = require('./Web_Config/database');
+const port = process.env.PORT || 8080;
 //start connect database
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
@@ -27,7 +30,7 @@ mongoose.connect(config.uri, (err) => {
         console.log('Could Not connect to database : ', err);
     }
     else {
-        console.log('Connect to database : ' + config.db);
+        console.log('Connect to database : '  +config.db);
     }
 });
 //start ejs set view
@@ -50,39 +53,44 @@ app.use(session({
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
-app.use(function(req, res, next) {
-   req.session.cookie.maxAge = 180 * 60 * 1000; // 3 hours
+app.use(function (req, res, next) {
+    req.session.cookie.maxAge = 180 * 60 * 1000; // 3 hours
     next();
 });
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
 });
 //
-app.use('/users', userRouter);
-app.use('/products', productRouter);
-app.use('/menus', menuRouter);
-app.use('/branchs', branchRouter);
-app.use('/catalogs', catalogRouter);
-app.use('/carts', catalogRouter);
 
-  var corsOptions = {
+app.use(cors(corsOptions),
+    catalogRouter,
+    branchRouter,
+    menuRouter,
+    productRouter,
+    sizeRouter,
+    colorRouter,
+    promotionRouter,
+    shippingRouter,
+    orderRouter,
+    userRouter);
+
+var corsOptions = {
     origin: 'http://localhost:4200',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
-  }
-  app.use(cors(corsOptions))
+}
 // app.use(cors({
 //     orgin: 'http://localhost:4200'
 // }));
 // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//     var err = new Error('Not Found');
-//     err.status = 404;
-//     next(err);
-// });
+app.use(function (req, res, next) {
+    var err = new Error('can not found url');
+    err.status = 404;
+    next(res.json({message:err.message}));
+});
 // development error handler
 // start server
 var server = app.listen(8080, function () {

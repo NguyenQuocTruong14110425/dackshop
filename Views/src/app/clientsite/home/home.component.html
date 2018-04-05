@@ -35,7 +35,7 @@
       <!-- <div class="col-sm-3"> -->
       <div class="listproduct">
         <a routerLink="['/detailproduct/',product._id]" *ngFor="let product of productpost">
-          <img [routerLink]="['/detailproduct/', product._id]" src='https://drive.google.com/uc?id={{product.behindimage}}' />
+          <img [routerLink]="['/detailproduct/', product._id]" src='https://drive.google.com/uc?id={{product.behindimagezoom}}' />
           <div class="nameproduct">
             {{product.nameproduct}}
           </div>
@@ -44,7 +44,7 @@
           </div>
           <div class="showaction">
             <div class="description">
-              size:{{product.price}}
+              size:{{product.Price}}
             </div>
             <button [routerLink]="['/detailproduct/',product._id]" class="btn">View Detail</button>
           </div>

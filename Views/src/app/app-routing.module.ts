@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     //client
     { path: '', component: ClientComponent, children: CLIENT_ROUTES},
         //admin
-        { path: '', component: ClientComponent, children: ADMIN_ROUTES},
+    { path: '', component: AdminComponent, children: ADMIN_ROUTES},
 ];
 @NgModule({
     declarations: [],

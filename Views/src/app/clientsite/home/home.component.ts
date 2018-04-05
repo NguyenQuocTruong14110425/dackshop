@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit {
   ) { }
   AllProduct() {
     console.log("test main product");
-    this.productService.getAllProducts().subscribe(data => {
-        this.productpost = data.product;
+    this.productService.getAllProducts().subscribe(result => {
+        this.productpost = result.data;
     });
   }
   ngOnInit() {
