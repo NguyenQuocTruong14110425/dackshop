@@ -2,6 +2,7 @@ const PromotionService = require('./controllers/PromotionService');
 var fs = require('fs');
 const EnumConstant = require('../Web_Config/EnumConstant.js');
 const config = require('../Web_Config/database');
+var coupon = require('./lib/coupon.code');
 module.exports = (router) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
@@ -10,9 +11,9 @@ module.exports = (router) => {
     router.get('/promotion/all/', (req, res) => {
         PromotionService.findAllPromotion(function (err, Promotions) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Promotions });
+                res.json({ success: true, message: mess.SearchSuccess, data: Promotions });
             }
 
         });
@@ -21,9 +22,43 @@ module.exports = (router) => {
     router.get('/promotion/detail/:idparam', (req, res) => {
         PromotionService.findPromotionById(req.params.idparam, function (err, Promotions) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Promotions });
+                res.json({ success: true, message: mess.SearchSuccess, data: Promotions });
+            }
+
+        });
+    });
+    //generate conpo code
+    router.post('/generate/code', (req, res) => {
+        var result = [];
+        for (let index = 0; index < req.body.AmountCounpon; index++) {
+                result.push(coupon.generate({
+                    parts: 4,
+                    partLen: 3,
+                }))
+        }
+        res.json({ success: true, message: mess.GenerateSuccess, data: result });
+    });
+    //validate conpo code
+    router.post('/validate/code', (req, res) => {
+        var result = coupon.validate(req.body.coupon, ({
+            parts: 4,
+            partLen: 3,
+        })
+        );
+        if (result == "") {
+            res.json({ success: false, message: mess.ValidateCodeError });
+        }
+        res.json({ success: true, message: mess.ValidateCodeSuccess, data: result });
+    });
+      //check conpo code
+      router.post('/check/code', (req, res) => {
+        PromotionService.checkCouponCode(req.body.coupon,req.body.idPromotion, function (err, Promotions) {
+            if (err) {
+                res.json({ success: false, message: err ? err : mess.ValidateCodeError });
+            } else {
+                res.json({ success: true, message: mess.ValidateCodeSuccess, data: Promotions });
             }
 
         });
@@ -34,9 +69,9 @@ module.exports = (router) => {
     router.post('/promotion/add/', (req, res) => {
         PromotionService.addPromotion(req.body, function (err, Promotions) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Promotions });
+                res.json({ success: true, message: mess.AddSuccess, data: Promotions });
             }
 
         });
@@ -45,16 +80,16 @@ module.exports = (router) => {
     //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
     //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
     // router.put('/:idparam', PromotionController.UpdatePromotion);
-    router.put('/promotion/update/:idparam', (req, res) => {
-        PromotionService.updatePromotion(req.params.idparam, req.body, function (err, Promotions) {
+    router.put('/promotion/update/', (req, res) => {
+        PromotionService.updatePromotion(req.body, function (err, Promotions) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ success: false, message: err ? err : null });
             } else {
-                PromotionService.findPromotionById(req.params.idparam, function (err, Promotions) {
+                PromotionService.findPromotionById(req.body._id, function (err, Promotions) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Promotions });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Promotions });
                     }
 
                 });
@@ -67,9 +102,9 @@ module.exports = (router) => {
     router.delete('/promotion/delete/:idparam', (req, res) => {
         PromotionService.removePromotion(req.params.idparam, function (err, Promotions) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Promotions });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Promotions });
             }
 
         });

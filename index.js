@@ -17,6 +17,8 @@ const branchRouter = require('./Web_Api/branch.api')(router);
 const catalogRouter = require('./Web_Api/catalog.api')(router);
 const sizeRouter = require('./Web_Api/size.api')(router);
 const colorRouter = require('./Web_Api/color.api')(router);
+const folderRouter = require('./Web_Api/folder.api')(router);
+const imageRouter = require('./Web_Api/image.api')(router);
 const shippingRouter = require('./Web_Api/shipping.api')(router);
 const promotionRouter = require('./Web_Api/promotion.api')(router);
 const orderRouter = require('./Web_Api/order.api')(router);
@@ -73,6 +75,8 @@ app.use(cors(corsOptions),
     productRouter,
     sizeRouter,
     colorRouter,
+    folderRouter,
+    imageRouter,
     promotionRouter,
     shippingRouter,
     orderRouter,

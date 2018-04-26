@@ -45,9 +45,9 @@ class SizeService {
             })
     };
     //hàm cập nhật một Size
-    updateSize(idparam, SizeModel, callback) {
+    updateSize(SizeModel, callback) {
         let dataSet = this.getDataSizeForUpdate(SizeModel, null);
-        Size.findByIdAndUpdateAsync(idparam,
+        Size.findByIdAndUpdateAsync(SizeModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);
@@ -83,7 +83,7 @@ class SizeService {
         if (data.TypeSize) {
             Size.TypeSize = data.TypeSize;
         }
-        if (data.IsDelete) {
+        if (data.IsDelete!==undefined) {
             Size.IsDelete = data.IsDelete;
         }
         return Size;

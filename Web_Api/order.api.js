@@ -10,9 +10,9 @@ module.exports = (router) => {
     router.get('/order/all/', (req, res) => {
         OrderService.findAllOrder(function (err, Orders) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Orders });
+                res.json({ success: true, message: mess.SearchSuccess, data: Orders });
             }
         });
     });
@@ -20,9 +20,9 @@ module.exports = (router) => {
     router.get('/order/detail/:idparam', (req, res) => {
         OrderService.findOrderById(req.params.idparam, function (err, Orders) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Orders });
+                res.json({ success: true, message: mess.SearchSuccess, data: Orders });
             }
 
         });
@@ -33,9 +33,9 @@ module.exports = (router) => {
     router.post('/order/add/', (req, res) => {
         OrderService.addOrder(req.body, function (err, Orders) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Orders });
+                res.json({ success: true, message: mess.AddSuccess, data: Orders });
             }
 
         });
@@ -47,13 +47,13 @@ module.exports = (router) => {
     router.put('/order/update/:idparam', (req, res) => {
         OrderService.updateOrder(req.params.idparam, req.body, function (err, Orders) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ success: false, message: err ? err : null });
             } else {
                 OrderService.findOrderById(req.params.idparam, function (err, Orders) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Orders });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Orders });
                     }
 
                 });
@@ -66,9 +66,9 @@ module.exports = (router) => {
     router.delete('/order/delete/:idparam', (req, res) => {
         OrderService.removeOrder(req.params.idparam, function (err, Orders) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Orders });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Orders });
             }
 
         });

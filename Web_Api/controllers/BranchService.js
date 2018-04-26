@@ -9,6 +9,19 @@ var mess = {} = Enum.DataMessage;
 
 class BranchService {
     constructor() { }
+      // hàm tìm danh sách branch theo id menu
+      findAllBranch(callback) {
+        Branch.find()
+            .populate({ path: "MenuParent", select: "_id MenuName QtyBranch" })
+            .execAsync()
+            .then(function (data) {
+                if (data == null || data == undefined) return callback(mess.SearchFail);
+                return callback(null, data);
+            })
+            .catch(err => {
+                return callback(err.message);
+            })
+    };
     // hàm tìm danh sách branch theo id menu
     findBranchByMenu(idparam, callback) {
         Menu.findById(idparam)
@@ -36,12 +49,12 @@ class BranchService {
             })
     }
     //hàm them mới một branch
-    addBranch(idparam, BranchModel, callback) {
-        let DataSet = this.getDataBranchForInsert(BranchModel, idparam);
+    addBranch(BranchModel, callback) {
+        let DataSet = this.getDataBranchForInsert(BranchModel, BranchModel.idmenu);
         Branch.createAsync(DataSet)
             .then(function (branchs) {
                 var idBranch = branchs._id;
-                Menu.findByIdAndUpdate(idparam,
+                Menu.findByIdAndUpdate(BranchModel.idmenu,
                     { "$push": { "BranchChild": idBranch } },
                     { "new": true, "upsert": true })
                     .then(DataMenu => Menu.findByIdAndUpdate(DataMenu._id, { DateUpdate: new Date(), QtyBranch: Number(DataMenu.BranchChild.length) }))
@@ -61,9 +74,9 @@ class BranchService {
             })
     };
     //hàm xử lý cập nhật một branch
-    updateBranch(idparam, BranchModel, callback) {
+    updateBranch(BranchModel, callback) {
         let dataSet = this.getDataBranchForUpdate(BranchModel, null);
-        Branch.findByIdAndUpdateAsync(idparam,
+        Branch.findByIdAndUpdateAsync(BranchModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);

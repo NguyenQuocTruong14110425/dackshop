@@ -6,24 +6,24 @@ const EnumConstant = require('../Web_Config/EnumConstant.js');
 module.exports = (router) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
-       // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
-       router.get('/product/all/', (req, res) => {
+    // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
+    router.get('/product/all/', (req, res) => {
         ProductService.findAllProduct(function (err, products) {
             if (err) {
-                res.json({ message: err ? err : mess.SaveSuccess });
+                res.json({ success: false, message: err ? err : mess.SaveSuccess });
             } else {
-                res.json({ message: mess.SearchSuccess, data: products });
+                res.json({ success: true, message: mess.SearchSuccess, data: products });
             }
 
         });
     });
-       // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
-       router.get('/product/allforcatalog/:idparam', (req, res) => {
+    // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
+    router.get('/product/allforcatalog/:idparam', (req, res) => {
         ProductService.findProductByCatalog(req.params.idparam, function (err, products) {
             if (err) {
-                res.json({ message: err ? err : mess.SaveSuccess });
+                res.json({ success: false, message: err ? err : mess.SaveSuccess });
             } else {
-                res.json({ message: mess.SearchSuccess, data: products });
+                res.json({ success: true, message: mess.SearchSuccess, data: products });
             }
 
         });
@@ -33,9 +33,9 @@ module.exports = (router) => {
     router.get('/product/detail/:idparam', (req, res) => {
         ProductService.findProductById(req.params.idparam, function (err, products) {
             if (err) {
-                res.json({ message: err ? err : mess.AddFail });
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: products });
+                res.json({ success: true, message: mess.SearchSuccess, data: products });
             }
 
         });
@@ -44,13 +44,13 @@ module.exports = (router) => {
     router.post('/product/add/:idparam', (req, res) => {
         ProductService.addProduct(req.params.idparam, req.body, function (err, dataproducts) {
             if (err) {
-                res.json({ message: err ? err : mess.AddFail });
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
                 ProductService.findProductById(dataproducts.idNewProduct, function (err, products) {
                     if (err) {
-                        res.json({ message: err ? err : mess.AddFail });
+                        res.json({ success: false, message: err ? err : mess.AddFail });
                     } else {
-                        res.json({ message: mess.AddSuccess, data: products });
+                        res.json({ success: true, message: mess.AddSuccess, data: products });
                     }
 
                 });

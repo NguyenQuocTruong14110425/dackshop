@@ -10,9 +10,9 @@ module.exports = (router) => {
     router.get('/color/all/', (req, res) => {
         ColorService.findAllColor(function (err, Colors) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Colors });
+                res.json({ success: true, message: mess.SearchSuccess, data: Colors });
             }
 
         });
@@ -21,9 +21,9 @@ module.exports = (router) => {
     router.get('/color/detail/:idparam', (req, res) => {
         ColorService.findColorById(req.params.idparam, function (err, Colors) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Colors });
+                res.json({ success: true, message: mess.SearchSuccess, data: Colors });
             }
 
         });
@@ -34,9 +34,9 @@ module.exports = (router) => {
     router.post('/color/add/', (req, res) => {
         ColorService.addColor(req.body, function (err, Colors) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Colors });
+                res.json({ success: true, message: mess.AddSuccess, data: Colors });
             }
 
         });
@@ -45,16 +45,16 @@ module.exports = (router) => {
     //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
     //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
     // router.put('/:idparam', ColorController.UpdateColor);
-    router.put('/color/update/:idparam', (req, res) => {
-        ColorService.updateColor(req.params.idparam, req.body, function (err, Colors) {
+    router.put('/color/update/', (req, res) => {
+        ColorService.updateColor(req.body, function (err, Colors) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ message: err ? err : null });
             } else {
-                ColorService.findColorById(req.params.idparam, function (err, Colors) {
+                ColorService.findColorById(req.body._id, function (err, Colors) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Colors });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Colors });
                     }
 
                 });
@@ -67,9 +67,9 @@ module.exports = (router) => {
     router.delete('/color/delete/:idparam', (req, res) => {
         ColorService.removeColor(req.params.idparam, function (err, Colors) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Colors });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Colors });
             }
 
         });

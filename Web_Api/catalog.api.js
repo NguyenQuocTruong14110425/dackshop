@@ -6,13 +6,24 @@ const EnumConstant = require('../Web_Config/EnumConstant.js');
 module.exports = (router) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
-       // Tìm tất cả catalog có trong branch có id branch là  Idpram truyền vào
-       router.get('/catalog/all/:idparam', (req, res) => {
+    // Tìm tất cả catalog có trong branch có id branch là  Idpram truyền vào
+    router.get('/catalog/allcatalog/', (req, res) => {
+        CatalogService.findAllCatalog(function (err, catalogs) {
+            if (err) {
+                res.json({ success: false, message: err ? err : mess.SaveSuccess });
+            } else {
+                res.json({ success: true, message: mess.SearchSuccess, data: catalogs });
+            }
+
+        });
+    });
+    // Tìm tất cả catalog có trong branch có id branch là  Idpram truyền vào
+    router.get('/catalog/all/:idparam', (req, res) => {
         CatalogService.findCatalogByBranch(req.params.idparam, function (err, catalogs) {
             if (err) {
-                res.json({ message: err ? err : mess.SaveSuccess });
+                res.json({ success: false, message: err ? err : mess.SaveSuccess });
             } else {
-                res.json({ message: mess.SearchSuccess, data: catalogs });
+                res.json({ success: true, message: mess.SearchSuccess, data: catalogs });
             }
 
         });
@@ -22,24 +33,24 @@ module.exports = (router) => {
     router.get('/catalog/detail/:idparam', (req, res) => {
         CatalogService.findCatalogById(req.params.idparam, function (err, catalogs) {
             if (err) {
-                res.json({ message: err ? err : mess.AddFail });
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: catalogs });
+                res.json({ success: true, message: mess.SearchSuccess, data: catalogs });
             }
 
         });
     });
     // thêm mới một catalog vào môt branch với Id branch là Idpram truyền vào
-    router.post('/catalog/add/:idparam', (req, res) => {
-        CatalogService.addCatalog(req.params.idparam, req.body, function (err, datacatalogs) {
+    router.post('/catalog/add/', (req, res) => {
+        CatalogService.addCatalog(req.body, function (err, datacatalogs) {
             if (err) {
-                res.json({ message: err ? err : mess.AddFail });
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
                 CatalogService.findCatalogById(datacatalogs.idNewCatalog, function (err, catalogs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.AddFail });
+                        res.json({ success: false, message: err ? err : mess.AddFail });
                     } else {
-                        res.json({ message: mess.AddSuccess, data: catalogs });
+                        res.json({ success: true, message: mess.AddSuccess, data: catalogs });
                     }
 
                 });
@@ -50,16 +61,16 @@ module.exports = (router) => {
 
 
     //cập nhật một catalog bất kỳ với id là idparam truyên vào
-    router.put('/catalog/update/:idparam', (req, res) => {
-        CatalogService.updateCatalog(req.params.idparam, req.body, function (err, datacatalogs) {
+    router.put('/catalog/update/', (req, res) => {
+        CatalogService.updateCatalog( req.body, function (err, datacatalogs) {
             if (err) {
-                res.json({ message: err ? err : mess.UpdateFail });
+                res.json({ success: false, message: err ? err : mess.UpdateFail });
             } else {
-                CatalogService.findCatalogById(req.params.idparam, function (err, catalogs) {
+                CatalogService.findCatalogById(req.body._id, function (err, catalogs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.UpdateFail });
+                        res.json({ success: false, message: err ? err : mess.UpdateFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: catalogs });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: catalogs });
                     }
 
                 });
@@ -71,13 +82,13 @@ module.exports = (router) => {
     router.delete('/catalog/delete/:idparam', (req, res) => {
         CatalogService.removeCatalog(req.params.idparam, function (err, catalogs) {
             if (err) {
-                res.json({ message: err ? err : mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
                 BranchService.findBranchById(catalogs.idOldParent, function (err, branchs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.RemoveFail });
+                        res.json({ success: false, message: err ? err : mess.RemoveFail });
                     } else {
-                        res.json({ message: mess.RemoveSuccess, data: branchs });
+                        res.json({ success: true, message: mess.RemoveSuccess, data: branchs });
                     }
 
                 });
@@ -89,13 +100,13 @@ module.exports = (router) => {
     router.delete('/catalog/removeall/:idparam', (req, res) => {
         CatalogService.removeAllCatalog(req.params.idparam, function (err, data) {
             if (err) {
-                res.json({ message: err ? err : mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
                 BranchService.findBranchById(req.params.idparam, function (err, branhcs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.RemoveFail });
+                        res.json({ success: false, message: err ? err : mess.RemoveFail });
                     } else {
-                        res.json({ message: mess.RemoveSuccess, data: branhcs });
+                        res.json({ success: true, message: mess.RemoveSuccess, data: branhcs });
                     }
 
                 });

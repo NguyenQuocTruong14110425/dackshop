@@ -11,9 +11,9 @@ module.exports = (router) => {
     router.get('/menu/all/', (req, res) => {
         MenuService.findAllMenu(function (err, Menus) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Menus });
+                res.json({ success: true, message: mess.SearchSuccess, data: Menus });
             }
 
         });
@@ -22,9 +22,9 @@ module.exports = (router) => {
     router.get('/menu/detail/:idparam', (req, res) => {
         MenuService.findMenuById(req.params.idparam, function (err, Menus) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Menus });
+                res.json({ success: true, message: mess.SearchSuccess, data: Menus });
             }
 
         });
@@ -35,9 +35,9 @@ module.exports = (router) => {
     router.post('/menu/add/', (req, res) => {
         MenuService.addMenu(req.body, function (err, Menus) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Menus });
+                res.json({ success: true, message: mess.AddSuccess, data: Menus });
             }
 
         });
@@ -46,16 +46,16 @@ module.exports = (router) => {
     //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
     //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
     // router.put('/:idparam', MenuController.UpdateMenu);
-    router.put('/menu/update/:idparam', (req, res) => {
-        MenuService.updateMenu(req.params.idparam, req.body, function (err, Menus) {
+    router.put('/menu/update/', (req, res) => {
+        MenuService.updateMenu(req.body, function (err, Menus) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ success: false, message: err ? err : null });
             } else {
-                MenuService.findMenuById(req.params.idparam, function (err, Menus) {
+                MenuService.findMenuById(req.body._id, function (err, Menus) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Menus });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Menus });
                     }
 
                 });
@@ -68,9 +68,9 @@ module.exports = (router) => {
     router.delete('/menu/delete/:idparam', (req, res) => {
         MenuService.removeMenu(req.params.idparam, function (err, Menus) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Menus });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Menus });
             }
 
         });

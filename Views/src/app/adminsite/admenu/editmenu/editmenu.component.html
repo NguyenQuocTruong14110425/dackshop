@@ -1,0 +1,41 @@
+  <div  *ngIf="!isEdit&&!isCreate" class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+            <i class="fa fa-warning"></i> Delete Alert ?</h4>
+        <button type="button" class="btn btn-secondary" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the product "{{menu?.MenuName}}" ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="onDeleteMenuSubmit(menu?._id)">Delete menu</button>
+        <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">cance</button>
+      </div>
+    </div>
+
+    <!-- modal for edit -->
+    <div  *ngIf="isEdit" class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+            <i class="fa fa-warning"></i> Edit For {{menu?.MenuName}}  ?</h4>
+        <button type="button" class="btn btn-secondary" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form (submit)="updateMenuSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="control-label">Name Product</label>
+          <input type="text"  [(ngModel)]="menu.MenuName"  id="MenuName_edit" name="MenuName_edit" class="form-control underlined">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button  type="submit" name="updateMenu-submit" class="btn btn-info" data-dismiss="modal">Save for Update</button>
+        <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">cance</button>
+      </div>
+      </form>
+    </div>
+
+  

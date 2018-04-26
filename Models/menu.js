@@ -8,6 +8,7 @@ var MenuSchema = new Schema({
   QtyBranch: { type: Number, default: 0 },
   DateCreate: { type: Date },
   DateUpdate: { type: Date },
+  IsActive: { type: Boolean, default: true },
   BranchChild: [{ type: Schema.ObjectId, ref: 'Branch' }]
 });
 

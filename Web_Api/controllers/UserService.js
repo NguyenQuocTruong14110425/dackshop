@@ -172,7 +172,7 @@ class UserService {
         if (data.DaskPoint) {
             User.DaskPoint = data.DaskPoint;
         }
-        if (data.IsDelete) {
+        if (data.IsDelete!==undefined) {
             User.IsDelete = data.IsDelete;
         }
         if (data.Promotion) {

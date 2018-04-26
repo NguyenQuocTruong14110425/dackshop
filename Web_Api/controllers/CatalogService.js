@@ -9,6 +9,19 @@ var mess = {} = Enum.DataMessage;
 
 class CatalogService {
     constructor() { }
+    // hàm tìm danh sách catalog
+    findAllCatalog(callback) {
+        Catalog.find()
+            .populate({ path: "BranchParent" ,select: "_id BranchName QtyCatalog" })
+            .execAsync()
+            .then(function (data) {
+                if (data == null || data == undefined) return callback(mess.SearchFail);
+                return callback(null, data);
+            })
+            .catch(err => {
+                return callback(err.message);
+            })
+    };
     // hàm tìm danh sách catalog theo id branch
     findCatalogByBranch(idparam, callback) {
         Branch.findById(idparam)
@@ -36,12 +49,12 @@ class CatalogService {
             })
     }
     //hàm them mới một catalog
-    addCatalog(idparam, CatalogModel, callback) {
-        let DataSet = this.getDataCatalogForInsert(CatalogModel, idparam);
+    addCatalog(CatalogModel, callback) {
+        let DataSet = this.getDataCatalogForInsert(CatalogModel, CatalogModel.idbranch);
         Catalog.createAsync(DataSet)
             .then(function (catalogs) {
                 var idCatalog = catalogs._id;
-                Branch.findByIdAndUpdate(idparam,
+                Branch.findByIdAndUpdate(CatalogModel.idbranch,
                     { "$push": { "CatalogChild": idCatalog } },
                     { "new": true, "upsert": true })
                     .then(DataBranch => Branch.findByIdAndUpdate(DataBranch._id, { DateUpdate: new Date(), QtyCatalog: Number(DataBranch.CatalogChild.length) }))
@@ -61,9 +74,9 @@ class CatalogService {
             })
     };
     //hàm xử lý cập nhật một catalog
-    updateCatalog(idparam, CatalogModel, callback) {
+    updateCatalog(CatalogModel, callback) {
         let dataSet = this.getDataCatalogForUpdate(CatalogModel, null);
-        Catalog.findByIdAndUpdateAsync(idparam,
+        Catalog.findByIdAndUpdateAsync(CatalogModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);

@@ -19,7 +19,7 @@ module.exports = (router) => {
                     }
                     else {
                         if (err.errors) {
-                            res.json({ message: err ? err : mess.RegisterError });
+                            res.json({ success: false, message: err ? err : mess.RegisterError });
 
                         }
                         else {
@@ -37,13 +37,13 @@ module.exports = (router) => {
     router.put('/user/update/:idparam', (req, res) => {
         UserService.updateUser(req.params.idparam, req.body, function (err, Users) {
             if (err) {
-                res.json({ message: err ? err : null });
+                res.json({ success: false, message: err ? err : null });
             } else {
                 UserService.findUserById(req.params.idparam, function (err, Users) {
                     if (err) {
-                        res.json({ message: err ? err : mess.SearchFail });
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Users });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Users });
                     }
 
                 });
@@ -55,9 +55,9 @@ module.exports = (router) => {
     router.delete('/user/delete/', (req, res) => {
         UserService.removeUser(req.params.idparam, function (err, Users) {
             if (err) {
-                res.json({ message: err ? err : mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Users });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Users });
             }
 
         });
@@ -102,9 +102,9 @@ module.exports = (router) => {
     router.get('/user/all/', (req, res) => {
         UserService.findAllUser(function (err, Sizes) {
             if (err) {
-                res.json({ message: err ? err : mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Sizes });
+                res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
             }
 
         });
@@ -113,9 +113,9 @@ module.exports = (router) => {
     router.get('/user/profile/:idparam', (req, res) => {
         UserService.findUserById(req.params.idparam, function (err, Sizes) {
             if (err) {
-                res.json({ message: err ? err : mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Sizes });
+                res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
             }
 
         });

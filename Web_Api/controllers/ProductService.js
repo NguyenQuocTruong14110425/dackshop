@@ -207,13 +207,13 @@ class ProductService {
         if (data.Promotion) {
             Product.Promotion = Valid.getObjectIDIfValid(data.Promotion)
         }
-        if (data.IsDelete) {
+        if (data.IsDelete!==undefined) {
             Product.IsDelete = data.IsDelete;
         }
-        if (data.Onsale) {
+        if (data.Onsale!==undefined) {
             Product.Onsale = data.Onsale;
         }
-        if (data.IsActive) {
+        if (data.IsActive!==undefined) {
             Product.IsActive = data.IsActive;
         }
         return Product;

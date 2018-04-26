@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="init"></div>
+<div id="content">
+  <div class="inner">
+    <div class="title">
+      <h2>REGISTER</h2>
+    </div>
+    <div *ngIf="message">
+      <div [ngClass]="messageClass">
+        {{ message }}
+      </div>
+    </div>
+    <div class="components" style="width:60%;	margin-left: 20%">
+      <form [formGroup]="form" (submit)="onRegisterSubmit()">
+        <div class="form-group">
+          <p>Full Name</p>
+          <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty),'has-success':!form.controls.username.errors}">
+            <input type="text" name="fullname" id="fullname" formControlName="fullname" class="form-control" autocomplete="off" aria-describedby="fullnameHelp"
+              placeholder="enter full name">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.fullname.errors?.required && form.controls.fullname.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.fullname.errors?.minlength||form.controls.fullname.errors?.maxlength) && form.controls.fullname.dirty">
+                Minimum characters:3, Maximum characters:30</li>
+              <li class="notification" *ngIf="form.controls.fullname.errors?.validateFullname && form.controls.fullname.dirty">
+                This must be a valid full name</li>
+              <li class="helpblock" *ngIf="fullnameMessage">{{ fullnameMessage }}</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Address</p>
+          <div [ngClass]="{'has-error':(form.controls.address.errors && form.controls.address.dirty),'has-success':!form.controls.address.errors}">
+            <input type="text" name="address" id="address" formControlName="address" class="form-control" autocomplete="off" aria-describedby="addressHelp"
+              placeholder="enter address">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.address.errors?.required && form.controls.address.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.address.errors?.minlength||form.controls.address.errors?.maxlength) && form.controls.address.dirty">
+                Minimum characters:3, Maximum characters:50</li>
+              <li class="notification" *ngIf="form.controls.address.errors?.validateAddress && form.controls.address.dirty">
+                This must be a valid address</li>
+              <li class="helpblock" *ngIf="addressMessage">{{ addressMessage }}</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Phone Number</p>
+          <div [ngClass]="{'has-error':(form.controls.numberphone.errors && form.controls.numberphone.dirty),'has-success':!form.controls.numberphone.errors}">
+            <input type="text" name="numberphone" id="numberphone" formControlName="numberphone" class="form-control" autocomplete="off"
+              aria-describedby="numberphoneHelp" placeholder="enter number phone">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.numberphone.errors?.required && form.controls.numberphone.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.numberphone.errors?.minlength||form.controls.numberphone.errors?.maxlength) && form.controls.numberphone.dirty">
+                Minimum characters:3, Maximum characters:50</li>
+              <li class="notification" *ngIf="form.controls.numberphone.errors?.validateNumberphone && form.controls.numberphone.dirty">
+                This phone number must enter number</li>
+              <li class="helpblock" *ngIf="numberphoneMessage">{{ numberphoneMessage }}</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Email</p>
+          <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty),'has-success':!form.controls.email.errors}">
+            <input type="email" name="email" class="form-control" id="email" autocomplete="off" aria-describedby="emailHelp" placeholder="Enter email"
+              formControlName="email" (blur)="checkEmail()">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.email.errors?.required && form.controls.email.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.email.errors?.minlength||form.controls.email.errors?.maxlength) && form.controls.email.dirty">
+                Minimum characters:5, Maximum characters:30</li>
+              <li class="notification" *ngIf="form.controls.email.errors?.validateEmail && form.controls.email.dirty">
+                username must not have any special characters</li>
+              <li class="helpblock" *ngIf="emailMessage">{{ emailMessage}}</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>User Name</p>
+          <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty),'has-success':!form.controls.username.errors}">
+            <input type="text" name="username" class="form-control" id="username" autocomplete="off" aria-describedby="usernameHelp"
+              placeholder="Enter username" formControlName="username" (blur)="checkUsername()">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.username.errors?.minlength||form.controls.username.errors?.maxlength) && form.controls.username.dirty">
+                Minimum characters:3, Maximum characters:15</li>
+              <li class="notification" *ngIf="form.controls.username.errors?.validateUsername && form.controls.username.dirty">
+                This must be a valid user name</li>
+              <li class="helpblock" *ngIf="usernameMessage">{{ usernameMessage }}</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Password</p>
+          <div [ngClass]="{'has-error':(form.controls.password.errors && form.controls.password.dirty),'has-success':!form.controls.password.errors}">
+            <input type="password" class="form-control" name="password" id="password" autocomplete="off" placeholder="Password" formControlName="password">
+            <div id="message">
+              <li class="error" *ngIf="form.controls.password.errors?.required && form.controls.password.dirty">This field is require</li>
+              <li class="warring" *ngIf="(form.controls.password.errors?.minlength||form.controls.password.errors?.maxlength) && form.controls.password.dirty">
+                Minimum characters:8, Maximum characters:35</li>
+              <li class="notification" *ngIf="form.controls.password.errors?.validatePassword && form.controls.password.dirty">
+                This must be a valid password</li>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Confirm Password</p>
+          <div [ngClass]="{'has-error': (form.controls.confirmpassword.errors && form.controls.confirmpassword.dirty) || (form.errors?.matchingPasswords && form.controls.confirmpassword.dirty), 'has-success': !form.controls.confirmpassword.errors && !form.errors?.matchingPasswords}">
+            <input type="password" name="confirmpassword" class="form-control" autocomplete="off" placeholder="*Confirm Password" formControlName="confirmpassword"
+            />
+            <!-- Validation -->
+            <div id="message">
+              <li class="error" *ngIf="form.controls.confirmpassword.errors?.required && form.controls.confirmpassword.dirty">This field is required</li>
+              <li class="warring" *ngIf="form.errors?.matchingPasswords && form.controls.confirmpassword.dirty">Password do not match</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3" id="register-button-style">
+              <input [disabled]="!form.valid || processing || !emailValid || !usernameValid" type="submit" name="register-submit" class="form-control btn btn-primary"
+                value="Sign Up">
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</div>

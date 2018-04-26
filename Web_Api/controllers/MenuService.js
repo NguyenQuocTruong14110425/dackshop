@@ -49,9 +49,9 @@ class MenuService {
             })
     };
     //hàm cập nhật một menu
-    updateMenu(idparam, MenuModel, callback) {
+    updateMenu(MenuModel, callback) {
         let dataSet = this.getDataMenuForUpdate(MenuModel, null);
-        Menu.findByIdAndUpdateAsync(idparam,
+        Menu.findByIdAndUpdateAsync(MenuModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);
@@ -91,6 +91,9 @@ class MenuService {
         }
         if (idBranch) {
             menu.BranchChild.push(idBranch);
+        }
+        if (data.IsActive!==undefined) {
+            menu.IsActive=data.IsActive;
         }
         return menu;
     }

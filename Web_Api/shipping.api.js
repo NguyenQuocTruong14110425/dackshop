@@ -10,9 +10,9 @@ module.exports = (router) => {
     router.get('/shipping/all/', (req, res) => {
         ShippingService.findAllShipping(function (err, Shippings) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Shippings });
+                res.json({ success: true, message: mess.SearchSuccess, data: Shippings });
             }
 
         });
@@ -21,9 +21,9 @@ module.exports = (router) => {
     router.get('/shipping/detail/:idparam', (req, res) => {
         ShippingService.findShippingById(req.params.idparam, function (err, Shippings) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Shippings });
+                res.json({ success: true, message: mess.SearchSuccess, data: Shippings });
             }
 
         });
@@ -34,9 +34,9 @@ module.exports = (router) => {
     router.post('/shipping/add/', (req, res) => {
         ShippingService.addShipping(req.body, function (err, Shippings) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: true, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Shippings });
+                res.json({ success: false, message: mess.AddSuccess, data: Shippings });
             }
 
         });
@@ -48,13 +48,13 @@ module.exports = (router) => {
     router.put('/shipping/update/:idparam', (req, res) => {
         ShippingService.updateShipping(req.params.idparam, req.body, function (err, Shippings) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ success: false, message: err ? err : null });
             } else {
                 ShippingService.findShippingById(req.params.idparam, function (err, Shippings) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Shippings });
+                        res.json({ success: false, message: mess.UpdateSuccess, data: Shippings });
                     }
 
                 });
@@ -67,9 +67,9 @@ module.exports = (router) => {
     router.delete('/shipping/delete/:idparam', (req, res) => {
         ShippingService.removeShipping(req.params.idparam, function (err, Shippings) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Shippings });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Shippings });
             }
 
         });

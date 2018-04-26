@@ -99,13 +99,13 @@ class OrderService {
         if (data.PaymentType) {
             Order.PaymentType = data.PaymentType;
         }
-        if (data.IdShipping) {
+        if (data.IdShipping!==undefined) {
             Order.Shipping.IdShipping = data.IdShipping;
         }
         if (data.StatusTracking) {
             Order.Shipping.StatusTracking = data.StatusTracking;
         }
-        if (data.IsDelete) {
+        if (data.IsDelete!==undefined) {
             Order.IsDelete = data.IsDelete;
         }
         return Order;

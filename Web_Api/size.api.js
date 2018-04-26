@@ -11,9 +11,9 @@ module.exports = (router) => {
     router.get('/size/all/', (req, res) => {
         SizeService.findAllSize(function (err, Sizes) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Sizes });
+                res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
             }
 
         });
@@ -22,9 +22,9 @@ module.exports = (router) => {
     router.get('/size/detail/:idparam', (req, res) => {
         SizeService.findSizeById(req.params.idparam, function (err, Sizes) {
             if (err) {
-                res.json({ message: err?err:mess.SearchFail });
+                res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ message: mess.SearchSuccess, data: Sizes });
+                res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
             }
 
         });
@@ -35,9 +35,9 @@ module.exports = (router) => {
     router.post('/size/add/', (req, res) => {
         SizeService.addSize(req.body, function (err, Sizes) {
             if (err) {
-                res.json({ message: err?err:mess.AddFail});
+                res.json({ success: false, message: err ? err : mess.AddFail });
             } else {
-                res.json({ message: mess.AddSuccess, data: Sizes });
+                res.json({ success: true, message: mess.AddSuccess, data: Sizes });
             }
 
         });
@@ -46,16 +46,16 @@ module.exports = (router) => {
     //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
     //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
     // router.put('/:idparam', SizeController.UpdateSize);
-    router.put('/size/update/:idparam', (req, res) => {
-        SizeService.updateSize(req.params.idparam, req.body, function (err, Sizes) {
+    router.put('/size/update/', (req, res) => {
+        SizeService.updateSize(req.body, function (err, Sizes) {
             if (err) {
-                res.json({ message: err?err:null});
+                res.json({ message: err ? err : null });
             } else {
-                SizeService.findSizeById(req.params.idparam, function (err, Sizes) {
+                SizeService.findSizeById(req.body._id, function (err, Sizes) {
                     if (err) {
-                        res.json({message: err?err:mess.SearchFail});
+                        res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: Sizes });
+                        res.json({ success: true, message: mess.UpdateSuccess, data: Sizes });
                     }
 
                 });
@@ -68,9 +68,9 @@ module.exports = (router) => {
     router.delete('/size/delete/:idparam', (req, res) => {
         SizeService.removeSize(req.params.idparam, function (err, Sizes) {
             if (err) {
-                res.json({message: err?err:mess.RemoveFail });
+                res.json({ success: false, message: err ? err : mess.RemoveFail });
             } else {
-                res.json({ message: mess.RemoveSuccess, data: Sizes });
+                res.json({ success: true, message: mess.RemoveSuccess, data: Sizes });
             }
 
         });

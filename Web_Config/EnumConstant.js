@@ -27,6 +27,8 @@ module.exports = function EnumConstant(){
         PasswordValid:"password validate",
         NotProvide:"Object was not provided",
         NotSignUser:"You have not signed in to any accounts yet",
+        GenerateError:"Your code generate coupon error",
+        ValidateCodeError:"Your code coupon used",
         //Success
         SuccessDefault: "Success",
         DeleteSuccess : "Delete susscess",
@@ -43,6 +45,7 @@ module.exports = function EnumConstant(){
         UserNameAvalible:"UserName is avilable",
         LogoutSuccess:"logout success",
         WellcomeUser:"Wellcome User",
+        ValidateCodeSuccess:"Your code coupon success",
     }
     this.DisplayMessage =  function(typeMess,object)
     {       

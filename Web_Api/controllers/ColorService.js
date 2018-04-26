@@ -45,9 +45,9 @@ class ColorService {
             })
     };
     //hàm cập nhật một Color
-    updateColor(idparam, ColorModel, callback) {
+    updateColor(ColorModel, callback) {
         let dataSet = this.getDataColorForUpdate(ColorModel);
-        Color.findByIdAndUpdateAsync(idparam,
+        Color.findByIdAndUpdateAsync(ColorModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);
@@ -83,7 +83,7 @@ class ColorService {
         if (data.ValueHex) {
             Color.ValueHex = data.ValueHex;
         }
-        if (data.IsDelete) {
+        if (data.IsDelete!==undefined) {
             Color.IsDelete = data.IsDelete;
         }
         return Color;

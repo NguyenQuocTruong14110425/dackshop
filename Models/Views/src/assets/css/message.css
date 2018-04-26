@@ -1,0 +1,31 @@
+@font-face {
+    font-family: UTM_Aptima;
+    src: url(../fonts/UTM_Aptima.ttf);
+}
+#message
+{
+    font-family:'UTM_Aptima';
+    font-size: 1.3em;
+    text-transform: none;
+    text-align: left;
+}
+#message .error {
+	display:inline-block;
+	color:#FA1F1F;
+}
+#message .susscess {
+	display:inline-block;
+	color:#1900FF;
+}
+#message .warring {
+	display:inline-block;
+	color:#EEFF00;
+}
+#message .notification {
+	display:inline-block;
+	color:#00FF00;
+}
+#message .helpblock {
+	display:inline-block;
+	color:#CCCCCC;
+}
