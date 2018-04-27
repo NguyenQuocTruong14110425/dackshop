@@ -43,15 +43,15 @@
       <div class="image-block">
         <div class="imagescoll">
           <div class="imagecontent" *ngFor="let image of Imageposts">
+              <div class="imageaction">
+                  <button class="btn" (click)="DeleteImage(image._id)">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  </button>
+                </div>
             <img src='https://drive.google.com/uc?id={{image.IdUrl}}' alt="" />
             <p>
               {{image.ImageName}}
             </p>
-            <div class="imageaction">
-              <button class="btn" (click)="DeleteImage(image._id)">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </button>
-            </div>
           </div>
           <div *ngIf="progress">
             <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">

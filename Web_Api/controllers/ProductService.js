@@ -48,12 +48,12 @@ class ProductService {
             })
     }
     //hàm them mới một Product
-    addProduct(idparam, ProductModel, callback) {
-        let DataSet = this.getDataProductForInsert(ProductModel, idparam);
+    addProduct(ProductModel, callback) {
+        let DataSet = this.getDataProductForInsert(ProductModel, ProductModel.CatalogParent);
         Product.createAsync(DataSet)
             .then(function (Products) {
                 var idProduct = Products._id;
-                Catalog.findByIdAndUpdate(idparam,
+                Catalog.findByIdAndUpdate(ProductModel.CatalogParent,
                     { "$push": { "ProductChild": idProduct } },
                     { "new": true, "upsert": true })
                     .then(DataCatalog => Catalog.findByIdAndUpdate(DataCatalog._id, { DateUpdate: new Date(), QtyProduct: Number(DataCatalog.ProductChild.length) }))
@@ -135,28 +135,24 @@ class ProductService {
 
     // hàm lấy data để thêm mới
     getDataProductForInsert(data, IdCatalog) {
+        console.log(data)
         let newProduct = new Product();
         newProduct.ProductName = data.ProductName,
             newProduct.ShortDescription = data.ShortDescription,
             newProduct.LongDescription = data.LongDescription,
-            newProduct.Size = [],
-            newProduct.Color = [],
             newProduct.AmountProduct = data.AmountProduct,
             newProduct.Price = data.Price,
             newProduct.SalePrice = data.SalePrice,
-            newProduct.Image = {
-                LeftImage: Valid.getObjectIDIfValid(data.LeftImage),
-                LeftImageZoom: Valid.getObjectIDIfValid(data.LeftImageZoom),
-                RightImage: Valid.getObjectIDIfValid(data.RightImage),
-                RightImageZoom: Valid.getObjectIDIfValid(data.RightImageZoom),
-                UnderImage: Valid.getObjectIDIfValid(data.UnderImage),
-                UnderImageZoom: Valid.getObjectIDIfValid(data.UnderImageZoom),
-            }
-        newProduct.DateCreate = new Date(),
+            newProduct.Image = data.Image,
+             newProduct.DateCreate = new Date(),
             newProduct.DateUpdate = null,
             newProduct.Comment = [],
             newProduct.Promotion = Valid.getObjectIDIfValid(data.Promotion),
-            newProduct.Suggestions = Valid.getObjectIDIfValid(data.Suggestions)
+            newProduct.Suggestions = data.Suggestions
+            newProduct.Color = data.Color
+            newProduct.Size = data.Size
+            newProduct.CheckNew = data.CheckNew
+            newProduct.Onsale = data.Onsale
         if (IdCatalog != null) {
             newProduct.CatalogParent = IdCatalog
         }

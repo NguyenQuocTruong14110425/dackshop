@@ -25,6 +25,7 @@ const orderRouter = require('./Web_Api/order.api')(router);
 const cartRouter = require('./Web_Api/cart.api')(router);
 const config = require('./Web_Config/database');
 const port = process.env.PORT || 8080;
+const angularHostting = config.hosting|| 'http://localhost:4200';
 //start connect database
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
@@ -35,10 +36,6 @@ mongoose.connect(config.uri, (err) => {
         console.log('Connect to database : '  +config.db);
     }
 });
-//start ejs set view
-// app.set('view engine', 'ejs');
-// app.set('views', __dirname + '/views');
-//start bodyParse and session
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
@@ -83,7 +80,7 @@ app.use(cors(corsOptions),
     userRouter);
 
 var corsOptions = {
-    origin: 'http://localhost:4200',
+    origin: angularHostting,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 // app.use(cors({
@@ -97,6 +94,7 @@ app.use(function (req, res, next) {
 });
 // development error handler
 // start server
-var server = app.listen(8080, function () {
+
+var server = app.listen(3000,'192.168.0.104', function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });

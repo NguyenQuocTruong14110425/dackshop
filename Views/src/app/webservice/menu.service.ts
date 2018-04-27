@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-
-
-
+import { Environment } from './environment';
 @Injectable()
 export class MenuService {
-
-  domain = "http://localhost:8080";
+  
+  domain = Environment.hostDomain
 
   constructor(
     private http: Http

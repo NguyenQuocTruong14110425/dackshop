@@ -41,8 +41,8 @@ module.exports = (router) => {
         });
     });
     // thêm mới một product vào môt branch với Id catalog là Idpram truyền vào
-    router.post('/product/add/:idparam', (req, res) => {
-        ProductService.addProduct(req.params.idparam, req.body, function (err, dataproducts) {
+    router.post('/product/add/', (req, res) => {
+        ProductService.addProduct(req.body, function (err, dataproducts) {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.AddFail });
             } else {

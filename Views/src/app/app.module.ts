@@ -1,8 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule,Component } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {NgbModule, NgbAlertConfig, NgbActiveModal, NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModule,
+  NgbAlertConfig,
+  NgbActiveModal,
+  NgbTimepickerConfig,
+  NgbRadioGroup,
+  NgbDatepicker,
+  NgbDateStruct
+} from '@ng-bootstrap/ng-bootstrap';
 import 'hammerjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -67,10 +75,11 @@ import {
   MatSlideToggleModule, MatSnackBarModule, MatTableModule, MatTabsModule, MatToolbarModule,
   MatTooltipModule, MatFormFieldModule, MatExpansionModule, MatStepperModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 import { EditmenuComponent } from './adminsite/admenu/editmenu/editmenu.component';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
+import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -172,9 +181,12 @@ import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
     NgbModalStack,
     NgbAlertConfig,
     NgbTimepickerConfig,
+    NgbRadioGroup,
+    NgbButtonLabel,
+    NgbDatepicker,
     AlertService
   ],
-  entryComponents: [EditmenuComponent,EditbranchComponent,EditcatalogComponent],
+  entryComponents: [EditmenuComponent, EditbranchComponent, EditcatalogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

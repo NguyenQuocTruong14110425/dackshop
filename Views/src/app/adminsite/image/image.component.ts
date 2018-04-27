@@ -148,7 +148,6 @@ export class ImageComponent implements OnInit {
     this.FolderService.GetListFolder().subscribe(result => {
       this.Folderposts = result.data;
       this.isDelete = false;
-      this.DetailFolder = null
     });
   }
   //Image

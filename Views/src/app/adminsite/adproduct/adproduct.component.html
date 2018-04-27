@@ -268,17 +268,18 @@
                         </label>
                     </div>
                     <div class="item-col fixed item-col-img md">
-                            <div class="item-img rounded"><img [routerLink]="['/detailproduct/', product._id]" src='https://drive.google.com/uc?id={{product.leftimage}}' /></div>
+                            <div class="item-img rounded"><img [routerLink]="['/detailproduct/', product._id]" src='https://drive.google.com/uc?id={{product.Image.LeftImage}}' /></div>
                     </div>
                     <div class="item-col fixed pull-left item-col-title">
                         <div class="item-heading">Name Product</div>
                         <div>
-                                <div>{{product.nameproduct}}</div>
+                                <div>{{product.ProductName}}</div>
                         </div>
                     </div>
                     <div class="item-col item-col-conten">
                         <div class="item-heading">Price Product</div>
-                        <div>{{product.price}} </div>
+                        <div>{{product.Price}} </div>
+                        <div>{{product.SalePrice}} </div>
                     </div>
                     <div class="item-col item-col-conten">
                         <div class="item-heading">Quatity</div>

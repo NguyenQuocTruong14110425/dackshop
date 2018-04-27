@@ -1059,18 +1059,41 @@
     font-style: italic;
     color: #d7dde4; }
 
+    .images-container {
+    padding: 5px;
+    text-align: center; 
+    max-height: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    }
+
+    .images-container .image-container {
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    display: inline-block;
+    float: none;
+    }
+
+    .images-container .image-container:hover {
+    border-color: rgba(133, 206, 54, 0.5); }
+    .images-container .image-container.active {
+    border-color: rgba(133, 206, 54, 0.5); }
     .images-container::after {
     display: block;
     clear: both;
-    content: ""; }
+    content: ""; 
+}
 
     .images-container .image-container {
     float: left;
-    padding: 3px;
-    margin-right: 10px;
-    margin-bottom: 35px;
+    padding: 2px;
+    margin-right: 25px;
+    margin-bottom: 15px;
     position: relative;
-    border: 1px solid #e6eaee;
+    max-width: 85px;
+    max-height: 85px;
+    border: 1px solid #f7fbfd;
     overflow: hidden; }
     .images-container .image-container.active {
     border-color: #0099CC; }
@@ -1085,7 +1108,7 @@
     opacity: 0;
     bottom: -35px;
     text-align: center;
-    height: 35px;
+    height: 30px;
     font-size: 24px;
     -webkit-transition: bottom 0.2s ease, opacity 0.2s ease;
     transition: bottom 0.2s ease, opacity 0.2s ease;
@@ -1098,15 +1121,17 @@
     display: inline-block;
     color: #4f5f6f;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
     opacity: 0.5;
     -webkit-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease; }
     .images-container .controls .control-btn:hover {
-    opacity: 1; }
+    opacity: 1;
+    color: #FFB300;
+    }
     .images-container .controls .control-btn.move {
     cursor: move; }
     .images-container .controls .control-btn.star {
@@ -1127,9 +1152,9 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 130px;
-    height: 135px;
-    line-height: 135px;
+    width: 80px;
+    height: 80px;
+    line-height: 75px;
     text-align: center; }
 
     .images-container .image-container.main {
@@ -2186,18 +2211,19 @@
     height: 200px;
     margin: 5px;
     }
-    .image-block  .imagecontent:hover .imageaction {
-    display: block;
+    .imagecontent:hover .imageaction {
+        display: block;
     }
     .imageaction{
     position: absolute;
-    top:70px;
-    z-index: 9999;
-    width: 200px;
     display: none;
     text-align: center;
+    font-size: 24px;
+    -webkit-transition: bottom 0.2s ease, opacity 0.2s ease;
+    transition: bottom 0.2s ease, opacity 0.2s ease;
+    margin-left: 10px;
     }
-    .imageaction >button{
+   .imageaction >button{
     border-top:0.1em solid #444343;
     height: 50px;
     width: 50px;
@@ -2206,7 +2232,7 @@
     opacity: 0.7;
     color: #ffffff;
     }
-    .imageaction >button:hover{
+   .imageaction >button:hover{
     opacity: 1;
     color: #ffee00;
     }
@@ -3000,20 +3026,6 @@
     #modal-media .modal-tab-content {
     min-height: 300px; }
 
-    #modal-media .images-container {
-    padding: 15px;
-    text-align: center; }
-    #modal-media .images-container .image-container {
-    margin: 0 auto 10px auto;
-    cursor: pointer;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    display: inline-block;
-    float: none; }
-    #modal-media .images-container .image-container:hover {
-    border-color: rgba(133, 206, 54, 0.5); }
-    #modal-media .images-container .image-container.active {
-    border-color: rgba(133, 206, 54, 0.5); }
 
     #modal-media .upload-container {
     padding: 15px; }
