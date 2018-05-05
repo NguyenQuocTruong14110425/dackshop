@@ -17,24 +17,36 @@ export class AuthService {
   ) { }
 
   registerUser(user) {
-    return this.http.post(this.domain + '/users/register', user).map(res => res.json());
+    return this.http.post(this.domain + '/user/register/', user).map(res => res.json());
   }
 
+  updateUser(user) {
+    return this.http.put(this.domain + '/user/update/', user).map(res => res.json());
+  }
+  deleteUser(idparam) {
+    return this.http.delete(this.domain + '/user/delete/' + idparam).map(res => res.json());
+  }
+  detailUser(idparam) {
+    return this.http.get(this.domain + '/user/detail/'+idparam).map(res => res.json());
+  }
+  GetAllUser() {
+    return this.http.get(this.domain + '/user/all/').map(res => res.json());
+  }
   loginUser(user) {
-    return this.http.post(this.domain + '/users/login', user).map(res => res.json());
+    return this.http.post(this.domain + '/user/login/', user).map(res => res.json());
   }
-
   checkUsername(username) {
-    return this.http.get(this.domain + '/users/checkUsername/' + username).map(res => res.json());
+    return this.http.get(this.domain + '/user/checkUsername/' + username).map(res => res.json());
   }
   checkEmail(email) {
-    return this.http.get(this.domain + '/users/checkEmail/' + email).map(res => res.json());
+    return this.http.get(this.domain + '/user/checkEmail/' + email).map(res => res.json());
   }
   profile() {
-    return this.http.get(this.domain + '/users/profile/').map(res => res.json());
+    return this.http.get(this.domain + '/user/profile/').map(res => res.json());
   }
+
   logout() {
-    return this.http.get(this.domain + '/users/logout/').map(res => res.json());
+    return this.http.get(this.domain + '/user/logout/').map(res => res.json());
   }
 
 

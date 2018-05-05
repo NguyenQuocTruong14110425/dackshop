@@ -8,7 +8,7 @@ var mess = {} = Enum.DataMessage;
 class UserService {
     constructor() { }
     //hàm tìm tất cả User
-    findAllUser(idparam, callback) {
+    findAllUser(callback) {
         User.find()
             .populate({ path: "Promotion" })
             .execAsync()
@@ -46,9 +46,9 @@ class UserService {
             })
     };
     //hàm cập nhật một User
-    updateUser(idparam, UserModel, callback) {
+    updateUser(UserModel, callback) {
         let dataSet = this.getDataUserForUpdate(UserModel, null);
-        User.findByIdAndUpdateAsync(idparam,
+        User.findByIdAndUpdateAsync(UserModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);
@@ -102,12 +102,10 @@ class UserService {
                 else {
 
                     bcrypt.compare(Password, data.Password, function(err, res) {
-                    console.log(res);
                         if (!res) {
                             return callback(mess.PasswordValid); // Return error
                         }
                         else {
-                            console.log(data);
                             return callback(null, data);
                         }
                     });
@@ -178,7 +176,6 @@ class UserService {
         if (data.Promotion) {
             User.Promotion = Valid.getObjectIDIfValid(data.Promotion);
         }
-        console.log(User );
         return User;
     }
 

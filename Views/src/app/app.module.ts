@@ -14,6 +14,7 @@ import {
 import 'hammerjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ChartsModule } from 'ng2-charts';
 //layout controller
 import { ClientComponent } from './router/client/client.component';
 import { AdminComponent } from './router/admin/admin.component';
@@ -24,7 +25,6 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
 import { AdsidebarComponent } from './partials/adsidebar/adsidebar.component';
 //client view
 import { HomeComponent } from './clientsite/home/home.component';
-import { LoginComponent } from './clientsite/login/login.component';
 import { RegisterComponent } from './clientsite/register/register.component';
 import { CheckoutComponent } from './clientsite/checkout/checkout.component';
 import { TrackingComponent } from './clientsite/tracking/tracking.component';
@@ -61,25 +61,51 @@ import { ImageService } from './webservice/image.service';
 import { AlertService } from './webservice/alert.service';
 
 //pipe
-import { ProductpipePipe } from './pipe/productpipe.pipe';
-import { cataloryPipe } from './pipe/productpipe.pipe';
-import { sizePipe } from './pipe/productpipe.pipe';
-import { CheckorderPipe } from './pipe/productpipe.pipe';
-//matirial
 import {
-  MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatPaginatorModule,
-  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
-  MatDialogModule, MatGridListModule, MatIconModule, MatInputModule,
-  MatListModule, MatMenuModule, MatProgressBarModule, MatProgressSpinnerModule,
-  MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSortModule,
-  MatSlideToggleModule, MatSnackBarModule, MatTableModule, MatTabsModule, MatToolbarModule,
-  MatTooltipModule, MatFormFieldModule, MatExpansionModule, MatStepperModule
-} from '@angular/material';
+  Decode64Pipe,
+  CheckorderPipe,
+  sizePipe,
+  cataloryPipe,
+  ProductpipePipe,
+  TotalProductPipe,
+  TotalNewProductPipe,
+  TotalDeleteProductPipe,
+  TotalPublicProductPipe,
+  TotalSoldOutroductPipe,
+  NewProductPipe,
+  FilterCatalogPipe,
+  FilterSizePipe,
+  FilterColorPipe,
+  FilterWithBranchPipe,
+  myCurrencyPipe
+} from './pipe/productpipe.pipe';
+import {
+  TotalOrderPipe,
+  TotalNewOrderPipe,
+  TotalOrderShippingPipe,
+  TotalOrderPenddingPipe,
+  TotalPaymentPenddingPipe
+} from './pipe/order.pipe';
+import {
+  TotalUserPipe,
+  TotalBanerUserPipe,
+  TotalNewUserPipe
+} from './pipe/user.pipe';
+import {
+  DeleteObjectPipe,
+  ActiveObjectPipe,
+  NewObjectPipe,
+  paginatePipe
+} from './pipe/sys.pipe';
+//ng-bootstrap
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 import { EditmenuComponent } from './adminsite/admenu/editmenu/editmenu.component';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.module';
+import { UserComponent } from './adminsite/user/user.component';
+import { SalechartComponent } from './adminsite/salechart/salechart.component';
+import { UserchartComponent } from './adminsite/userchart/userchart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,7 +119,6 @@ import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.modul
     AdsidebarComponent,
     //client view
     HomeComponent,
-    LoginComponent,
     RegisterComponent,
     CheckoutComponent,
     TrackingComponent,
@@ -117,11 +142,41 @@ import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.modul
     AlertComponent,
     ImageComponent,
     SettingComponent,
-    //pipe
+    UserComponent,
+    //pipe product
     ProductpipePipe,
     cataloryPipe,
     sizePipe,
     CheckorderPipe,
+    Decode64Pipe,
+    TotalProductPipe,
+    TotalNewProductPipe,
+    TotalPublicProductPipe,
+    TotalDeleteProductPipe,
+    TotalSoldOutroductPipe,
+    NewProductPipe,
+    FilterCatalogPipe,
+    FilterSizePipe,
+    FilterColorPipe,
+    FilterWithBranchPipe,
+    myCurrencyPipe,
+    //pipe user
+    TotalUserPipe,
+    TotalBanerUserPipe,
+    TotalNewUserPipe,
+    //pipe order
+    TotalOrderPipe,
+    TotalNewOrderPipe,
+    TotalOrderShippingPipe,
+    TotalOrderPenddingPipe,
+    TotalPaymentPenddingPipe,
+    //pipe sys
+    DeleteObjectPipe,
+    ActiveObjectPipe,
+    NewObjectPipe,
+    paginatePipe,
+    SalechartComponent,
+    UserchartComponent
   ],
   imports: [
     NgbModule,
@@ -130,39 +185,8 @@ import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.modul
     BrowserModule,
     HttpModule,
     AppRoutingModule,
-    //material
-    BrowserAnimationsModule,
-    CdkTableModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatExpansionModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatSliderModule,
-    MatSidenavModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule
+    //Chart
+    ChartsModule
   ],
   providers: [
     AuthService,
@@ -184,7 +208,8 @@ import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.modul
     NgbRadioGroup,
     NgbButtonLabel,
     NgbDatepicker,
-    AlertService
+    AlertService,
+    TotalProductPipe
   ],
   entryComponents: [EditmenuComponent, EditbranchComponent, EditcatalogComponent],
   bootstrap: [AppComponent]

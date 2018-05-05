@@ -31,15 +31,19 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-3">
-      <div class="folder-block" *ngFor="let folder of Folderposts">
-        <button (click)="getImageList(folder._id)"></button>
-        <div class="namefolder">
-          <span>{{folder.FolderName}}</span>
+    <div class="col-sm-6">
+        <div class="folder-block" >
+            <div class="folderscoll">
+            <div class="foldercontent"*ngFor="let folder of Folderposts">
+          <button (click)="getImageList(folder._id)"></button>
+          <div class="namefolder">
+            <span>{{folder.FolderName}}</span>
+          </div>
         </div>
-      </div>
+          </div>
+        </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-6">
       <div class="image-block">
         <div class="imagescoll">
           <div class="imagecontent" *ngFor="let image of Imageposts">
@@ -48,12 +52,13 @@
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                   </button>
                 </div>
-            <img src='https://drive.google.com/uc?id={{image.IdUrl}}' alt="" />
+            <img *ngIf="image.ImageLocal?.data==null" src='https://drive.google.com/uc?id={{image.IdUrl}}' alt="" />
+            <img *ngIf="image.ImageLocal?.data" width="16" height="16" src="data:image/png;base64,{{image.ImageLocal?.data|decode64}}"/>
             <p>
               {{image.ImageName}}
             </p>
           </div>
-          <div *ngIf="progress">
+          <div *ngIf="progress" style="margin-left:50%">
             <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
               <g>
                 <rect class="bar" transform="translate(0,0)" y="15"></rect>
@@ -126,26 +131,7 @@
     </button>
   </div>
   <div class="modal-body">
-      <ul class="item-list striped">
-          <li class="item" *ngFor="let image of lstImage">
-            <div class="item-row">
-              <div class="item-col item-col-title">
-                <label>
-                  <span>Name Image:{{image.name}}</span>
-                  <h6>Type:{{image.type}}</h6>
-                  <h6>Size: {{image.size}} Byte</h6>
-                </label>
-              </div>
-              <li style="float:left">
-                  <button type="button" class="btn btn-secondary" (click)="removeUploadImage(image)">
-                    <i class="fa fa-trash-o "></i>
-                  </button>
-                </li>
-            </div>
-          </li>
-        </ul>
-
-    <form [formGroup]="formImage" (submit)="onCreateImageSubmit(DetailFolder._id)" enctype="multipart/form-data">
+     <form [formGroup]="formImage" (submit)="onCreateImageSubmit(DetailFolder._id)" enctype="multipart/form-data">
       <input type="file" id="uploadPicture" formControlName="uploadPicture" class="hidden-input" accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
         (change)="selectFile($event)" multiple>
       <div class="modal-footer">
@@ -153,5 +139,23 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">cancel</button>
       </div>
     </form>
+    <ul class="item-list striped">
+        <li class="item" *ngFor="let image of lstImage">
+          <div class="item-row">
+            <div class="item-col item-col-title">
+              <label>
+                <span>Name Image:{{image.name}}</span>
+                <h6>Type:{{image.type}}</h6>
+                <h6>Size: {{image.size}} Byte</h6>
+              </label>
+            </div>
+            <li style="float:left">
+                <button type="button" class="btn btn-secondary" (click)="removeUploadImage(image)">
+                  <i class="fa fa-trash-o "></i>
+                </button>
+              </li>
+          </div>
+        </li>
+      </ul>
   </div>
 </ng-template>

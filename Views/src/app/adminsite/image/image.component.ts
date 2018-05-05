@@ -138,10 +138,11 @@ export class ImageComponent implements OnInit {
     });
   }
   getImageList(id) {
+    this.progress=true;
     this.FolderService.GetListImageByFolder(id).subscribe(result => {
-      console.log(result)
       this.Imageposts = result.data;
       this.detailFolder(id);
+      this.progress=false;
     });
   }
   GetListFolder() {
@@ -160,11 +161,9 @@ export class ImageComponent implements OnInit {
   selectFile(e)
   {
     this.lstImage= Array.from(e.target.files);
-    console.log(this.lstImage)
   }
   removeUploadImage(image)
   {
-    console.log(image)
     this.lstImage = this.lstImage.filter(x => x !== image);
   }
 
@@ -186,6 +185,7 @@ export class ImageComponent implements OnInit {
           this.createFormImage();
           this.progress=false;
           this.isupload = false;
+          this.lstImage = null;
         }
       })
   }
@@ -221,7 +221,6 @@ export class ImageComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.GetListImage();
     this.GetListFolder();
   }
 

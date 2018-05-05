@@ -48,7 +48,7 @@ export class OrderdetailComponent implements OnInit {
       console.log(this.products);
     });
   }
-  UpdateStatusShip(id,status) {
+  UpdateStatusShip(order) {
     if(status=="shipping order")
     {
       status = "complete"
@@ -57,7 +57,7 @@ export class OrderdetailComponent implements OnInit {
     {
       status = "shipping order"
     }
-    this.orderService.updateorder(id,status).subscribe(data => {
+    this.orderService.updateOrder(order).subscribe(data => {
       console.log(data);
       if (!data.success) {
         this.messageClass = 'alert alert-danger';

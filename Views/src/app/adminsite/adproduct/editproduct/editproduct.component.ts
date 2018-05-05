@@ -14,7 +14,7 @@ import { PromotionService } from '../../../webservice/promotion.service';
 @Component({
   selector: 'app-editproduct',
   templateUrl: './editproduct.component.html',
-  styleUrls: ['./editproduct.component.css']
+  styleUrls: ['./editproduct.component.scss']
 })
 export class EditproductComponent implements OnInit {
   processing = false;
@@ -34,6 +34,14 @@ export class EditproductComponent implements OnInit {
   lstSizeDisplay = [];
   lstColorDisplay = [];  
   Image = {
+    LeftImage: String,
+    LeftImageZoom: String,
+    RightImage: String,
+    RightImageZoom: String,
+    UnderImage: String,
+    UnderImageZoom: String,
+  };
+  ImageLocal = {
     LeftImage: String,
     LeftImageZoom: String,
     RightImage: String,
@@ -120,32 +128,38 @@ export class EditproductComponent implements OnInit {
     switch (flag) {
       case 1:
         this.leftiamge = false;
-        this.Image.LeftImage = image;
+        this.Image.LeftImage = image.IdUrl;
+        this.ImageLocal.LeftImage=image._id;
         this.alertService.success("Add left image success!")
         break
       case 2:
         this.leftiamgezoom = false;
-        this.Image.LeftImageZoom = image;
+        this.Image.LeftImageZoom = image.IdUrl;
+        this.ImageLocal.LeftImageZoom=image._id;
         this.alertService.success("Add left image zoom success!")
         break
       case 3:
         this.rightiamge = false;
-        this.Image.RightImage = image;
+        this.Image.RightImage = image.IdUrl;
+        this.ImageLocal.RightImage=image._id;
         this.alertService.success("Add under image success!")
         break
       case 4:
         this.rightiamgezoom = false;
-        this.Image.RightImageZoom = image
+        this.Image.RightImageZoom = image.IdUrl;
+        this.ImageLocal.RightImageZoom=image._id;
         this.alertService.success("Add right image zoom success!")
         break
       case 5:
         this.underimage = false;
-        this.Image.UnderImage = image
+        this.Image.UnderImage = image.IdUrl;
+        this.ImageLocal.UnderImage=image._id;
         this.alertService.success("Add under image success!")
         break
       case 6:
         this.underimagezoom = false
-        this.Image.UnderImageZoom = image
+        this.Image.UnderImageZoom = image.IdUrl
+        this.ImageLocal.UnderImageZoom=image._id;
         this.alertService.success("Add under image zoom success!")
         break
     }
@@ -158,31 +172,37 @@ export class EditproductComponent implements OnInit {
       case 1:
         this.leftiamge = false;
         this.Image.LeftImage = null;
+        this.ImageLocal.LeftImage = null;
         this.alertService.success("remove left image success!")
         break
       case 2:
         this.leftiamgezoom = false;
         this.Image.LeftImageZoom = null;
+        this.ImageLocal.LeftImageZoom = null;
         this.alertService.success("remove left image zoom success!")
         break
       case 3:
         this.rightiamge = false;
         this.Image.RightImage = null;
+        this.ImageLocal.RightImage = null;
         this.alertService.success("remove under image success!")
         break
       case 4:
         this.rightiamgezoom = false;
         this.Image.RightImageZoom = null
+        this.ImageLocal.RightImageZoom = null;
         this.alertService.success("remove right image zoom success!")
         break
       case 5:
         this.underimage = false;
         this.Image.UnderImage = null
+        this.ImageLocal.UnderImage = null;
         this.alertService.success("remove under image success!")
         break
       case 6:
         this.underimagezoom = false
         this.Image.UnderImageZoom = null
+        this.ImageLocal.UnderImageZoom = null;
         this.alertService.success("Add under image zoom success!")
         break
     }
@@ -212,7 +232,7 @@ export class EditproductComponent implements OnInit {
         newProduct.CheckNew=this.formProduct.get('CheckNew').value;
         newProduct.Promotion=this.formProduct.get('Promotion').value;
         newProduct.CatalogParent=this.formProduct.get('CatalogParent').value;
-        newProduct.Image=this.Image;
+        newProduct.Image=this.ImageLocal;
         newProduct.Color=this.lstColorDisplay;
         newProduct.Size=this.lstSizeDisplay;
         newProduct.SalePrice=this.PriceOnSale;   
@@ -332,7 +352,7 @@ export class EditproductComponent implements OnInit {
       IdSize:size._id,
       SizeName:size.SizeName,
       TypeSize:size.TypeSize,
-      IsActive:false
+      IsActive:true
     }
     this.sizeposts = this.sizeposts.filter(x => x !== size);
     this.lstSizeDisplay.push(modelSizetemp);

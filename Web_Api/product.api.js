@@ -1,5 +1,6 @@
 const config = require('../Web_Config/database');
 const CatalogService = require('./controllers/CatalogService');
+const ProductDomain = require('./business/Product.Domain');
 const ProductService = require('./controllers/ProductService');
 var fs = require('fs');
 const EnumConstant = require('../Web_Config/EnumConstant.js');
@@ -7,8 +8,23 @@ module.exports = (router) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
     // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
-    router.get('/product/all/', (req, res) => {
-        ProductService.findAllProduct(function (err, products) {
+    router.get('/product/countproduct/', (req, res) => {
+        var ProductConfig = new ProductDomain();
+        var Dataconfig =  ProductConfig.Getinit(function (err, result) {
+            if (err) {
+                res.json({ success: false, message: err });
+            } else {
+                res.json({ success: true, data: result });
+            }
+        })
+    });
+    // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
+    router.get('/product/all', (req, res) => {
+        var paging = {
+            page:1,
+            step:10
+        }
+        ProductService.findAllProduct(paging,function (err, products) {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.SaveSuccess });
             } else {

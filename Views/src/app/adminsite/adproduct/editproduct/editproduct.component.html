@@ -266,19 +266,19 @@
         <div role="tabpanel" class="tab-pane fade" id="color">
           <div class="images-container">
             <div class="image-container" *ngFor="let color of lstColorDisplay">
-              <div class="controls">
+              <div class="controls"  style="z-index:10">
                 <a class="control-btn" (click)="IsActiveColor(color)">
-                      <i class="fa fa-smile-o"></i>
+                  <i class="fa fa-smile-o"></i>
                 </a>
-                <a  class="control-btn remove" (click)="UnchooseColor(color)">
+                <a class="control-btn remove" (click)="UnchooseColor(color)">
                   <i class="fa fa-trash-o"></i>
                 </a>
               </div>
               <div *ngIf="color.IsActive" class="image" [ngStyle]="{'background':color.ValueHex}">
-                  <p>{{color.ColorName}}</p>
+                <p>{{color.ColorName}}</p>
               </div>
               <div *ngIf="!color.IsActive" class="image" [ngStyle]="{'background':'rgb(191, 191, 191)'}">
-                  <p>{{color.ColorName}}</p>
+                <p>{{color.ColorName}}</p>
               </div>
             </div>
             <a class="add-image" (click)="openImportColor(importcolor)">
@@ -402,10 +402,10 @@
         </div>
       </div>
       <div style="float:right">
-          <button type="submit" class="btn btn-secondary">Save</button>
-          <button type="button" class="btn btn-secondary">Save And Public</button>
-          <button type="button" class="btn btn-secondary">Save And New Create</button>
-        </div>
+        <button type="submit" class="btn btn-secondary">Save</button>
+        <button type="button" class="btn btn-secondary">Save And Public</button>
+        <button type="button" class="btn btn-secondary">Save And New Create</button>
+      </div>
     </form>
   </div>
 </article>
@@ -420,38 +420,59 @@
   </div>
   <div class="modal-body">
     <div *ngIf="isFolder">
-      <div class="folder-block" *ngFor="let folder of Folderposts">
-        <button (click)="getImageList(folder._id)"></button>
-        <div class="namefolder">
-          <span>{{folder.FolderName}}</span>
+      <div class="folder-block">
+        <div class="folderscoll">
+          <div class="foldercontent" *ngFor="let folder of Folderposts">
+            <button (click)="getImageList(folder._id)"></button>
+            <div class="namefolder">
+              <span>{{folder.FolderName}}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div *ngIf="!isFolder" class="images-container">
-      <div class="image-container" *ngFor="let image of Imageposts">
-        <div class="controls">
-          <a *ngIf="leftiamge">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,1)"></i>
-          </a>
-          <a *ngIf="leftiamgezoom">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,2)"></i>
-          </a>
-          <a *ngIf="rightiamge">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,3)"></i>
-          </a>
-          <a *ngIf="rightiamgezoom">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,4)"></i>
-          </a>
-          <a *ngIf="underimage">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,5)"></i>
-          </a>
-          <a *ngIf="underimagezoom">
-            <i class="fa fa-plus-circle" aria-hidden="true" (click)="d('Cross click')" (click)="chooseImage(image.IdUrl,6)"></i>
-          </a>
+      <div class="image-block" *ngIf="!isFolder" >
+        <div class="imagescoll">
+          <div class="imagecontent" style="width: 125px;height: 125px;" *ngFor="let image of Imageposts">
+            <div class="imageaction" *ngIf="leftiamge">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,1)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="imageaction" *ngIf="leftiamgezoom">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,2)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="imageaction" *ngIf="rightiamge">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,3)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="imageaction" *ngIf="rightiamgezoom">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,4)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="imageaction" *ngIf="underiamge">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,5)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="imageaction" *ngIf="underiamgezoom">
+              <button class="btn" (click)="d('Cross click')" (click)="chooseImage(image,6)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <img *ngIf="image.ImageLocal?.data==null" style="width:100px;height:100px" src='https://drive.google.com/uc?id={{image.IdUrl}}' alt="" />
+            <img *ngIf="image.ImageLocal?.data" style="width:100px;height:100px" src="data:image/png;base64,{{image.ImageLocal?.data|decode64}}"
+            />
+            <p>
+              {{image.ImageName}}
+            </p>
+          </div>
         </div>
-        <img class="image" src='https://drive.google.com/uc?id={{image.IdUrl}}' alt="" />
       </div>
-    </div>
     <div *ngIf="!isFolder" class="modal-footer">
       <button class="btn btn-secondary" (click)="backFolder()">
         <i class="fa fa-sign-out" aria-hidden="true"> Back</i>
@@ -471,20 +492,20 @@
   <div class="modal-body">
     <div class="images-container">
       <div class="image-container" *ngFor="let color of colorposts">
-        <div class="controls">
+        <div class="controls" style="z-index:10">
           <a>
-            <i class="fa fa-plus-circle" aria-hidden="true"  (click)="chooseColor(color)"></i>
+            <i class="fa fa-plus-circle" aria-hidden="true" (click)="chooseColor(color)"></i>
           </a>
         </div>
         <div class="image" [ngStyle]="{'background':color.ValueHex}">
-            <p>{{color.ColorName}}</p>
+          <p>{{color.ColorName}}</p>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="d('Cross click')">
-          <i class="fa fa-sign-out" aria-hidden="true"> Close</i>
-        </button>
-      </div>
+      <button class="btn btn-secondary" (click)="d('Cross click')">
+        <i class="fa fa-sign-out" aria-hidden="true"> Close</i>
+      </button>
+    </div>
   </div>
 </ng-template>

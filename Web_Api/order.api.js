@@ -44,12 +44,12 @@ module.exports = (router) => {
     //lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
     //Nếu có tồn tại req.body._id thì sẽ bị remove, chỉ nhận thuộc tịnh params.idpram
     // router.put('/:idparam', OrderController.UpdateOrder);
-    router.put('/order/update/:idparam', (req, res) => {
-        OrderService.updateOrder(req.params.idparam, req.body, function (err, Orders) {
+    router.put('/order/update/', (req, res) => {
+        OrderService.updateOrder(req.body, function (err, Orders) {
             if (err) {
                 res.json({ success: false, message: err ? err : null });
             } else {
-                OrderService.findOrderById(req.params.idparam, function (err, Orders) {
+                OrderService.findOrderById(req.body._id, function (err, Orders) {
                     if (err) {
                         res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {

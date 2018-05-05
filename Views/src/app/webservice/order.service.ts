@@ -18,21 +18,19 @@ export class OrderService {
 
   
   //order
-  Checkout(order) {
-    return this.http.post(this.domain + '/carts/order/',order).map(res => res.json());
-  }
-
-  listorder() {
-    return this.http.get(this.domain + '/carts/listorder/').map(res => res.json());
-  }
-  orderwithphone(phone) {
-    return this.http.get(this.domain + '/carts/phoneforoder/'+phone).map(res => res.json());
+  getListOrder() {
+    return this.http.get(this.domain + '/order/all/').map(res => res.json());
   }
   getDetailOrder(id) {
-    return this.http.get(this.domain + '/carts/detailorder/' + id).map(res => res.json());
+    return this.http.get(this.domain + '/order/detail/' + id).map(res => res.json());
   }
-  updateorder(id,status) {
-    return this.http.get(this.domain + '/carts/updateorder/'+id+'/'+status).map(res => res.json());
+  createOrder(order) {
+    return this.http.post(this.domain + '/order/add/',order).map(res => res.json());
   }
-
+  updateOrder(Order) {
+    return this.http.put(this.domain + '/order/update/',Order).map(res => res.json());
+  }
+  deleteOrder(id) {
+    return this.http.delete(this.domain + '/order/delete/'+ id).map(res => res.json());
+  }
 }

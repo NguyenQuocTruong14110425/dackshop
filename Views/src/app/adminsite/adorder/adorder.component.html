@@ -1,48 +1,279 @@
-<div id="content">
-  <div class="inner">
-    <div class="title">
-      <h2>Active Order</h2>
+<article class="content items-list-page">
+  <div class="card-order">
+    <div class="card-item">
+      <div class="iconimg" style="background:#0099CC">
+        <img src="./assets/images/icon/icon-newcart.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">New Order</div>
+        <div class="number-item" style="color:#0099CC">{{OrderPost|TotalNewOrder}}</div>
+      </div>
     </div>
-    <div class="components">
-      <div class="row show-hide-message" *ngIf="message">
-        <div [ngClass]="messageClass">
-            <div id="message">
-          <p class="notification">{{ message }}</p>
+    <div class="card-item">
+      <div class="iconimg" style="background:#9200cc">
+        <img src="./assets/images/icon/icon-pendding.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Order pendding</div>
+        <div class="number-item" style="color:#9200cc">{{OrderPost|TotalOrderPendding}}</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc9c00">
+        <img src="./assets/images/icon/icon-shipping.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Shipping pendding</div>
+        <div class="number-item" style="color:#cc9c00">{{OrderPost|TotalOrderShipping}}</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc4100">
+        <img src="./assets/images/icon/icon-card.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Payment Pendding</div>
+        <div class="number-item" style="color:#cc4100">{{OrderPost|TotalPaymentPendding}}</div>
+      </div>
+    </div>
+  </div>
+      <div class="card tasks sameheight-item" data-exclude="xs,sm">
+        <div class="card-header bordered">
+          <div class="header-block">
+            <h3 class="title"> ALL Order </h3>
+          </div>
+          <div class="header-block pull-right">
+            <a (click)="opencreate(modalorder)" class="btn btn-info btn-sm rounded pull-right"> Add new </a>
+          </div>
+        </div>
+        <div class="card-block">
+          <div class="tasks-block">
+            <ul class="item-list" *ngFor="let order of OrderPost">
+              <a  (click)="opendetail(ordermodal,order._id)">
+                <li class="item">
+                  <div class="item-row">
+                    <!-- <div class="item-col-image">
+                        <img class="avata-img" *ngIf="Order?.Gender=='Male'" src="https://ptetutorials.com/images/Order-profile.png">
+                        <img class="avata-img" *ngIf="Order?.Gender=='Female'" src="https://image.flaticon.com/icons/png/512/190/190680.png">
+                      </div> -->
+                    <div class="item-col">
+                      <div class="itemcontent">
+                        <div class="item-title">{{order?.FullName}}</div>
+                        <div class="item">
+                          <span>Phone Number:{{order?.PhoneNumber}}</span>
+                        </div>
+                        <div class="item">
+                          <span>Address:{{order?.Address}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-col">
+                      <div class="itemcontent">
+                        <div class="item">
+                          <span>Date Order:{{Order?.DateOrder| date:'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="item">
+                          <span>Status Order: {{Order?.Shipping?.StatusTracking}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </a>
+            </ul>
           </div>
         </div>
       </div>
+</article>
+<ng-template #modalorder let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-warning"></i> Create new Order ?</h4>
+    <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="formOrder" (submit)="onCreateOrderSubmit()">
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="control-label">Full Name</label>
+        <input type="text" formControlName="FullName" class="form-control underlined">
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">Email</label>
+          <input type="email" formControlName="Email" class="form-control underlined">
+        </div>
+        <div class="form-group col-sm-6">
+          <label class="control-label">Number Phone</label>
+          <input type="text" formControlName="PhoneNumber" class="form-control underlined">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Address</label>
+        <input type="text" formControlName="Address" class="form-control underlined">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Shipping</label>
+        <select formControlName="Shipping" class="form-control underlined" placeholder="Choose a type shipping">
+          <option> Ship COD </option>
+          <option> Express Delivery </option>
+          <option> Delivery</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">PaymentType</label>
+        <select formControlName="PaymentType" class="form-control underlined" placeholder="Choose a payment type">
+          <option> Online payment</option>
+          <option> Momo Pay </option>
+          <option> Zalo Pay</option>
+          <option value="COD"> Cash on delivery (COD)</option>
+        </select>
+      </div>
     </div>
-
-      <div class="components">
-        <h1>Items ordered</h1>
-        <div class="shopbag" *ngFor="let order of orderpost">
-          <div class="phone">
-          <p>{{order.dateorder|date:"MM/dd/yy"}}</p>
-        </div>
-          <div class="info">
-            <p>Name:{{order.name}}</p>
-            <h3>Address:{{order.address}}</h3>
-            <h3>Status:{{order.status}}</h3>
-          </div>
-          <div class="quarity">
-           <p>Subtotal: ${{order.cart.totalPrice}}</p>
-          </div>
-          <div class="action">
-            <button [routerLink]="['/ordertail/', order._id]">
-              <mat-icon>keyboard_arrow_down</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="shopbag">
-          <div class="total">
-            <p>Estimated Total: $</p>
-            <div class="sale">Subtotal: $</div>
-          </div>
-        </div>
-
+    <div class="modal-footer">
+      <button type="submit" id="submitsize" name="submitsize" class="btn btn-info" (click)="c('Close click')">Save for Create</button>
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">cance</button>
     </div>
-   
+  </form>
+</ng-template>
 
-</div>
-</div>
+
+<ng-template #ordermodal let-c="close" let-d="dismiss">
+	<div class='panal-checkout'>
+		<div class='order-info'>
+			<div class='order-info-content'>
+				<h3 class="title">Detail Order</h3>
+				<div class="checkout-scoll">
+					<table class='order-table'  *ngFor="let product of DetailOrder?.Cart?.items">
+						<tbody>
+							<tr>
+								<td>
+									<img src='https://drive.google.com/uc?id={{product?.item.Product.Image}}' class='full-width'
+									/>
+								</td>
+								<td>
+									<br>
+									<span class='thin'> {{product?.item.Product.ProductName}}</span>
+									<br>
+									<div class="sort-description">{{product?.item.Product.ShortDescription}}</div>
+									<br>
+									<span class='small'> Color:{{product?.item.Product.Color}}, Size:{{product?.item.Product.Size}}</span>
+									<br>
+									<div class='price-checkout'> {{product?.item.Product.Price| currency}} x {{product?.totalQty}}</div>
+								</td>
+							</tr>
+							<div class='line'></div>
+						</tbody>
+					</table>
+				</div>
+				<div class='line'></div>
+				<div class='total'>
+					<div class='line'></div>
+					<span style='float:left;'>
+							<div class='thin dense'>VAT 10%:</div>
+							<div class='thin dense'>ToTal Quantity:</div>
+							TOTAL
+						  </span>
+					<span style='float:right; text-align:right;'>
+						<div class='thin dense'>$68.75</div>
+						<div class='thin dense'>{{DetailOrder?.Cart.totalQtyOrder}}</div>
+						{{DetailOrder?.Cart.totalOrder| currency}}
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class='credit-info'>
+          <div class="card items" style="width:100%">
+              <div class="title-block">
+                <div style="float: right;">
+                  <button class="btn btn-secondary"  (click)="c('Close click')" (click)="DeleteOrder(DetailOrder?._id)">
+                    <i class="fa fa-trash-o "></i>
+                  </button>
+                  <button class="btn btn-secondary" (click)="EditOrder()">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                </div>
+              </div>
+              <ul class="item-list striped">
+                <li class="item">
+                  <form (submit)="updateOrderSubmit()">
+                    <div class="item-row">
+                      <div class="item-col item-col-title">
+                        <label *ngIf="isDetailOrder">Full Name: </label>
+                        <label style="padding-left: 10px" *ngIf="isDetailOrder">{{DetailOrder?.FullName}}</label>
+                        <div class="form-group" *ngIf="!isDetailOrder">
+                          <label class="control-label">Full Name:</label>
+                          <input type="text" [(ngModel)]="DetailOrder.FullName" id="FullName_edit" name="FullName_edit" class="form-control underlined">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-row">
+                      <div class="item-col item-col-title">
+                        <label *ngIf="isDetailOrder">Phone Number: </label>
+                        <label style="padding-left: 10px " *ngIf="isDetailOrder">{{DetailOrder?.PhoneNumber}}</label>
+                        <div class="form-group" *ngIf="!isDetailOrder">
+                          <label class="control-label">Phone Number:</label>
+                          <input type="text" [(ngModel)]="DetailOrder.PhoneNumber" id="PhoneNumber_edit" name="PhoneNumber_edit" class="form-control underlined">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-row">
+                      <div class="item-col">
+                        <label *ngIf="isDetailOrder">Email: </label>
+                        <label style="padding-left: 10px " *ngIf="isDetailOrder">{{DetailOrder?.Email}}</label>
+                        <div class="form-group" *ngIf="!isDetailOrder">
+                          <label class="control-label">Email:</label>
+                          <input type="email" [(ngModel)]="DetailOrder.Email" id="Email_edit" name="Email_edit" class="form-control underlined">
+                        </div>
+                      </div>
+                    </div>
+      
+                    <div class="item-row">
+                      <div class="item-col item-col-title">
+                        <label *ngIf="isDetailOrder">Address: </label>
+                        <label style="padding-left: 10px " *ngIf="isDetailOrder">{{DetailOrder?.Address}}</label>
+                        <div class="form-group" *ngIf="!isDetailOrder">
+                          <label class="control-label">Address:</label>
+                          <input type="text" [(ngModel)]="DetailOrder.Address" id="Address_edit" name="Address_edit" class="form-control underlined">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-row" style="border-top: 1px solid rgb(75, 82, 87)">
+                      <div class="itemcontent" *ngIf="isDetailOrder">
+                        <div class="item-title">
+                          <label class="control-label">Type Shipping: {{DetailOrder?.IdShipping?.ShippingType}}</label>
+                        </div>
+                        <div class="item">
+                          <span>Price shipping: {{DetailOrder?.IdShipping?.Price}} VND</span>
+                        </div>
+                        <div class="item">
+                          <span>Payment Type: {{DetailOrder?.PaymentType}} VND</span>
+                        </div>
+                        <div class="item">
+                          <span>Status Order: {{DetailOrder?.Shipping?.StatusTracking}}</span>
+                        </div>
+                      </div>
+                        <div class="item-col" *ngIf="!isDetailOrder">
+                          <div class="form-group">
+                            <label class="control-label">Status Order</label>
+                            <select [(ngModel)]="DetailOrder.Shipping.StatusTracking" id="StatusTracking_edit" name="StatusTracking_edit" class="form-control underlined"
+                              placeholder="Choose a Status">
+                              <option> Order unConfirm </option>
+                              <option> Order Confirm </option>
+                              <option> Payment pedding</option>
+                              <option> Shipping pedding</option>
+                              <option> Complete</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                    <button *ngIf="!isDetailOrder" type="button" (click)="detailOrder(DetailOrder._id)" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                    <button *ngIf="!isDetailOrder" type="submit"  (click)="c('Close click')" class="btn btn-secondary" data-dismiss="modal">Save</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+		</div>
+	</div>
+</ng-template>

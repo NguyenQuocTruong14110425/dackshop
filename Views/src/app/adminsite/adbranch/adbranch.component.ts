@@ -27,6 +27,7 @@ export class AdbranchComponent implements OnInit {
     private modalService: NgbModal,
     private alertService: AlertService
   ) {
+    this.branchService.ListBranch;
     this.createForm();
   }
   openedit(branch, IsEdit) {
@@ -80,9 +81,18 @@ export class AdbranchComponent implements OnInit {
     });
   }
   GetListbranch() {
-    this.branchService.GetAllBranch().subscribe(result => {
-      this.branchpost = result.data;
-    });
+    if (this.branchService.CheckExitBranch() == 1) {
+      this.branchpost = this.branchService.ListBranch;
+    }
+    else {
+      this.branchService.getAllBranchTemp((err, result) => {
+        if (err) {
+          this.alertService.error(err);
+        } else {
+          this.branchpost = result.data;
+        }
+      })
+    }
   }
   GetListMenu() {
     this.menuService.GetListMenu().subscribe(result => {

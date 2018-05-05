@@ -47,9 +47,9 @@ class OrderService {
             })
     };
     //hàm cập nhật một Order
-    updateOrder(idparam, OrderModel, callback) {
+    updateOrder(OrderModel, callback) {
         let dataSet = this.getDataOrderForUpdate(OrderModel, null);
-        Order.findByIdAndUpdateAsync(idparam,
+        Order.findByIdAndUpdateAsync(OrderModel._id,
             { $set: dataSet })
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.UpdateFail);
@@ -72,9 +72,11 @@ class OrderService {
     //hàm lấy dữ liệu khi thêm mới
     getDataOrderForInsert(data) {
         let newOrder = new Order();
+        newOrder.Cart = data.Cart;
         newOrder.FullName = data.FullName,
             newOrder.Address = data.Address,
             newOrder.PhoneNumber = data.PhoneNumber,
+            newOrder.Email = data.Email,
             newOrder.PaymentType = data.PaymentType,
             newOrder.Shipping.IdShipping = data.IdShipping,
             newOrder.Shipping.StatusTracking = data.StatusTracking,
@@ -87,6 +89,9 @@ class OrderService {
             {
                 DateUpdate: new Date()
             }
+        if (data.Cart) {
+            Order.Cart = data.Cart;
+        }
         if (data.FullName) {
             Order.FullName = data.FullName;
         }
@@ -96,16 +101,16 @@ class OrderService {
         if (data.PhoneNumber) {
             Order.PhoneNumber = data.PhoneNumber;
         }
+        if (data.Email) {
+            Order.Email = data.Email;
+        }
         if (data.PaymentType) {
             Order.PaymentType = data.PaymentType;
         }
-        if (data.IdShipping!==undefined) {
-            Order.Shipping.IdShipping = data.IdShipping;
+        if (data.Shipping) {
+            Order.Shipping = data.Shipping;
         }
-        if (data.StatusTracking) {
-            Order.Shipping.StatusTracking = data.StatusTracking;
-        }
-        if (data.IsDelete!==undefined) {
+        if (data.IsDelete !== undefined) {
             Order.IsDelete = data.IsDelete;
         }
         return Order;

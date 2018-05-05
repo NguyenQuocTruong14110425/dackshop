@@ -210,9 +210,9 @@
     }
 
     .alert {
-    position:absolute;
-    top:80px;
-    right:150px;
+    position:fixed;
+    top:120px;
+    right:20px;
     z-index: 9999;
     background-color: #c4453c; 
     font-family: 'Montserrat', sans-serif;
@@ -1083,7 +1083,7 @@
     display: block;
     clear: both;
     content: ""; 
-}
+    }
 
     .images-container .image-container {
     float: left;
@@ -1199,7 +1199,13 @@
     font-size: 0.95rem; } }
     @media (max-width: 767.98px) {
     .item-list {
-    font-size: 1.05rem; } }
+    font-size: 1.05rem; } 
+    .item-list .item-col .itemcontent {
+        float: left;
+        text-align: center;
+        align-items: center;
+         }
+}
     .item-list.striped > li {
     border-bottom: 1px solid #e9edf0; 
     padding:10px 10px 10px 10px;
@@ -1232,6 +1238,11 @@
     .item-list.striped > li:hover{
     background: rgb(217, 243, 252);
     }
+    .item-list .item-col .itemcontent {
+        float: left;
+        text-align: center;
+        align-items: center;
+         }
     }
     .item-list.striped .item-list-footer {
     border-bottom: none; }
@@ -1248,6 +1259,18 @@
     -ms-flex-direction: column;
     flex-direction: column; }
 
+    .item-list img {
+    margin-left: 45%;
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+    }
+    .item-list img:hover {
+    box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
+    -moz-box-shadow:0 0.1px 0.5em rgba(0,0,0,.3);
+    -webkit-box-shadow:0 0.5em 0.5em rgba(0,0,0,.3);
+    border:1px solid #cac02b;
+    }
     .item-list .item-row {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1303,7 +1326,40 @@
     width: 100%; }
     .item-list .item-col:last-child {
     padding-right: 0; }
-
+    .item-list .item-col .itemcontent {
+    float: left;
+    padding: 10px;
+     }
+    .item-list .item-row:hover{
+    background: rgb(207, 238, 248);
+    }
+    .item-list .item-col-image {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 10px 10px 10px 0;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 120px;
+     }
+    .item-list .item-col-image >img {
+    width:50px;
+    height:50px;
+    float: left;
+    margin-right: 10px;
+    border-radius: 50%;
+    }
+    .item-list .item-col .itemcontent .item-title {
+    font-size: 16px;
+    color: #466574;
+    font-family: UTMAptimaBold;
+    text-transform: uppercase;
+    }
+    .item-list .item-col .itemcontent .item {
+    font-size: 14px;
+    color: #575757;
+    text-transform: uppercase;
+    }
     .item-list .no-overflow {
     overflow: hidden;
     font-family: UTMHelvetIns;
@@ -1702,11 +1758,56 @@
     .title-block {
     padding-bottom: 15px;
     margin-bottom: 30px;
-    border-bottom: 1px solid #d7dde4; }
+    border-bottom: 1px solid #d7dde4;
+    }
     .title-block::after {
     display: block;
     clear: both;
     content: ""; }
+
+    .card-order{
+    margin-top: 0;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex; 
+    padding-bottom: 50px;
+    }
+    .card-order .card-item{
+    width: 300px;
+    height: 120px;
+    max-width: 300px;
+    max-height: 150px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-left: 20px;
+    text-align: center;
+    vertical-align: middle;
+     }
+     .card-order .card-item .iconimg{
+    max-width: 100px;
+    max-height: 150px;
+    width: 90px;
+    height: 120px;
+    float: left;
+    }
+    .card-order .card-item .iconimg img{
+    margin-top:40%;
+    width: 50px;
+    height: 50px;
+    }
+     .card-order .card-item .item-content{
+    text-align: center;
+    color: #3c6fa1;
+    }
+    .card-order .card-item .item-content .title-item{
+    font-size: 18px;
+    font-family: UTMAptimaBold;
+    color: #3c6fa1;
+    }
+    .card-order .card-item .item-content .number-item{
+    margin-top:25px;
+    font-size: 35px;
+    font-family: UTMDaxBold;
+    }
     @media (max-width: 767.98px) {
     .title-block {
     margin-bottom: 20px; } }
@@ -1723,12 +1824,22 @@
     .section {
     margin-bottom: 25px; } }
     @media (min-width: 992px) and (max-width: 1199.98px) {
+    .card-order{
+    display: table-cell;
+    float: left; 
+    }
     .section {
     margin-bottom: 20px; } }
     @media (min-width: 768px) and (max-width: 991.98px) {
+    .card-order{
+    display: table-cell;
+    }
     .section {
     margin-bottom: 15px; } }
     @media (max-width: 767.98px) {
+        .card-order{
+        display: table-cell;
+        }
     .section {
     margin-bottom: 10px; } }
     .section:last-of-type {
@@ -2175,7 +2286,7 @@
     white-space: nowrap;
     width: 100%; }
     .tasks .tasks-block {
-    max-height: 400px;
+    max-height: 1000px;
     overflow-y: scroll;
     overflow-x: hidden;
     margin: 0;
@@ -2194,17 +2305,17 @@
     -webkit-box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
     }
     .image-block {
-        box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
-        -moz-box-shadow:0 0.1px 0.5em rgba(0,0,0,.3);
-        -webkit-box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
-   }
-   .image-block .imagescoll{
+    box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
+    -moz-box-shadow:0 0.1px 0.5em rgba(0,0,0,.3);
+    -webkit-box-shadow:0 0.1em 0.5em rgba(0,0,0,.3);
+    }
+    .image-block .imagescoll{
     max-height: 800px;
     padding: 1.5em;
     overflow-y: scroll;
     overflow-x: hidden;
-   }
-   .image-block  .imagecontent{
+    }
+    .image-block  .imagecontent{
     float: left;
     text-align: center;
     width: 200px;
@@ -2212,7 +2323,7 @@
     margin: 5px;
     }
     .imagecontent:hover .imageaction {
-        display: block;
+    display: block;
     }
     .imageaction{
     position: absolute;
@@ -2223,7 +2334,7 @@
     transition: bottom 0.2s ease, opacity 0.2s ease;
     margin-left: 10px;
     }
-   .imageaction >button{
+    .imageaction >button{
     border-top:0.1em solid #444343;
     height: 50px;
     width: 50px;
@@ -2232,7 +2343,7 @@
     opacity: 0.7;
     color: #ffffff;
     }
-   .imageaction >button:hover{
+    .imageaction >button:hover{
     opacity: 1;
     color: #ffee00;
     }
@@ -2252,47 +2363,58 @@
     margin-top: 0.5em;
     font-size: 14px;
     }
-    
     .folder-block {
     float: left;
-    margin: 0;
-    margin-right: 20px;
-    padding-bottom: 1em;
     }
-    .folder-block button {
+    .folder-block .folderscoll{
+    max-height: 800px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    }
+    .folder-block  .foldercontent{
+    text-align: center;
+    margin: 10px;
+    float: left;
+    }
+    .folder-block  .foldercontent button {
     background:url(../../images/folder.png) #f3f3f3;
     background-repeat: no-repeat;
-    background-size: 100px 100px;
+    background-size: 60px 60px;
     color: #252525;
     display: block;
     font-size: 0.9em;
-    float: left;
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 60px;
+    min-height: 60px;
     border:0;
     -webkit-box-shadow:none;
     }
-    .folder-block button:focus {
-        background:url(../../images/folder-open.png) #f3f3f3;
-        background-repeat: no-repeat;
-        background-size: 100px 100px;
-        }
-    .folder-block button:hover {
+    .folder-block  .foldercontent button:focus {
     background:url(../../images/folder-open.png) #f3f3f3;
     background-repeat: no-repeat;
-    background-size: 100px 100px;
+    background-size: 60px 60px;
     }
-    .folder-block .namefolder{  
+    .folder-block  .foldercontent button:hover {
+    background:url(../../images/folder-open.png) #f3f3f3;
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    }
+    .folder-block  .foldercontent .namefolder{  
     text-align: center;
-    font-size: 14px;
+    font-size: 9px;
     font-family: UTMDaxMedium;
     color: #303030;
-    text-transform: uppercase;;
+    text-transform: uppercase;
+    display: block;
+    width: 60px;
+    height: 40px;
+    overflow: hidden;
+    content: "...";
+    white-space: break-word;
+    text-overflow: ellipsis;
     }
-    .folder-block .namefolder:hover {
+    .folder-block  .foldercontent .namefolder:hover {
     color: #f3ac00;
     }
-
     @media (max-width: 767.98px) {
     .items-list-page .title-block {
     padding-bottom: 10px;
@@ -2569,7 +2691,7 @@
 
     .table-flip-scroll table {
     width: 100%; 
-}
+    }
 
     @media only screen and (max-width: 800px) {
     .table-flip-scroll .flip-content:after,

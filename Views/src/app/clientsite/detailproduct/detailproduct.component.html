@@ -1,146 +1,117 @@
 <div id="detail-display-bg" class="all-width">
-  <div *ngIf="message">
-    <div [ngClass]="messageClass">
-      {{ message }}
+  <div id="detail-display-wrapper" class="clearfix responsive-mid">
+    <div id="detail-gallery-wrapper">
+      <div id="detail-display-img-wrapper">
+        <img *ngIf="!product?.Image.LeftImage.ImageLocal" class="primary-img" src='https://drive.google.com/uc?id={{product?.Image.LeftImageZoom.IdUrl}}'
+          alt="" />
+        <img *ngIf="product?.Image.LeftImage.ImageLocal" class="primary-img" src="data:image/png;base64,{{product?.Image.LeftImageZoom.ImageLocal?.data|decode64}}"
+        />
+      </div>
+      <!-- <img class="primary-img" data-zoom-image="http://image.sneakerhead.com/is/image/sneakerhead/snusa-detail_20_zoom?$2356$&$img=sneakerhead/air-jordan-retro-1-basketball-555088100-1" /> -->
+      <!--hiển thị lhình ảnh và zoom lên-->
+      <div id="detail-display-icon">
+        <ul>
+          <!--left image -->
+          <li *ngIf="!product?.Image.LeftImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-1" attr.data-primary="https://drive.google.com/uc?id={{product?.Image.LeftImageZoom.IdUrl}}"
+            attr.data-zoom="https://drive.google.com/uc?id={{product?.Image.LeftImageZoom.IdUrl}}">
+            <img style="width:80px;height: 80px " src="https://drive.google.com/uc?id={{product?.Image.LeftImage.IdUrl}}" alt="">
+          </li>
+          <li *ngIf="product?.Image.LeftImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-1" attr.data-primary="data:image/png;base64,{{product?.Image.LeftImageZoom.ImageLocal?.data|decode64}}"
+            attr.data-zoom="data:image/png;base64,{{product?.Image.LeftImageZoom.ImageLocal?.data|decode64}}">
+            <img style="width: 80px;height: 80px " src="data:image/png;base64,{{product?.Image.LeftImage.ImageLocal?.data|decode64}}"
+              alt="">
+          </li>
+          <!--right image -->
+          <li *ngIf="!product?.Image.RightImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-2" attr.data-primary="https://drive.google.com/uc?id={{product?.Image.RightImageZoom.IdUrl}}"
+            attr.data-zoom="https://drive.google.com/uc?id={{product?.Image.RightImageZoom.IdUrl}}">
+            <img style="width: 80px;height: 80px " src="https://drive.google.com/uc?id={{product?.Image.RightImage.IdUrl}}" alt="">
+          </li>
+          <li *ngIf="product?.Image.RightImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-2" attr.data-primary="data:image/png;base64,{{product?.Image.RightImageZoom.ImageLocal?.data|decode64}}"
+            attr.data-zoom="data:image/png;base64,{{product?.Image.RightImageZoom.ImageLocal?.data|decode64}}">
+            <img style="width: 80px;height: 80px " src="data:image/png;base64,{{product?.Image.RightImage.ImageLocal?.data|decode64}}"
+              alt="">
+          </li>
+          <!--under image -->
+          <li *ngIf="!product?.Image.UnderImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-3" attr.data-primary="https://drive.google.com/uc?id={{product?.Image.UnderImageZoom.IdUrl}}"
+            attr.data-zoom="https://drive.google.com/uc?id={{product?.Image.UnderImageZoom.IdUrl}}">
+            <img style="width: 80px;height: 80px " src="https://drive.google.com/uc?id={{product?.Image.UnderImage.IdUrl}}" alt="">
+          </li>
+          <li *ngIf="product?.Image.UnderImage.ImageLocal" class="image-thumb selected visible" id="image-thumb-3" attr.data-primary="data:image/png;base64,{{product?.Image.UnderImageZoom.ImageLocal?.data|decode64}}"
+            attr.data-zoom="data:image/png;base64,{{product?.Image.UnderImageZoom.ImageLocal?.data|decode64}}">
+            <img style="width: 80px;height: 80px " src="data:image/png;base64,{{product?.Image.UnderImage.ImageLocal?.data|decode64}}"
+              alt="">
+          </li>
+        </ul>
+      </div>
+
+      <!--end -->
+
     </div>
-  </div>
-    <div id="detail-display-wrapper" class="clearfix responsive-mid">				
-  <div id="detail-gallery-wrapper">
-    <div id="detail-display-img-wrapper">
-      <img class="primary-img" attr.data-zoom-image="https://drive.google.com/uc?id={{product?.leftimagezoom}}"/>
-    </div>
-    <!-- <img class="primary-img" data-zoom-image="http://image.sneakerhead.com/is/image/sneakerhead/snusa-detail_20_zoom?$2356$&$img=sneakerhead/air-jordan-retro-1-basketball-555088100-1" /> -->
-  <!--hiển thị lhình ảnh và zoom lên-->
-    <div id="detail-display-icon">
-      <ul>
-        <li class="image-thumb selected visible" id="image-thumb-1"
-          attr.data-primary="https://drive.google.com/uc?id={{product?.leftimage}}"
-          attr.data-zoom="https://drive.google.com/uc?id={{product?.leftimagezoom}}">
-          <img src="https://drive.google.com/uc?id={{product?.leftimage}}" alt="">
-        </li>
-    
-        <li	class="image-thumb selected visible" id="image-thumb-2"
-        attr.data-primary="https://drive.google.com/uc?id={{product?.underimage}}"
-        attr.data-zoom="https://drive.google.com/uc?id={{product?.underimagezoom}}">
-          <img src="https://drive.google.com/uc?id={{product?.underimage}}"/>
-        </li>
-        <li	class="image-thumb selected visible" id="image-thumb-3"
-        attr.data-primary="https://drive.google.com/uc?id={{product?.behindimage}}"
-        attr.data-zoom="https://drive.google.com/uc?id={{product?.behindimagezoom}}">
-          <img src="https://drive.google.com/uc?id={{product?.behindimage}}" />
-        </li>
-      </ul>
-    </div>
-    
-  <!--end -->
-    
-  </div>
-  <div id="detail-display-info-wrapper">
-    
-    <div class="detail-display-info-section default">
-        <h2>{{product?.nameproduct}}</h2>         
-      <p class="detail-price">
-      <span class="price">${{product?.price}}</span>					
-      <!-- <span class="strokeText"><span class="price">$160.00</span></span> -->
-      </p>
-      <!-- <ul class="detail-additional-info">
+    <div id="detail-display-info-wrapper">
+
+      <div class="detail-display-info-section default">
+        <h2 class="title-product">{{product?.ProductName}}</h2>
+        <p class="detail-price">
+          <span class="price">{{product?.Price| currency}}</span>
+          <!-- <span class="strokeText"><span class="price">$160.00</span></span> -->
+        </p>
+        <!-- <ul class="detail-additional-info">
         <li>Style: 555088-100</li>
         <li>White / Black-White</li>
       </ul> -->
-      <p class="detail-description excerpt">
-        <!-- Simply put, the Air Jordan 1 is the sneaker that started it all. Michael Jordan's first signature model was released in 1985, and is the only Air Jord<span class="excerpt-extended">...</span><span class="detail-description content">an model that sports a Nike Swoosh. The Air Jordan 1 violated the NBA's uniform policy, which led to Jordan being fined $5,000 a game, and became a topic of a popular Nike commercial. The Air Jordan 1 is still popular today, and has been released in more colorways than any other Air Jordan model.</span>
+        <p class="detail-description excerpt">
+          <!-- Simply put, the Air Jordan 1 is the sneaker that started it all. Michael Jordan's first signature model was released in 1985, and is the only Air Jord<span class="excerpt-extended">...</span><span class="detail-description content">an model that sports a Nike Swoosh. The Air Jordan 1 violated the NBA's uniform policy, which led to Jordan being fined $5,000 a game, and became a topic of a popular Nike commercial. The Air Jordan 1 is still popular today, and has been released in more colorways than any other Air Jordan model.</span>
         <span class="detail-description-readmore read">Read More</span>
        -->
-       {{product?.description}}
-      </p>
-    </div>
-  
-              
-  <div class="detail-display-info-section default">
-          
-    <ul id="detail-all-color" class="clearfix">
-      <li>
-        <input type="radio" id="detail-color-select-1" name="color-select-1" checked>
-          <label for="detail-color-select-1">
-            <img src="http://image.sneakerhead.com/is/image/sneakerhead/snusa-square-20?$sn20-60$&$img=sneakerhead/air-jordan-retro-1-basketball-555088100-1" alt="Air Jordan 1 Retro OG (Perforated)">
-          </label>
-      </li>																				
-      <li>
-        <input type="radio" id="detail-color-select-2" name="color-select-1">
-          <label class="thumb-link" for="detail-color-select-2">
-            <a href="">
-            <img src="http://image.sneakerhead.com/is/image/sneakerhead/snusa-square-20?$sn20-60$&$img=sneakerhead/air-jordan-retro-1-basketball-555088114-1" alt="Air Jordan 1 Retro OG">
-            </a>
-          </label>
-       </li>
-       <li>
-        <input type="radio" id="detail-color-select-3" name="color-select-1">
-          <label class="thumb-link" for="detail-color-select-3">
-            <a href="">
-            <img src="http://image.sneakerhead.com/is/image/sneakerhead/snusa-square-20?$sn20-60$&$img=sneakerhead/air-jordan-retro-1-basketball-555088022-1" alt="Air Jordan 1 Retro OG">
-            </a>
-          </label>
-      </li>
-        <li>
-          <input type="radio" id="detail-color-select-4" name="color-select-1">
-          <label class="thumb-link" for="detail-color-select-4">
-            <a href="">
-            <img src="http://image.sneakerhead.com/is/image/sneakerhead/snusa-square-20?$sn20-60$&$img=sneakerhead/air-jordan-retro-1-basketball-555088103-1" alt="Air Jordan 1 Retro OG">
-            </a>
-            </label>
-        </li>
-    </ul>
-  </div>
-  
-  <form action="" method="post" name="product_addtocart_form" id="product_addtocart_form">
-  
-  <div class="detail-display-info-section default sizes">
-                    
-  <div id="size-selection">        
-    <br/>
-    <p>Size Charts</p>
-    <ul id="detail-all-size" class="clearfix">
-      <li>
-        <input type="radio"  class="detail-size-select" name="size-select" id="detail-size-select-3032" value="3032">
-        <label  for="detail-size-select-3032"><span class="single">6.5</span></label>
-      </li>
-      <li>
-        <input type="radio" disabled class="detail-size-select" name="size-select" id="detail-size-select-3031" value="3031">
-        <label class="disabled" for="detail-size-select-3031"><span class="single">{{product?.size}}</span></label>
-      </li>
-      <li>
-        <input type="radio" disabled class="detail-size-select" name="size-select" id="detail-size-select-3030" value="3030">
-        <label class="disabled" for="detail-size-select-3030"><span class="single">7.5</span></label>
-      </li>
-      <li>
-        <input type="radio" disabled class="detail-size-select" name="size-select" id="detail-size-select-3029" value="3029">
-        <label class="disabled" for="detail-size-select-3029"><span class="single">8</span></label>
-      </li>
-      <li>
-        <input type="radio" disabled class="detail-size-select" name="size-select" id="detail-size-select-3028" value="3028">
-        <label class="disabled" for="detail-size-select-3028"><span class="single">8.5</span></label>
-      </li>
-      <li>
-        <input type="radio" disabled class="detail-size-select" name="size-select" id="detail-size-select-3027" value="3027">
-        <label class="disabled" for="detail-size-select-3027"><span class="single">9</span></label>
-      </li>
-          
-    </ul>
-  </div>
-  
-  </div>
-  
-    <ul class="detail-additional-info last">
-  
-      <li>*LIMIT 1 PAIR PER CUSTOMER.</li>				
-      <li>Tax: $0.00 *excludes CA residents.</li>							
-      <li>FREE SHIPPING &amp; FREE RETURN ELIGIBLE.</li>
-      <li>*Excluded From Discount, Promo &amp; Reward Points</li>
-    </ul>
-      <div class="detail-display-info-section detail-display-bag default">
-        <button  (click)="AddToCart(product?._id)" class="button-yellow" type="submit">ADD TO BAG</button>
+          {{product?.SortDescription}}
+        </p>
       </div>
-  </form>			
+      <form (submit)="AddToCart()">
+        <div class="detail-display-info-section default">
+          <p>Color:</p>
+          <ul id="detail-all-size" class="clearfix">
+            <li *ngFor="let color of product?.Color">
+              <button *ngIf="color.IsActive==true" type="button"  (click)="changeColor(color.IdColor?.ColorName)" [ngStyle]="IsChangeColor==color.IdColor?.ColorName?{'background': '#66cc00','color':'#fff'}:{'background':color.IdColor?.ValueHex}">{{color.IdColor?.ColorName}}</button>
+              <label *ngIf="color.IsActive==false" [ngStyle]="{'background':color.IdColor?.ValueHex}" class="colordisabled">
+                <input type="radio">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="detail-display-info-section default sizes">
+          <div id="size-selection">
+            <p>Size:</p>
+            <ul id="detail-all-size" class="clearfix">
+              <li *ngFor="let size of product?.Size">
+                  <button *ngIf="size.IsActive==true" type="button"  (click)="changeSize(size.IdSize?.SizeName)" [ngStyle]="IsChangeSize==size.IdSize?.SizeName?{'background': '#66cc00','color':'#fff'}:null">{{size.IdSize?.SizeName}}</button>
+                <label class="disabled" *ngIf="size.IsActive==false">
+                  <input type="radio">{{size.IdSize?.SizeName}}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Quantity:</label>
+          <div class="input-group" style="width:150px;">
+            <span class="input-group-addon" (click)="ChangeQty(-1)">
+              <i class="fa fa-minus" aria-hidden="true"></i>
+            </span>
+            <input style="text-align: center" min="1" [(ngModel)]="IsChangQty" id="IsChangQty" name="IsChangQty" class="form-control underlined">
+            <span class="input-group-addon"  (click)="ChangeQty(1)">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+        <ul class="detail-additional-info last">
+          {{product?.LongDescription}}
+        </ul>
+        <div class="detail-display-info-section detail-display-bag default">
+          <button class="button-yellow" type="submit">ADD TO BAG</button>
+        </div>
+      </form>
+    </div>
   </div>
-  </div>
-  </div>
+</div>

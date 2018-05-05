@@ -24,6 +24,7 @@ export class AdcatalogComponent implements OnInit {
     private modalService: NgbModal,
     private alertService: AlertService
   ) {
+    this.catalogService.ListCatalog;
     this.createForm();
   }
   openedit(catalog, IsEdit) {
@@ -77,9 +78,18 @@ GetListbranch() {
   });
 }
 GetListcatalog() {
-  this.catalogService.GetAllCatalog().subscribe(result => {
-    this.catalogpost = result.data;
-  });
+  if (this.catalogService.CheckExitCatalog() == 1) {
+    this.catalogpost = this.catalogService.ListCatalog;
+  }
+  else {
+    this.catalogService.getAllCatalogTemp((err, result) => {
+      if (err) {
+        this.alertService.error(err);
+      } else {
+        this.catalogpost = result.data;
+      }
+    })
+  }
 }
 ngOnInit() {
   this.GetListcatalog(); 

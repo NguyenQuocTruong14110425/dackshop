@@ -19,12 +19,12 @@ var ProductSchema = new Schema({
     Price: { type: Number, default: 0 },
     SalePrice: { type: Number, default: 0 },
     Image: {
-        LeftImage: String,
-        LeftImageZoom: String,
-        RightImage: String,
-        RightImageZoom: String,
-        UnderImage: String,
-        UnderImageZoom: String
+        LeftImage: { type: Schema.ObjectId, ref: 'Image' },
+        LeftImageZoom: { type: Schema.ObjectId, ref: 'Image' },
+        RightImage: { type: Schema.ObjectId, ref: 'Image' },
+        RightImageZoom: { type: Schema.ObjectId, ref: 'Image' },
+        UnderImage:{ type: Schema.ObjectId, ref: 'Image' },
+        UnderImageZoom: { type: Schema.ObjectId, ref: 'Image' },
     },
     DateCreate: { type: Date },
     DateUpdate: { type: Date },

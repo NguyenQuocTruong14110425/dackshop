@@ -1,0 +1,293 @@
+<article class="content items-list-page">
+    <div class="card-order">
+      <div class="card-item">
+        <div class="iconimg" style="background:#0099CC">
+          <img src="./assets/images/icon/icon-usernew.png">
+        </div>
+        <div class="item-content">
+          <div class="title-item">New User Tis Month</div>
+          <div class="number-item" style="color:#0099CC">{{UserPost|TotalNewUser}}</div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="iconimg" style="background:#9200cc">
+          <img src="./assets/images/icon/icon-usergroup.png">
+        </div>
+        <div class="item-content">
+          <div class="title-item">Total User</div>
+          <div class="number-item" style="color:#9200cc">{{UserPost|TotalUser:false}}</div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="iconimg" style="background:#cc9c00">
+          <img src="./assets/images/icon/icon-userpendding.png">
+        </div>
+        <div class="item-content">
+          <div class="title-item">Unconfirmed User</div>
+          <div class="number-item" style="color:#cc9c00">0</div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="iconimg" style="background:#cc4100">
+          <img src="./assets/images/icon/icon-userbanner.png">
+        </div>
+        <div class="item-content">
+          <div class="title-item">Banner User</div>
+          <div class="number-item" style="color:#cc4100">{{UserPost|TotalBanerUser:true}}</div>
+        </div>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card tasks sameheight-item" data-exclude="xs,sm">
+        <div class="card-header bordered">
+          <div class="header-block">
+            <h3 class="title"> ALL User </h3>
+          </div>
+          <div class="header-block pull-right">
+            <a (click)="opencreate(modaluser)" class="btn btn-info btn-sm rounded pull-right"> Add new </a>
+          </div>
+        </div>
+        <div class="card-block">
+          <div class="tasks-block">
+            <ul class="item-list" *ngFor="let user of UserPost">
+              <a (click)="detailUser(user._id)">
+                <li class="item">
+                  <div class="item-row">
+                    <div class="item-col-image">
+                      <img class="avata-img" *ngIf="user?.Gender=='Male'" src="https://ptetutorials.com/images/user-profile.png">
+                      <img class="avata-img" *ngIf="user?.Gender=='Female'" src="https://image.flaticon.com/icons/png/512/190/190680.png">
+                    </div>
+                    <div class="item-col">
+                      <div class="itemcontent">
+                        <div class="item-title">{{user?.FullName}}</div>
+                        <div class="item">
+                          <span>Gender:{{user?.Gender}}</span>
+                        </div>
+                        <div class="item">
+                          <span>Age:{{user?.Age}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-col">
+                      <div class="itemcontent">
+                        <div class="item">
+                          <span>Date Update:{{user?.DateUpdate| date:'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="item">
+                          <span>Status: {{user?.IsDelete==true?"InActive":"Active"}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card items">
+        <div class="title-block">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="title"> Detail User
+              </h3>
+              <p class="title-description"> List of sample items - e.g. books, movies, events, etc... </p>
+            </div>
+          </div>
+          <div style="float: right;">
+            <button class="btn btn-secondary" (click)="DeleteUser(DetailUser?._id)">
+              <i class="fa fa-trash-o "></i>
+            </button>
+            <button class="btn btn-secondary" (click)="EditUser()">
+              <i class="fa fa-pencil"></i>
+            </button>
+          </div>
+        </div>
+        <ul class="item-list striped">
+          <li class="item">
+            <form (submit)="updateUserSubmit()">
+              <img *ngIf="DetailUser?.Gender=='Male'" src="https://ptetutorials.com/images/user-profile.png">
+              <img *ngIf="DetailUser?.Gender=='Female'" src="https://image.flaticon.com/icons/png/512/190/190680.png">
+              <div class="item-row">
+                <div class="item-col item-col-title">
+                  <label *ngIf="isDetailUser">Full Name: </label>
+                  <label style="padding-left: 10px" *ngIf="isDetailUser">{{DetailUser?.FullName}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Full Name:</label>
+                    <input type="text" [(ngModel)]="DetailUser.FullName" id="FullName_edit" name="FullName_edit" class="form-control underlined">
+                  </div>
+                </div>
+              </div>
+              <div class="item-row">
+                <div class="item-col item-col-title">
+                  <label *ngIf="isDetailUser">Gender: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.Gender}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Gender:</label>
+                    <select [(ngModel)]="DetailUser.Gender" id="Gender_edit" name="Gender_edit" class="form-control underlined" placeholder="Choose a Gender">
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Orther</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="item-col">
+                  <label *ngIf="isDetailUser">Age: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.Age}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Age:</label>
+                    <input type="number" min="0" max="120" [(ngModel)]="DetailUser.Age" id="Age_edit" name="Age_edit" class="form-control underlined">
+                  </div>
+                </div>
+              </div>
+              <div class="item-row">
+                <div class="item-col">
+                  <label *ngIf="isDetailUser">Number Phone: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.NumberPhone}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Number Phone:</label>
+                    <input type="text" [(ngModel)]="DetailUser.NumberPhone" id="NumberPhone_edit" name="NumberPhone_edit" class="form-control underlined">
+                  </div>
+                </div>
+                <div class="item-col">
+                  <label *ngIf="isDetailUser">Email: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.Email}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Email</label>
+                    <input type="email" [(ngModel)]="DetailUser.Email" id="Email_edit" name="Email_edit" class="form-control underlined">
+                  </div>
+                </div>
+              </div>
+
+              <div class="item-row">
+                <div class="item-col item-col-title">
+                  <label *ngIf="isDetailUser">Address: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.Address}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Address</label>
+                    <input type="text" [(ngModel)]="DetailUser.Address" id="Address_edit" name="Address_edit" class="form-control underlined">
+                  </div>
+                </div>
+              </div>
+              <div class="item-row">
+                <div class="item-col">
+                  <label *ngIf="isDetailUser">UserName: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.UserName}}</label>
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">UserName:</label>
+                    <input type="text" [(ngModel)]="DetailUser.UserName" id="UserName_edit" name="UserName_edit" class="form-control underlined">
+                  </div>
+                </div>
+                <div class="item-col">
+                  <div class="form-group" *ngIf="!isDetailUser">
+                    <label class="control-label">Password</label>
+                    <input type="password" (ngModel)="DetailUser.Password" id="Password_edit" name="Password_edit" class="form-control underlined">
+                  </div>
+                </div>
+              </div>
+              <div class="item-row" style="border-top: 1px solid rgb(75, 82, 87)">
+                <div class="item-col item-col-title">
+                  <label *ngIf="isDetailUser">Dask Point: </label>
+                  <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.DaskPoint}}</label>
+                </div>
+              </div>
+              <div class="item-row">
+                <div class="itemcontent" *ngIf="isDetailUser">
+                  <div class="item-title">
+                    <label class="control-label">Name promotion: {{DetailUser?.Promotion?.PromotionName}}</label>
+                  </div>
+                  <div class="item">
+                    <span>Type promotion: {{DetailUser?.Promotion?.TypePromotion}}</span>
+                  </div>
+                  <div class="item">
+                    <span *ngIf="DetailUser?.Promotion?.TypePromotion=='free shipping'">Value: {{DetailUser?.Promotion?.Value}} VND</span>
+                    <span *ngIf="DetailUser?.Promotion?.TypePromotion!='free shipping'">Value: {{DetailUser?.Promotion?.Value}} %</span>
+                  </div>
+                </div>
+                <div class="item-col" *ngIf="!isDetailUser">
+                  <div class="form-group">
+                    <label class="control-label">Promotion</label>
+                    <select [(ngModel)]="DetailUser.Promotion" id="Promotion_edit" name="Promotion_edit" class="form-control underlined" placeholder="Choose a promotion">
+                      <option value="{{promotion._id}}" *ngFor="let promotion of promotionposts">
+                        {{promotion.PromotionName}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="!isDetailUser" type="button" (click)="detailUser(DetailUser._id)" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+              <button *ngIf="!isDetailUser" type="submit" class="btn btn-secondary" data-dismiss="modal">Save</button>
+            </form>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+
+<ng-template #modaluser let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-warning"></i> Create new User ?</h4>
+    <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="formUser" (submit)="onCreateUserSubmit()">
+    <div class="modal-body">
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">Full Name</label>
+          <input type="text" formControlName="FullName" class="form-control underlined">
+        </div>
+        <div class="form-group col-sm-6">
+          <label class="control-label">Gender</label>
+          <select formControlName="Gender" class="form-control underlined" placeholder="Choose a Gender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Orther</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">Age</label>
+          <input type="number" min="0" max="120" formControlName="Age" class="form-control underlined">
+        </div>
+        <div class="form-group col-sm-6">
+          <label class="control-label">Number Phone</label>
+          <input type="text" formControlName="NumberPhone" class="form-control underlined">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Email</label>
+        <input type="email" formControlName="Email" class="form-control underlined">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Address</label>
+        <input type="text" formControlName="Address" class="form-control underlined">
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">UserName</label>
+          <input type="text" formControlName="UserName" class="form-control underlined">
+        </div>
+        <div class="form-group  col-sm-6">
+          <label class="control-label">Password</label>
+          <input type="text" formControlName="Password" class="form-control underlined">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" id="submitsize" name="submitsize" class="btn btn-info" (click)="c('Close click')">Save for Create</button>
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">cance</button>
+    </div>
+  </form>
+</ng-template>
+

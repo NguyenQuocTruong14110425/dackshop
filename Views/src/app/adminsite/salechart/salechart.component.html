@@ -1,0 +1,104 @@
+<article class="content items-list-page">
+  <div class="card-order">
+    <div class="card-item">
+      <div class="iconimg" style="background:#0099CC">
+        <img src="./assets/images/icon/icon-newcart.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Monthly Sales</div>
+        <div class="number-item" style="color:#0099CC">150</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#9200cc">
+        <img src="./assets/images/icon/icon-pendding.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Weekly Sales</div>
+        <div class="number-item" style="color:#9200cc">150</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc9c00">
+        <img src="./assets/images/icon/icon-shipping.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Daily Sales</div>
+        <div class="number-item" style="color:#cc9c00">150</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc4100">
+        <img src="./assets/images/icon/icon-card.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Inventory Quantity</div>
+        <div class="number-item" style="color:#cc4100">150</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+ 
+      <canvas baseChart
+                  [data]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [chartType]="lineChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas baseChart
+                  [data]="pieChartData"
+                  [labels]="pieChartLabels"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
+      <button (click)="randomizeType()" style="display: inline-block">Toggle</button>
+    </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div style="display: block;">
+        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+          [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 10px">
+      <table class="table table-responsive table-condensed">
+        <tr>
+          <th *ngFor="let label of lineChartLabels">{{label}}</th>
+        </tr>
+        <tr *ngFor="let d of lineChartData">
+          <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
+        </tr>
+      </table>
+      <button (click)="randomize()">CLICK</button>
+    </div>
+  </div>
+  <div>
+    <div style="display: block">
+      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+        [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <button (click)="randomize()">Update</button>
+  </div>
+  <div style="display: block">
+    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"></canvas>
+  </div>
+  <div style="display: block">
+    <canvas baseChart [datasets]="radarChartData" [labels]="radarChartLabels" [chartType]="radarChartType" (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"></canvas>
+  </div>
+  <div style="display: block">
+    <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"></canvas>
+  </div>
+  <div style="display: block">
+    <canvas baseChart [data]="polarAreaChartData" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend" [chartType]="polarAreaChartType"
+      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+  </div>
+</article>

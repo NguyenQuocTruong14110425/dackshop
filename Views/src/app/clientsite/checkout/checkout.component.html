@@ -1,82 +1,87 @@
-<div class="container">
-  <div id="content">
-    <div class="init"></div>
-    <div class="inner">
-      <div class="title">
-        <h2>Check out</h2>
+<div class="new_arrivals">
+  <div class="container">
+    <div class="row">
+      <div class="col text-center">
       </div>
-      <div *ngIf="ordermessage">
-        <div [ngClass]="messageClass">
-            {{ordermessage}}
-        </div>
-      </div>
-      <form [formGroup]="orderform" (submit)="onOrderSubmit()">
-      <div class="body">
-        <div class="components">
-          <h1>Items ordered</h1>
-          <div class="shopbag" *ngFor="let cart of cartpost">
-            <img src='https://drive.google.com/uc?id={{cart.item.leftimage}}' />
-            <div class="info">
-              <p>{{cart.item.nameproduct}}</p>
-              <h3>{{cart.item.size}}</h3>
-            </div>
-            <div class="price">
-              <p>${{cart.item.price}}</p>
-              <div class="sale">${{cart.item.price}}</div>
-            </div>
-            <div class="quarity">
-                <a class="bnt-ji" routerLink='/checkout' (click)="reduceItemCart(cart.item._id)">
-                  <mat-icon>-</mat-icon>
-                </a>
-              <input type="number" value="{{cart.qty}}">
-              <a  class="bnt-ji" routerLink='/checkout' (click)="increaseItemCart(cart.item._id)">
-                <mat-icon>add</mat-icon>
-              </a>
-              </div>
-            <div class="action">
-              <button>
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-
-          <div class="shopbag">
-            <div class="total">
-              <p>Estimated Total: ${{total}}</p>
-              <div class="sale">Subtotal: ${{total}}</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="rightbody">
-        <div class="components">
-          <h1> Customer Infomation</h1>
-          <div class="form-group">
-            <p>Name Customer</p>
-            <input type="text" class="form-control" id="name" formControlName="name" placeholder="enter customer">
-          </div>
-          <div class="form-group">
-            <p>Address</p>
-            <input type="text" class="form-control" id="adress"  formControlName="address" placeholder="enter address">
-          </div>
-          <div class="form-group">
-            <p>Phone</p>
-            <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="enter phone number">
-          </div>
-          <div class="form-group">
-            <p>Payment card number</p>
-            <input type="text" class="form-control" id="paymentcard" formControlName="paymentcard" placeholder="enter card number">
-          </div>
-        </div>
-        
-        <div class="rightbody">
-          <button type="submit" class="btn btn-info proceed">proceed to checkout</button>
-        </div>
-
-      </div>
-    </form>
     </div>
+    <div class="row align-items-center">
+      <div class="col text-center">
+        <div class="new_arrivals_sorting">
+          <h2>CHECKOUT</h2>
+        </div>
+      </div>
+    </div>
+    <form (submit)="onOrderSubmit()">
+    <div class="row">
+      <div class='checkout-page col-sm-6'>
+        <div class='page-info'>
+          <div class='order-info-content'>
+            <div class="checkout-scoll">
+              <table class='order-table' *ngFor="let cart of cartpost">
+                <tbody>
+                  <tr>
+                    <td>
+                      <img src='https://drive.google.com/uc?id={{cart?.item.Product.Image}}' class='full-width' />
+                    </td>
+                    <td>
+                      <br>
+                      <span class='thin'> {{cart?.item.Product.ProductName}}</span>
+                      <br>
+                      <div class="sort-description">{{cart?.item.Product.ShortDescription}}</div>
+                      <br>
+                      <span class='small'> Color:{{cart?.item.Product.Color}}, Size:{{cart?.item.Product.Size}}</span>
+                      <br>                     
+                      <span class='priceorder'>{{cart?.item.Product.Price| currency}} x {{cart?.totalQty}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class='line'></div>
+            <div class='total'>
+              <div class='line'></div>
+              <span style='float:left;'>
+                <div class='thin dense'>VAT 10%:</div>
+                <div class='thin dense'>ToTal Quantity:</div>
+                TOTAL
+              </span>
+              <span style='float:right; text-align:right;'>
+                <div class='thin dense'>$68.75</div>
+                <div class='thin dense'>{{total?.totalQtyOrder}}</div>
+                {{total?.totalOrder| currency}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5" style="margin-top:120px">
+        <h3 class="title" style="margin-left:100px;margin-bottom:20px">Infomation Customer</h3>
+          <div class="form-group">
+            <label class="control-label">Full Name</label>
+            <input type="text" [(ngModel)]="profile.FullName" id="FullName_edit" name="FullName_edit" class="form-control underlined">
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="control-label">Email</label>
+              <input type="email" [(ngModel)]="profile.Email"   id="Email_edit" name="Email_edit" class="form-control underlined">
+            </div>
+            <div class="form-group col-sm-6">
+              <label class="control-label">Number Phone</label>
+              <input type="text"[(ngModel)]="profile.NumberPhone"  id="NumberPhone_edit" name="NumberPhone_edit" class="form-control underlined">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Address</label>
+            <input type="text" [(ngModel)]="profile.Address"  id="Address_edit" name="Address_edit" class="form-control underlined">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Payment Card</label>
+            <input type="text" class="form-control underlined">
+          </div>
+          <button type="submit" style="float:right;margin-top:20px" class="btn btn-info">Complete</button>
+      </div>
+    </div>
+  </form>
+    
   </div>
 </div>

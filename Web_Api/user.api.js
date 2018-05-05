@@ -34,12 +34,12 @@ module.exports = (router) => {
         }
     });
     //cập nhật thông tin một user
-    router.put('/user/update/:idparam', (req, res) => {
-        UserService.updateUser(req.params.idparam, req.body, function (err, Users) {
+    router.put('/user/update/', (req, res) => {
+        UserService.updateUser(req.body, function (err, Users) {
             if (err) {
                 res.json({ success: false, message: err ? err : null });
             } else {
-                UserService.findUserById(req.params.idparam, function (err, Users) {
+                UserService.findUserById(req.body._id, function (err, Users) {
                     if (err) {
                         res.json({ success: false, message: err ? err : mess.SearchFail });
                     } else {
@@ -52,7 +52,7 @@ module.exports = (router) => {
         });
     });
     // xóa một user
-    router.delete('/user/delete/', (req, res) => {
+    router.delete('/user/delete/:idparam', (req, res) => {
         UserService.removeUser(req.params.idparam, function (err, Users) {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.RemoveFail });
@@ -100,17 +100,16 @@ module.exports = (router) => {
     });
     //Tìm tất cả User và nhãn hiệu con nằm trong User ||data:{dữ liệu trả về} message:{lỗi thông báo}
     router.get('/user/all/', (req, res) => {
-        UserService.findAllUser(function (err, Sizes) {
+        UserService.findAllUser(function (err, Users) {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.SearchFail });
             } else {
-                res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
+                res.json({ success: true, message: mess.SearchSuccess, data: Users });
             }
-
         });
     });
     // tìm thông tin của một người
-    router.get('/user/profile/:idparam', (req, res) => {
+    router.get('/user/detail/:idparam', (req, res) => {
         UserService.findUserById(req.params.idparam, function (err, Sizes) {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.SearchFail });
@@ -120,9 +119,27 @@ module.exports = (router) => {
 
         });
     });
+    // tìm thông tin của một người
+    router.get('/user/profile/', (req, res) => {
+        if (!req.session.customer) {
+            res.json({ success: false, message: mess.NotSignUser });
+        }
+        else {
+            var user = req.session.customer.user
+            UserService.findUserById(user, function (err, Sizes) {
+                if (err) {
+                    res.json({ success: false, message: err ? err : mess.SearchFail });
+                } else {
+                    res.json({ success: true, message: mess.SearchSuccess, data: Sizes });
+                }
+
+            });
+        }
+
+    });
     //logout
     router.get('/user/logout', function (req, res, next) {
-        if (!req.session.user) {
+        if (!req.session.customer) {
             res.json({ success: false, message: mess.NotSignUser });
         }
         else {
@@ -148,7 +165,10 @@ module.exports = (router) => {
                     if (err) {
                         res.json({ success: false, message: err ? err : mess.LoginError }); // Return error
                     } else {
-                        req.session.user = req.body.UserName;
+                        req.session.customer = {
+                            user: Users._id,
+                            cart: null
+                        }
                         res.json({ success: true, message: mess.WellcomeUser, user: Users }); // Return success and token to frontend
                     }
                 });

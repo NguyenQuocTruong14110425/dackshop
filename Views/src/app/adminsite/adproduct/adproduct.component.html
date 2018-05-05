@@ -1,377 +1,305 @@
-<!-- Content -->
-
-<div id="content">
-  <!-- New Post Button -->
-  <div class="inner">
-    <div class="title">
-      <h2>List product</h2>
-    </div>
-    <div *ngIf="message">
-      <div [ngClass]="messageClass">
-        {{ message }}
+<article class="content items-list-page">
+  <div class="card-order">
+    <div class="card-item">
+      <div class="iconimg" style="background:#0099CC">
+        <img src="./assets/images/icon/icon-newproduct.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">New Product this month</div>
+        <div class="number-item" style="color:#0099CC">{{productposts|TotalNewProduct}}</div>
       </div>
     </div>
-    <form [formGroup]="form" *ngIf="newProduct" (submit)="addproductSubmit()">
-      <div class="title">
-        <h2>Create product</h2>
+    <div class="card-item">
+      <div class="iconimg" style="background:#9200cc">
+        <img src="./assets/images/icon/icon-totalproduct.png">
       </div>
-      <div class="col-md-12">
-        <div class="body">
-
-          <div class="components">
-            <h1>Name product</h1>
-            <div class="form-group">
-              <div [ngClass]="{'has-error':(form.controls.nameproduct.errors && form.controls.nameproduct.dirty),'has-success':!form.controls.nameproduct.errors}">
-                <input type="text" id="nameproduct" name="nameproduct" formControlName="nameproduct" class="form-control" placeholder="Enter name product">
-                <div id="message">
-                  <li class="error" *ngIf="form.controls.nameproduct.errors?.required && form.controls.nameproduct.dirty">This field is require</li>
-                  <li class="warring" *ngIf="(form.controls.nameproduct.errors?.minlength||form.controls.nameproduct.errors?.maxlength) && form.controls.nameproduct.dirty">
-                    Minimum characters:3, Maximum characters:30</li>
-                  <li class="notification" *ngIf="form.controls.nameproduct.errors?.validatenameproduct && form.controls.nameproduct.dirty">
-                    This must be a valid full name</li>
-                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="components">
-            <h1>Description</h1>
-            <div class="form-group">
-              <div [ngClass]="{'has-error':(form.controls.description.errors && form.controls.description.dirty),'has-success':!form.controls.description.errors}">
-                <input type="text" id="description" name="description" formControlName="description" class="form-control" placeholder="Enter description product">
-                <div id="message">
-                  <li class="error" *ngIf="form.controls.description.errors?.required && form.controls.description.dirty">This field is require</li>
-                  <li class="warring" *ngIf="(form.controls.description.errors?.minlength||form.controls.description.errors?.maxlength) && form.controls.description.dirty">
-                    Minimum characters:3, Maximum characters:50</li>
-                  <li class="notification" *ngIf="form.controls.description.errors?.validatedescriptionproduct && form.controls.description.dirty">
-                    This must be a description</li>
-                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="components">
-            <h1>Price</h1>
-            <div class="form-group">
-              <div [ngClass]="{'has-error':(form.controls.price.errors && form.controls.price.dirty),'has-success':!form.controls.price.errors}">
-                <input type="text" id="price" name="price" formControlName="price" class="form-control" placeholder="Enter price product">
-                <div id="message">
-                  <li class="error" *ngIf="form.controls.price.errors?.required && form.controls.price.dirty">This field is require</li>
-                  <li class="warring" *ngIf="(form.controls.price.errors?.minlength||form.controls.price.errors?.maxlength) && form.controls.price.dirty">
-                    Minimum characters:2, Maximum characters:10</li>
-                  <li class="notification" *ngIf="form.controls.price.errors?.validatepriceproduct && form.controls.price.dirty">
-                    This must be a number</li>
-                  <li class="helpblock" *ngIf="productMessage">{{ productMessage }}</li>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="components">
-            <h1>Amount Product</h1>
-            <div class="form-group">
-              <div [ngClass]="{'has-error':(form.controls.amountproduct.errors && form.controls.amountproduct.dirty),'has-success':!form.controls.amountproduct.errors}">
-                <input type="number" min="0" id="amountproduct" name="amountproduct" formControlName="amountproduct" class="form-control"
-                  placeholder="Enter amountproduct product">
-                <div id="message">
-                  <li class="error" *ngIf="form.controls.amountproduct.errors?.required && form.controls.amountproduct.dirty">This field is require</li>
-                  <li class="warring" *ngIf="(form.controls.amountproduct.errors?.minlength||form.controls.amountproduct.errors?.maxlength) && form.controls.amountproduct.dirty">
-                    Minimum characters:2, Maximum characters:10</li>
-                  <li class="notification" *ngIf="form.controls.amountproduct.errors?.validatepriceproduct && form.controls.amountproduct.dirty">
-                    This must be a number</li>
-                  <li class="helpblock" *ngIf="amountproductMessage">{{ amountproductMessage }}</li>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="components">
-            <h1>Image</h1>
-            <div class="form-group">
-
-              <div>
-                <p>Path left image:</p>
-                <input id="leftimage" class="form-control" name="leftimage" formControlName="leftimage" type="text" />
-              </div>
-              <br/>
-              <div>
-                <p>Path left image zoom:</p>
-                <input id="leftimagezoom" class="form-control" name="leftimagezoom" formControlName="leftimagezoom" type="text" />
-              </div>
-              <br/>
-              <div>
-                <p>Path under image:</p>
-                <input id="underimage" class="form-control" name="underimage" formControlName="underimage" type="text" />
-              </div>
-              <br/>
-              <div>
-                <p>Path under image zoom:</p>
-                <input id="underimagezoom" class="form-control" name="underimagezoom" formControlName="underimagezoom" type="text" />
-              </div>
-              <br/>
-              <div>
-                <p>Path behind image:</p>
-                <input id="behindimage" class="form-control" name="behindimage" formControlName="behindimage" type="text" />
-              </div>
-              <br/>
-              <div>
-                <p>Path behind image zoom:</p>
-                <input id="behindimagezoom" class="form-control" name="behindimagezoom" formControlName="behindimagezoom" type="text" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="rightbody">
-          <div class="components">
-            <h1>Catalog</h1>
-            <select id="catalog" class="form-control" name="catalog" formControlName="catalog">
-              <option></option>
-              <option *ngFor="let catalog of catalogposts">
-                {{catalog.catalogName}}
-              </option>
-            </select>
-          </div>
-          <div class="components">
-            <h1>Color</h1>
-            <div class="form-group">
-              <select id="color" class="form-control" name="color" formControlName="color">
-                <option>black</option>
-                <option>green</option>
-                <option>blue</option>
-                <option>white</option>
-                <option>pink</option>
-                <option>red</option>
-                <option>yellow</option>
-                <option>gray</option>
-                <option>orange</option>
-                <option>brown</option>
-                <option>cyan</option>
-                <option>grey</option>
-                <option>lightsteelblue</option>
-              </select>
-            </div>
-          </div>
-          <div class="components">
-            <h1>Promotion</h1>
-            <div class="form-group">
-              <select id="checksale" class="form-control" name="checksale" formControlName="color">
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-              </select>
-            </div>
-          </div>
-          <div class="components">
-            <h1>Size</h1>
-            <select id="size" class="size" class="form-control" name="size" formControlName="size">
-              <option>30</option>
-              <option>31</option>
-              <option>32</option>
-              <option>33</option>
-              <option>34</option>
-              <option>35</option>
-              <option>36</option>
-              <option>37</option>
-              <option>38</option>
-              <option>39</option>
-              <option>40</option>
-              <option>41</option>
-              <option>42</option>
-              <option>43</option>
-            </select>
-          </div>
-          <input type="submit" class="btn btn-primary" name="addproduct-submit" value="submit">
-          <button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
-        </div>
+      <div class="item-content">
+        <div class="title-item">Total Product</div>
+        <div class="number-item" style="color:#9200cc">{{productposts|TotalProduct:false}}</div>
       </div>
-    </form>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc9c00">
+        <img src="./assets/images/icon/icon-publicproduct.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Toltal Public product</div>
+        <div class="number-item" style="color:#cc9c00">{{productposts|TotalPublicProduct:true}}</div>
+      </div>
+    </div>
+    <div class="card-item">
+      <div class="iconimg" style="background:#cc4100">
+        <img src="./assets/images/icon/icon-soldout.png">
+      </div>
+      <div class="item-content">
+        <div class="title-item">Sold out product</div>
+        <div class="number-item" style="color:#cc4100">{{productposts|TotalSoldOutroduct:false}}</div>
+      </div>
+    </div>
   </div>
+  <div class="title-search-block">
+    <div class="title-block">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 class="title"> PRODUCT DASHBOARD
+            <a [routerLink]="['/add-product/']" class="btn bnt-create"> Add New </a>
+          </h3>
+          <p class="title-description"> List of sample items - e.g. books, movies, events, etc... </p>
+        </div>
+      </div>
+    </div>
+    <div class="items-search">
+      <div class="header-block header-block-search">
+        <form role="search">
+          <div class="input-container">
+            <i class="fa fa-search"></i>
+            <input type="search" placeholder="Search">
+            <div class="underline"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" role="tab" href="#allproduct" data-toggle="tab">All Product</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#newproduct" data-toggle="tab">Product New</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#publicproduct" data-toggle="tab">Product Public</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#deleteproduct" data-toggle="tab">Product Delete</a>
+    </li>
 
-  <article class="content items-list-page">
-    <div class="title-search-block">
-        <div class="title-block">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3 class="title"> PRODUCT DASHBOARD
-                        <a  [routerLink]="['/add-product/']" class="btn bnt-create"> Add New </a>
-                    </h3>
-                    <p class="title-description"> List of sample items - e.g. books, movies, events, etc... </p>
-                </div>
+  </ul>
+  <div class="card items">
+    <ul class="item-list striped">
+      <li class="item item-list-header">
+        <div class="item-row">
+          <div class="item-col fixed item-col-check">
+            <label class="item-check" id="select-all-items">
+              <input type="checkbox" class="checkbox">
+              <span></span>
+            </label>
+          </div>
+          <div class="item-col item-col-header fixed item-col-img md">
+            <div>
+              <span>Image</span>
             </div>
+          </div>
+          <div class="item-col item-col-header item-col-title">
+            <div>
+              <span>Name Product</span>
+            </div>
+          </div>
+          <div class="item-col item-col-header item-col-conten">
+            <div>
+              <span>Price Product</span>
+            </div>
+          </div>
+          <div class="item-col item-col-header item-col-conten">
+            <div>
+              <span>Quatity Product</span>
+            </div>
+          </div>
+          <div class="item-col item-col-header item-col-conten">
+            <div>
+              <span>Catalog Product</span>
+            </div>
+          </div>
+          <div class="item-col item-col-header item-col-conten">
+            <div>
+              <span>Promotion</span>
+            </div>
+          </div>
         </div>
-        <div class="items-search">
-                <div class="header-block header-block-search">
-                        <form role="search">
-                            <div class="input-container">
-                                <i class="fa fa-search"></i>
-                                <input type="search" placeholder="Search">
-                                <div class="underline"></div>
-                            </div>
-                        </form>
-                    </div>
-        </div>
-    </div>
-    <div class="card items">
-        <ul class="item-list striped">
-            <li class="item item-list-header">
-                <div class="item-row">
-                    <div class="item-col fixed item-col-check">
-                        <label class="item-check" id="select-all-items">
-                            <input type="checkbox" class="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="item-col item-col-header fixed item-col-img md">
-                        <div>
-                            <span>Image</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-title">
-                        <div>
-                            <span>Name Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-conten">
-                        <div>
-                            <span>Price Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-conten">
-                        <div>
-                            <span>Quatity Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-conten">
-                        <div>
-                            <span>Catalog Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-conten">
-                        <div>
-                            <span>Size Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-conten">
-                        <div>
-                            <span>Color Product</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header fixed item-col-actions-dropdown"> </div>
-                </div>
-            </li>
-            <li class="item" *ngFor="let product of productposts">
-                <div class="item-row">
-                    <div class="item-col fixed item-col-check">
-                        <label class="item-check" id="select-all-items">
-                            <input type="checkbox" class="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="item-col fixed item-col-img md">
-                            <div class="item-img rounded"><img [routerLink]="['/detailproduct/', product._id]" src='https://drive.google.com/uc?id={{product.Image.LeftImage}}' /></div>
-                    </div>
-                    <div class="item-col fixed pull-left item-col-title">
-                        <div class="item-heading">Name Product</div>
-                        <div>
-                                <div>{{product.ProductName}}</div>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-conten">
-                        <div class="item-heading">Price Product</div>
-                        <div>{{product.Price}} </div>
-                        <div>{{product.SalePrice}} </div>
-                    </div>
-                    <div class="item-col item-col-conten">
-                        <div class="item-heading">Quatity</div>
-                        <div> 250 </div>
-                    </div>
-                    <div class="item-col item-col-conten">
-                        <div class="item-heading">Category</div>
-                            <div>{{product.catalog}}</div>
-                    </div>
-                    <div class="item-col item-col-conten">
-                        <div class="item-heading">Size</div>
-                          <div>{{product.size}}</div>
-                    </div>
-                    <div class="item-col item-col-conten">
-                        <div class="item-heading">Color</div>
-                        <div>{{product.color}}</div>
-                    </div>
-                    <div class="item-col fixed item-col-actions-dropdown">
-                        <div class="item-actions-dropdown">
-                            <a class="item-actions-toggle-btn">
-                                <span class="inactive">
-                                    <i class="fa fa-cog"></i>
-                                </span>
-                                <span class="active">
-                                    <i class="fa fa-chevron-circle-right"></i>
-                                </span>
-                            </a>
-                            <div class="item-actions-block">
-                                <ul class="item-actions-list">
-                                    <li>
-                                        <a class="remove" data-toggle="modal" data-target="#deleteproduct">
-                                            <i class="fa fa-trash-o "></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="edit"  [routerLink]="['/edit-product/', product._id]">
-                                            <i class="fa fa-pencil"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="deleteproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title">
-                            <i class="fa fa-warning"></i> Delete Alert ?</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                      <div class="modal-body">
-                        <p>Are you sure you want to delete the product "{{product?.nameproduct}}" ?</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="onDeleteProductsubmit(product?._id)" data-dismiss="modal">Delete product</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cance</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </li>
+      </li>
+      <div class="tab-content">
+          <div *ngIf="progress" style="margin-left:50%">
+              <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
+                <g>
+                  <rect class="bar" transform="translate(0,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(25,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(50,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(75,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(100,0)" y="15"></rect>
+                </g>
+              </svg>
+            </div>
+        <div role="tabpanel" class="tab-pane active fade show" id="allproduct">
 
-        </ul>
-    </div>
-    <nav class="text-right">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href=""> Prev </a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href=""> 1 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href=""> 2 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href=""> 3 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href=""> 4 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href=""> 5 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href=""> Next </a>
-            </li>
-        </ul>
-    </nav>
+          <li class="item" *ngFor="let product of productposts|DeleteObject:false|paginate:paging.step:paging.page:paging.size; let i = index">
+            <div class="item-row">
+              <div class="item-col fixed item-col-check">
+               {{i+1}}
+              </div>
+              <div class="item-col-image">
+                <img *ngIf="!product.Image.LeftImage.ImageLocal" src='https://drive.google.com/uc?id={{product.Image.LeftImage.IdUrl}}' alt=""
+                />
+                <img *ngIf="product.Image.LeftImage.ImageLocal" src="data:image/png;base64,{{product.Image.LeftImage.ImageLocal?.data|decode64}}"
+                />
+              </div>
+              <div class="item-col fixed pull-left item-col-title">
+                <div class="item-heading">Name Product</div>
+                <div>
+                  <div style="margin-left:15px">{{product.ProductName}}</div>
+                </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Price Product</div>
+                <div>{{product.Price| currency}} </div>
+                <span>VND</span>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Quatity</div>
+                <div> {{product.AmountProduct}} </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Category</div>
+                <div> {{product.CatalogParent.CatalogName}}</div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Promotion</div>
+                <div *ngFor="let Promotion of product.Promotion"> {{Promotion.PromotionName}}</div>
+              </div>
+            </div>
+          </li>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="newproduct">
+          <li class="item" *ngFor="let product of productposts|NewObject:false">
+            <div class="item-row">
+              <div class="item-col fixed item-col-check">
+               {{i}}
+              </div>
+              <div class="item-col-image">
+                <img *ngIf="!product.Image.LeftImage.ImageLocal" src='https://drive.google.com/uc?id={{product.Image.LeftImage.IdUrl}}' alt=""
+                />
+                <img *ngIf="product.Image.LeftImage.ImageLocal" src="data:image/png;base64,{{product.Image.LeftImage.ImageLocal?.data|decode64}}"
+                />
+              </div>
+              <div class="item-col fixed pull-left item-col-title">
+                <div class="item-heading">Name Product</div>
+                <div>
+                  <div style="margin-left:15px">{{product.ProductName}}</div>
+                </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Price Product</div>
+                <div>{{product.Price| currency}} </div>
+                <span>VND</span>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Quatity</div>
+                <div> {{product.AmountProduct}} </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Category</div>
+                <div> {{product.CatalogParent.CatalogName}}</div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Promotion</div>
+                <div *ngFor="let Promotion of product.Promotion"> {{Promotion.PromotionName}}</div>
+              </div>
+            </div>
+
+          </li>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="publicproduct">
+          <li class="item" *ngFor="let product of productposts|ActiveObject:true">
+            <div class="item-row">
+              <div class="item-col fixed item-col-check">
+              {{i}}
+              </div>
+              <div class="item-col-image">
+                <img *ngIf="!product.Image.LeftImage.ImageLocal" src='https://drive.google.com/uc?id={{product.Image.LeftImage.IdUrl}}' alt=""
+                />
+                <img *ngIf="product.Image.LeftImage.ImageLocal" src="data:image/png;base64,{{product.Image.LeftImage.ImageLocal?.data|decode64}}"
+                />
+              </div>
+              <div class="item-col fixed pull-left item-col-title">
+                <div class="item-heading">Name Product</div>
+                <div>
+                  <div style="margin-left:15px">{{product.ProductName}}</div>
+                </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Price Product</div>
+                <div>{{product.Price| currency}} </div>
+                <span>VND</span>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Quatity</div>
+                <div> {{product.AmountProduct}} </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Category</div>
+                <div> {{product.CatalogParent.CatalogName}}</div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Promotion</div>
+                <div *ngFor="let Promotion of product.Promotion"> {{Promotion.PromotionName}}</div>
+              </div>
+            </div>
+
+          </li>
+        </div>
+        <div role="tabpanel" class="tab-pane fade " id="deleteproduct">
+          <li class="item" *ngFor="let product of productposts|DeleteObject:true">
+            <div class="item-row">
+              <div class="item-col fixed item-col-check">
+                {{i}}
+              </div>
+              <div class="item-col-image">
+                <img *ngIf="!product.Image.LeftImage.ImageLocal" src='https://drive.google.com/uc?id={{product.Image.LeftImage.IdUrl}}' alt=""
+                />
+                <img *ngIf="product.Image.LeftImage.ImageLocal" src="data:image/png;base64,{{product.Image.LeftImage.ImageLocal?.data|decode64}}"
+                />
+              </div>
+              <div class="item-col fixed pull-left item-col-title">
+                <div class="item-heading">Name Product</div>
+                <div>
+                  <div style="margin-left:15px">{{product.ProductName}}</div>
+                </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Price Product</div>
+                <div>{{product.Price| currency}} </div>
+                <span>VND</span>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Quatity</div>
+                <div> {{product.AmountProduct}} </div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Category</div>
+                <div> {{product.CatalogParent.CatalogName}}</div>
+              </div>
+              <div class="item-col item-col-conten">
+                <div class="item-heading">Promotion</div>
+                <div *ngFor="let Promotion of product.Promotion"> {{Promotion.PromotionName}}</div>
+              </div>
+            </div>
+
+          </li>
+        </div>
+
+      </div>
+    </ul>
+  </div>
+  <nav class="text-right">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" (click)="onChangePage(paging.page-1)"> Prev </a>
+      </li>
+      <li class="page-item"  *ngFor="let index of paging.totalpage;" >
+        <a class="page-link" (click)="onChangePage(index)"> {{index}}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"(click)="onChangePage(paging.page+1)"> Next </a>
+      </li>
+    </ul>
+  </nav>
 </article>
-

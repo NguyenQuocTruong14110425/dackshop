@@ -33,7 +33,7 @@ export class TrackingComponent implements OnInit {
   }
   GetphoneForOrder(phone) {
     this.orderdetailstatus=false;
-    this.orderService.orderwithphone(phone).subscribe(data => {
+    this.orderService.getDetailOrder(phone).subscribe(data => {
       if (!data.success) {
         this.messageClass = 'alert alert-danger';
         this.message = data.message;

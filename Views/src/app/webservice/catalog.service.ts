@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Environment } from './environment';
+import { Catalog } from '../model/catalog';
 
 
 @Injectable()
 export class CatalogService {
 
   domain = Environment.hostDomain
+  public ListCatalog: Array<Catalog>
 
   constructor(
     private http: Http
@@ -32,8 +34,27 @@ export class CatalogService {
         return this.http.put(this.domain + '/catalog/update/', catalog).map(res => res.json());
       }
       deleteCatalog(id) {
-        console.log(id);
         return this.http.delete(this.domain + '/catalog/delete/'+ id).map(res => res.json());
+      }
+      CheckExitCatalog() {
+        if (this.ListCatalog != undefined || this.ListCatalog != null)
+          return 1
+        return 0
+      }
+      getAllCatalogTemp(calback) {
+        this.GetAllCatalog().subscribe(result => {
+          if (!result.success) {
+            return calback(result.mesage)
+          } else {
+            if (this.ListCatalog == undefined && result.data) {
+              this.ListCatalog = result.data
+              return calback(null, result)
+            }
+            else if (this.ListCatalog) {
+              return calback(null, this.ListCatalog)
+            }
+          }
+        });
       }
       
     }

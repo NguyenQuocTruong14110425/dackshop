@@ -3,6 +3,7 @@ const ImageService = require('./controllers/ImageService');
 const FolderService = require('./controllers/FolderService');
 var fs = require('fs');
 const path = require('path');
+var Base64 = require('@ronomon/base64');
 var multer = require('multer');
 const EnumConstant = require('../Web_Config/EnumConstant.js');
 module.exports = (router) => {
@@ -64,33 +65,25 @@ module.exports = (router) => {
         for (let index = 0; index < lstFileName.length; index++) {       
             var filepath = './uploads/' + lstFileName[index]
             var filename = lstFileName[index];
-            var readImage = fs.readFileSync(filepath);
             var IdFolder = req.params.idparam;
                 ImageService.uploadImage(filepath, filename, function (err, Images) {
                     if (err) {
                         flag=0;
                         res.json({ success: false, message: err ? err : mess.SaveSuccess });
                     } else {
-                        var ModelImage =
+                        let ModelImage =
                             {
-                                ImageName: filename,
+                                ImageName: lstFileName[index],
                                 IdUrl: Images.id,
-                                IdFolder: IdFolder
-                            }
+                                IdFolder: IdFolder,
+                                readImage:fs.readFileSync('./uploads/' + lstFileName[index]),
+                                contentType:contentType[index]
+                            }                  
                         ImageService.addImage(ModelImage, function (err, dataImages) {
                             if (err) {
                                 res.json({ message: err ? err : mess.AddFail });
                             } else {
-                                ImageService.findImageById(dataImages.idNewImage, function (err, Images) {
-                                    if (err) {
-                                        flag=0;
-                                        res.json({ success: false, message: err ? err : mess.AddFail });
-                                    }
-                                    else
-                                    {
-                                        flag=flag+1;
-                                    }       
-                                });
+                                flag=flag+1;
                             }
                         });
                     }

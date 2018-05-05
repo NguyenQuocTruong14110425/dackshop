@@ -15,7 +15,7 @@ var UserSchema = new Schema({
     DaskPoint: { type: Number, default: 0 },
     DateCreate: { type: Date },
     DateUpdate: { type: Date },
-    Promotion: [{ type: Schema.ObjectId, ref: 'Promotion' }],
+    Promotion: { type: Schema.ObjectId, ref: 'Promotion' },
     TopSuggestion: {
         Products: [{
             IdProduct: { type: Schema.ObjectId, ref: 'Product' },

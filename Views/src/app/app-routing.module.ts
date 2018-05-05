@@ -1,10 +1,9 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { ClientComponent, CLIENT_ROUTES } from './router/client';
-import { AdminComponent, ADMIN_ROUTES } from './router/admin';
+import { ClientComponent, CLIENT_ROUTES} from './router/client';
+import { AdminComponent, ADMIN_ROUTES  } from './router/admin';
 
-import { HomeComponent } from './ClientSite/home/home.component';
 const appRoutes: Routes = [
     { path: '', redirectTo: 'home',pathMatch:'full'},
     //client

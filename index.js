@@ -49,7 +49,7 @@ app.use(cookieParser());
 app.use(session({
     secret: 'mysupersecret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 app.use(function (req, res, next) {
@@ -95,6 +95,6 @@ app.use(function (req, res, next) {
 // development error handler
 // start server
 
-var server = app.listen(3000,'192.168.0.104', function () {
+var server = app.listen(port,config.domain, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });

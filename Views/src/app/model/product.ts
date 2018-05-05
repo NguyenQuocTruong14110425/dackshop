@@ -1,4 +1,5 @@
 export class Product {
+    _id:String;
     ProductName: String;
     ShortDescription: String;
     LongDescription: String;

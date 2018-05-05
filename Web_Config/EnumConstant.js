@@ -29,6 +29,7 @@ module.exports = function EnumConstant(){
         NotSignUser:"You have not signed in to any accounts yet",
         GenerateError:"Your code generate coupon error",
         ValidateCodeError:"Your code coupon used",
+        ProductAvailable:"The product you selected is not available or has already been deleted on the system",
         //Success
         SuccessDefault: "Success",
         DeleteSuccess : "Delete susscess",
@@ -46,6 +47,10 @@ module.exports = function EnumConstant(){
         LogoutSuccess:"logout success",
         WellcomeUser:"Wellcome User",
         ValidateCodeSuccess:"Your code coupon success",
+        AddtoCartSuccess:"The product added to the cart success",
+        RemoveItemCartSuccess:"Remove item sucess",
+        IncreaseCartSuccess:"Increase item sucess",
+        ReduceCartSuccess:"Reduce item success"
     }
     this.DisplayMessage =  function(typeMess,object)
     {       

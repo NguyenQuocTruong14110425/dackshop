@@ -1,83 +1,122 @@
 const Product = require('../Models/product');
 const config = require('../Web_Config/database');
-const Cart = require('../Models/cart');
+const CartService = require('./controllers/CartService');
+const EnumConstant = require('../Web_Config/EnumConstant.js');
 module.exports = (router) => {
+    var Enum = new EnumConstant();
+    var mess = {} = Enum.DataMessage;
 //add a item product
-router.get('/cart/addcart/:id', function (req, res, next) {
-    var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
-    
-    Product.findById(productId, function (err, product) {
-        if(err)
+router.post('/cart/addcart/', function (req, res, next) {
+    var cart = new CartService(req.session.cart ? req.session.cart : {});
+        var ItemProduct =
         {
-            res.json({ success: false, message: 'The product you selected is not available or has already been deleted on the system'});            
+            Product:req.body.Product,
+            Promotion:req.body.Promotion
         }
-        else
-        {
-        cart.add(product, product.id);
+        cart.AddProductToCart(ItemProduct, ItemProduct.Product._id);
         req.session.cart = cart;
-        res.json({ success: true, message: 'The success of the product is added to the cart',carts:cart});   
+        var ResultCart = cart.getTocart(cart.items)
+        var TotalData =
+        {
+            totalOrder:cart.totalOrder,
+            totalQtyOrder:cart.totalQtyOrder
         }
-    });
+        res.json({ success: true, message: mess.AddtoCartSuccess, data:ResultCart ,TotalData:TotalData});   
 });
 
 router.get('/cart/shoppingcart', function (req, res, next) {
     if (!req.session.cart) {
-        res.json({ success: false, message: 'you do not have any products in your shopping cart',products:null });
+        res.json({ success: false, message: mess.NotProductAvailable,data:null });
     }
     else
     {
-    var cart = new Cart(req.session.cart);
-    res.json({ success: true, message: 'your cart!', products: cart.generateArray(), totalPrice: cart.totalPrice});
+    var cart = new CartService(req.session.cart);
+    var TotalData =
+    {
+        totalOrder:cart.totalOrder,
+        totalQtyOrder:cart.totalQtyOrder
+    }
+    res.json({ success: true, data: cart.generateArray(),TotalData:TotalData});
     }
 });
 
 router.get('/cart/removecart', function (req, res, next) {
-    if (!req.session.cart) {
-        res.json({ success: false, message: 'you do not have any products in your shopping cart' });
-    }
-    if(req.session.cart.items===undefined)
-    {
-        res.json({ success: false, message: 'products in your shopping cart have the problem!' });
+    if (!req.session.cart || req.session.cart.items===undefined) {
+        res.json({ success: false, message: mess.ProductAvailable,data:null });
     }
     else
     {
     req.session.destroy();
-    res.json({ success: true, message: 'All products have been removed from the cart'});
+    var TotalData =
+    {
+        totalOrder:0,
+        totalQtyOrder:0
+    }
+    res.json({ success: true, message: mess.RemoveCartSuccess,data: null,TotalData:TotalData});
     }
 });
 router.get('/cart/reduceitem/:id', function(req, res, next) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
-
+    if (!req.session.cart || req.session.cart.items===undefined) {
+        res.json({ success: false, message: mess.ProductAvailable,data:null });
+    }
+    else
+    {
+    var cart = new CartService(req.session.cart ? req.session.cart : {});
     cart.reduceByOne(productId);
     req.session.cart = cart;
-    res.json({ success: true, message: 'you are reduce product!'});
+    var TotalData =
+    {
+        totalOrder:cart.totalOrder,
+        totalQtyOrder:cart.totalQtyOrder
+    }
+    res.json({ success: true, message: mess.ReduceCartSuccess,data: cart.generateArray(),TotalData:TotalData});
+    }
 });
 
 router.get('/cart/increaseitem/:id', function(req, res, next) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
+    if (!req.session.cart || req.session.cart.items===undefined) {
+        res.json({ success: false, message: mess.ProductAvailable,data:null });
+    }
+    else
+    {
+    var cart = new CartService(req.session.cart ? req.session.cart : {});
     cart.increaseByOne(productId);
     req.session.cart = cart;
-    res.json({ success: true, message: 'you are increase product!'});
+    var TotalData =
+    {
+        totalOrder:cart.totalOrder,
+        totalQtyOrder:cart.totalQtyOrder
+    }
+    res.json({ success: true, message: mess.IncreaseCartSuccess,data: cart.generateArray(),TotalData:TotalData});
+    }
 });
 
 router.get('/cart/removeitem/:id', function(req, res, next) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
-
+    if (!req.session.cart || req.session.cart.items===undefined) {
+        res.json({ success: false, message: mess.ProductAvailable,data:null });
+    }
+    else
+    {
+    var cart = new CartService(req.session.cart ? req.session.cart : {});
     cart.removeItem(productId);
     req.session.cart = cart;
-    res.json({ success: true, message: 'you are remove a product to bag shoping!'});
+    var TotalData =
+    {
+        totalOrder:cart.totalOrder,
+        totalQtyOrder:cart.totalQtyOrder
+    }
+    res.json({ success: true, message: mess.RemoveItemCartSuccess,data: cart.generateArray(),TotalData:TotalData});
+    }
 });
 router.get('/cart/checkout', function(req, res, next) {
-    if (!req.session.cart) {
-        return res.redirect('/shopping-cart');
+    if (!req.session.cart || req.session.cart.items===undefined) {
+        res.json({ success: false, message: mess.NotProductAvailable,data:null });
     }
-    var cart = new Cart(req.session.cart);
-    var errMsg = req.flash('error')[0];
-    res.json({ success: true, total: cart.totalPrice, errMsg: errMsg, noError: !errMsg});
+    var cart = new CartService(req.session.cart);
+    res.json({ success: true, data:cart});
 });
 
 // router.post('/order', function(req, res, next) {

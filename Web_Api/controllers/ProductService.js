@@ -2,16 +2,25 @@ const Catalog = require('../../Models/catalog');
 const Product = require('../../Models/product');
 const Valid = require('../lib/Valid.js');
 const EnumConstant = require('../../Web_Config/EnumConstant.js');
-
 var Enum = new EnumConstant();
 var mess = {} = Enum.DataMessage;
 
 class ProductService {
     constructor() { }
-     // hàm tìm danh sách Product
-     findAllProduct(callback) {
+    // hàm tìm danh sách Product
+    findAllProduct(paging,callback) {
+        const limit = (Number(paging.page)*Number(paging.step))
         Product.find()
-            .populate({ path: "CatalogParent" })
+            .populate({ path: "CatalogParent", select: "_id CatalogName QtyProduct" })
+            .populate({ path: "Color.IdColor" })
+            .populate({ path: "Size.IdSize" })
+            .populate({ path: "Image.LeftImage" })
+            .populate({ path: "Image.LeftImageZoom" })
+            .populate({ path: "Image.RightImage" })
+            .populate({ path: "Image.RightImageZoom" })
+            .populate({ path: "Image.UnderImage" })
+            .populate({ path: "Image.UnderImageZoom" })
+            .populate({ path: "Promotion", select: "_id TypePromotion PromotionName Value SaleEndDate SaleStartDate ApplyFor" })
             .execAsync()
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.SearchFail);
@@ -24,7 +33,16 @@ class ProductService {
     // hàm tìm danh sách Product theo id Catalog
     findProductByCatalog(idparam, callback) {
         Catalog.findById(idparam)
-            .populate({ path: "ProductChild" })
+            .populate({ path: "CatalogParent", select: "_id CatalogName QtyProduct" })
+            .populate({ path: "Color.IdColor" })
+            .populate({ path: "Size.IdSize" })
+            .populate({ path: "Image.LeftImage" })
+            .populate({ path: "Image.LeftImageZoom" })
+            .populate({ path: "Image.RightImage" })
+            .populate({ path: "Image.RightImageZoom" })
+            .populate({ path: "Image.UnderImage" })
+            .populate({ path: "Image.UnderImageZoom" })
+            .populate({ path: "Promotion", select: "_id TypePromotion PromotionName Value SaleEndDate SaleStartDate ApplyFor" })
             .execAsync()
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.SearchFail);
@@ -38,6 +56,15 @@ class ProductService {
     findProductById(idparam, callback) {
         Product.findById(idparam)
             .populate({ path: "CatalogParent", select: "_id CatalogName QtyProduct" })
+            .populate({ path: "Color.IdColor" })
+            .populate({ path: "Size.IdSize" })
+            .populate({ path: "Image.LeftImage" })
+            .populate({ path: "Image.LeftImageZoom" })
+            .populate({ path: "Image.RightImage" })
+            .populate({ path: "Image.RightImageZoom" })
+            .populate({ path: "Image.UnderImage" })
+            .populate({ path: "Image.UnderImageZoom" })
+            .populate({ path: "Promotion", select: "_id TypePromotion PromotionName Value SaleEndDate SaleStartDate ApplyFor" })
             .execAsync()
             .then(function (data) {
                 if (data == null || data == undefined) return callback(mess.SearchFail);
@@ -135,7 +162,6 @@ class ProductService {
 
     // hàm lấy data để thêm mới
     getDataProductForInsert(data, IdCatalog) {
-        console.log(data)
         let newProduct = new Product();
         newProduct.ProductName = data.ProductName,
             newProduct.ShortDescription = data.ShortDescription,
@@ -144,15 +170,15 @@ class ProductService {
             newProduct.Price = data.Price,
             newProduct.SalePrice = data.SalePrice,
             newProduct.Image = data.Image,
-             newProduct.DateCreate = new Date(),
+            newProduct.DateCreate = new Date(),
             newProduct.DateUpdate = null,
             newProduct.Comment = [],
             newProduct.Promotion = Valid.getObjectIDIfValid(data.Promotion),
             newProduct.Suggestions = data.Suggestions
-            newProduct.Color = data.Color
-            newProduct.Size = data.Size
-            newProduct.CheckNew = data.CheckNew
-            newProduct.Onsale = data.Onsale
+        newProduct.Color = data.Color
+        newProduct.Size = data.Size
+        newProduct.CheckNew = data.CheckNew
+        newProduct.Onsale = data.Onsale
         if (IdCatalog != null) {
             newProduct.CatalogParent = IdCatalog
         }
@@ -182,39 +208,94 @@ class ProductService {
         if (data.SalePrice) {
             Product.SalePrice = data.SalePrice
         }
-        if (data.LeftImage) {
-            Product.Image.LeftImage = Valid.getObjectIDIfValid(data.LeftImage)
+        if (data.Size) {
+            Product.Size = data.Size
         }
-        if (data.LeftImageZoom) {
-            Product.Image.LeftImageZoom = Valid.getObjectIDIfValid(data.LeftImageZoom)
+        if (data.Color) {
+            Product.Color = data.Color
         }
-        if (data.RightImage) {
-            Product.Image.RightImage = Valid.getObjectIDIfValid(data.RightImage)
+        if (data.Image) {
+            Product.Image = data.Image
         }
-        if (data.RightImageZoom) {
-            Product.Image.RightImageZoom = Valid.getObjectIDIfValid(data.RightImageZoom)
-        }
-        if (data.UnderImage) {
-            Product.Image.UnderImage = Valid.getObjectIDIfValid(data.UnderImage)
-        }
-        if (data.UnderImageZoom) {
-            Product.Image.UnderImageZoom = Valid.getObjectIDIfValid(data.UnderImageZoom)
-        }
-        if (data.Promotion) {
-            Product.Promotion = Valid.getObjectIDIfValid(data.Promotion)
-        }
-        if (data.IsDelete!==undefined) {
+        if (data.IsDelete !== undefined) {
             Product.IsDelete = data.IsDelete;
         }
-        if (data.Onsale!==undefined) {
+        if (data.CheckNew !== undefined) {
+            Product.CheckNew = data.CheckNew;
+        }
+        if (data.Onsale !== undefined) {
             Product.Onsale = data.Onsale;
         }
-        if (data.IsActive!==undefined) {
+        if (data.IsActive !== undefined) {
             Product.IsActive = data.IsActive;
         }
         return Product;
     }
     //
+    //*************************/
+    //Thống kê
+    //*************************/
+    CountProduct(Condition, callback) {
+        Product.count({
+            IsActive: Condition.IsActive || true,
+            IsDelete: Condition.IsDelete || false,
+            Onsale: Condition.Onsale || true,
+            CheckNew: Condition.CheckNew || true,
+            AmountProduct: { $gte: Condition.MinAmount || 0, $lte: Condition.MaxAmount || 10000000 },
+            Price: { $gte: Condition.MinPrice || 0, $lte: Condition.MaxPrice || 10000000 * 10000000 },
+            SalePrice: { $gte: Condition.MinSalePrice || 0, $lte: Condition.MaxSalePrice || 10000000 * 10000000 },
+        })
+            .execAsync()
+            .then(function (dataCount) {
+                return callback(null, dataCount);
+            })
+            .catch(err => {
+                return callback(err.message);
+            })
+    }
+    CountProductInMonth(callback) {
+        Product.aggregate(
+            {
+                $match: { IsDelete: false }
+            },
+            {
+                $group: {
+                    _id: { year: { $year: "$DateCreate" }, month: { $month: "$DateCreate" }, },
+                    totalAmount: { $sum: 1 },
+                },
+            },
+            {
+                $group: {
+                    _id: { year: "$_id.year" },
+                    ProductNew: {
+                        $push:
+                            {
+                                month: "$_id.month",
+                                totalAmount: "$totalAmount",
+                            }
+                    }
+                }
+            }
+        )
+            .execAsync()
+            .then(function (dataCount) {
+                return callback(null, dataCount);
+            })
+            .catch(err => {
+                return callback(err.message);
+            })
+    };
+    CountObject() {
+        Product.aggregate(
+            {
+                $match: { IsDelete: false }
+            },
+            {
+                $count: "IsActive"
+            }
+        )
+    };
+
 }
 
 module.exports = new ProductService();
