@@ -42,9 +42,7 @@ export class CartService {
   getCartDetail(calback) {
     this.shoppingcart().subscribe(result => {
       if (!result.success) {
-        if (result.data == undefined && this.storage) {
-          return calback(null, this.storage)
-        }
+        return calback(null, this.storage)
       } else {
         if (this.storage != undefined && result.data) {
           this.storage.data = result.data
@@ -99,10 +97,7 @@ export class CartService {
       if (!result.success) {
         return calback(result.mesage)
       } else {
-        if (this.storage != undefined && result.data) {
-          this.storage.data = result.data
-          this.storage.TotalData = result.TotalData
-        }
+        this.storage = null
         return calback(null, result)
       }
     });

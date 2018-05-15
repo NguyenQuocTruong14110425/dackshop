@@ -9,7 +9,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 @Component({
   selector: 'app-detailproduct',
   templateUrl: './detailproduct.component.html',
-  styleUrls: ['./detailproduct.component.css']
+  styleUrls: ['./detailproduct.component.scss']
 })
 export class DetailproductComponent implements OnInit {
   formDetailProduct: FormGroup
@@ -17,8 +17,9 @@ export class DetailproductComponent implements OnInit {
   currentUrl: { [key: string]: any; };
   Idproduct;
   IsChangeSize;
+  progress = false;
   IsChangeColor;
-  IsChangQty =1;
+  IsChangQty = 1;
   constructor(
     private FormBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -36,62 +37,61 @@ export class DetailproductComponent implements OnInit {
 
   AddToCart() {
     var ItemProduct =
-    {
-      Product: { 
-        _id:this.product._id,
-        ProductName:this.product.ProductName,
-        Image:this.product.Image.LeftImage.IdUrl,
-        ShortDescription: this.product.ShortDescription,
-        Price:this.product.Price,
-        Qty:this.IsChangQty>0?this.IsChangQty:1,
-        Size:this.IsChangeSize,
-        Color:this.IsChangeColor
+      {
+        Product: {
+          _id: this.product._id,
+          ProductName: this.product.ProductName,
+          Image: this.product.Image.LeftImage.IdUrl,
+          ShortDescription: this.product.ShortDescription,
+          Price: this.product.Price,
+          Qty: this.IsChangQty > 0 ? this.IsChangQty : 1,
+          Size: this.IsChangeSize,
+          Color: this.IsChangeColor
         },
-    Promotion: {
-        _id:this.product.Promotion[0]._id,
-        PromotionName:this.product.Promotion[0]._id,
-        Value:this.product.Promotion[0].Value,
-        SaleEndDate: this.product.Promotion[0].SaleEndDate,
-        TypePromotion:this.product.Promotion[0].TypePromotion,
+        Promotion: {
+          _id: this.product.Promotion ? this.product.Promotion[0]._id : '',
+          PromotionName: this.product.Promotion ? this.product.Promotion[0].PromotionName : '',
+          Value: this.product.Promotion ? this.product.Promotion[0].Value : 0,
+          SaleEndDate: this.product.Promotion ? this.product.Promotion[0].SaleEndDate : null,
+          TypePromotion: this.product.Promotion ? this.product.Promotion[0].TypePromotion : '',
         }
-    }
+      }
     this.cartService.AddCart(ItemProduct).subscribe(result => {
       if (!result.success) {
         this.alertService.error(result.message);
       } else {
         this.alertService.success(result.message)
         this.cartService.storage =
-        {
-          data:result.data,
-          TotalData:{
-            totalOrder:result.TotalData.totalOrder,
-            totalQtyOrder:result.TotalData.totalQtyOrder,
+          {
+            data: result.data,
+            TotalData: {
+              totalOrder: result.TotalData.totalOrder,
+              totalQtyOrder: result.TotalData.totalQtyOrder,
+            }
           }
-        }
-        this.alertService.success(result.message)        
+        this.alertService.success(result.message)
       }
     });
   }
-  changeColor(idColor){
-    this.IsChangeColor =idColor;
+  changeColor(idColor) {
+    this.IsChangeColor = idColor;
   }
-  changeSize(idSize){
-    this.IsChangeSize =idSize;
+  changeSize(idSize) {
+    this.IsChangeSize = idSize;
   }
-  ChangeQty(event)
-  {
-    if(event==-1)
-    {
-      this.IsChangQty>0?this.IsChangQty--:1
+  ChangeQty(event) {
+    if (event == -1) {
+      this.IsChangQty > 0 ? this.IsChangQty-- : 1
     }
-    if(event==1)
-    {
-      this.IsChangQty<500?this.IsChangQty++:500
+    if (event == 1) {
+      this.IsChangQty < 500 ? this.IsChangQty++ : 500
     }
   }
   getDetailProduct() {
+    this.progress = true;
     this.productService.getSingleProduct(this.Idproduct).subscribe(result => {
       this.product = result.data;
+      this.progress = false;
     });
   }
   ngOnInit() {

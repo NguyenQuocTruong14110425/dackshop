@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
+import { Subject } from 'rxjs/Subject';
+import { WebsocketService } from '../socketcore/websocket.service';
 import { Environment } from './environment';
 import { Product } from '../model/product';
-
-
-
+const SERVER_URL = 'ws://localhost:3000';
 @Injectable()
 export class ProductService {
 
   domain = Environment.hostDomain
   public Listproduct: Array<Product>
-
+  public messages: Subject<any> = new Subject<any>();
   constructor(
-    private http: Http
-
-
-  ) { }
+    private http: Http,
+    private websocket: WebsocketService
+  ) {
+    this.messages = <Subject<string>>this.websocket
+    .connect(SERVER_URL)
+    .map((response: MessageEvent): any => {
+      let data = JSON.parse(response.data);
+      console.log('message data' + data);
+      return data;
+    });
+   }
 
   //product
   SearchProduct(nameproduct) {
@@ -100,7 +108,7 @@ export class ProductService {
     return listChild;
   }
 
-  TranferItemToArray(item, listChild) {
+  TranferItemToArray(item,listChild) {
     if (item != null || item != undefined) {
       if (listChild.length == 0) {
         listChild.push(item)

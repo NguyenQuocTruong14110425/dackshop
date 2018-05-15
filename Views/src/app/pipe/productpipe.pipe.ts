@@ -12,7 +12,7 @@ export class ProductpipePipe implements PipeTransform {
     else {
       return object.filter((result) => {
 
-        return result.nameproduct.toLowerCase().indexOf(searchtext.toLowerCase()) > -1;
+        return result.ProductName.toLowerCase().indexOf(searchtext.toLowerCase()) > -1;
       })
     }
   }
@@ -26,7 +26,7 @@ export class ProductpipePipe implements PipeTransform {
 export class FilterCatalogPipe implements PipeTransform {
 
   transform(object: any, lstCatalogOfBranch: Array<any>): any {
-    if (lstCatalogOfBranch.length == 0 || object === undefined) {
+    if (lstCatalogOfBranch.length == 0) {
       return object;
     }
     else {
@@ -55,17 +55,18 @@ export class FilterWithBranchPipe implements PipeTransform {
     else {
       console.log(lstCatalog)
       var temp = []
-      object.filter((result) => {
-        lstCatalog.forEach(element => {
-          console.log(result.CatalogParent)
-          if (element == result.CatalogParent) {
-          console.log("test")
-            temp.push(result)
+      return object.filter((result) => {
+        for(let index =0;index<=lstCatalog.length;index++)
+        {
+          console.log(lstCatalog[index])
+          console.log(result.CatalogParent._id)
+          if(result.CatalogParent._id.toLowerCase().indexOf(lstCatalog[index].toLowerCase()) === -1)
+          {
+          return false;
           }
-        });
+          return true;
+        }
       })
-      console.log(temp)
-      return temp
     }
   }
 }
@@ -104,6 +105,7 @@ export class FilterColorPipe implements PipeTransform {
       return object;
     }
     else {
+      
       return object.filter((result) => {
         lstColor.forEach(element => {
           if (element == result._id) {
@@ -156,7 +158,7 @@ export class sizePipe implements PipeTransform {
     }
     else {
       return object.filter((result) => {
-        return result.price >= +price;
+        return result.Price >= +price;
       })
     }
   }

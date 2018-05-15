@@ -1,156 +1,236 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Inject, OnInit, Output, Input, HostListener, AfterViewInit, ViewChild, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { OrderService } from '../../webservice/order.service';;
+import { AlertService } from '../../webservice/alert.service';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BaseChartDirective } from 'ng2-charts';
 @Component({
   selector: 'app-salechart',
   templateUrl: './salechart.component.html',
   styleUrls: ['./salechart.component.css']
 })
-export class SalechartComponent implements OnInit {
-
-  constructor() { }
-  // lineChart
-  // public lineChartData: Array<any> = [
-  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-  //   { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-  //   { data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C' }
-  // ];
-  // public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  // public lineChartOptions: any = {
-  //   responsive: true
-  // };
-  public lineChartColors: Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-  // public lineChartLegend: boolean = true;
-  // public lineChartType: string = 'line';
-
-  // public randomize(): void {
-  //   let _lineChartData: Array<any> = new Array(this.lineChartData.length);
-  //   for (let i = 0; i < this.lineChartData.length; i++) {
-  //     _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
-  //     for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-  //       _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-  //     }
-  //   }
-  //   this.lineChartData = _lineChartData;
-  // }
-
-  // // events
-  // public chartClicked(e: any): void {
-  //   console.log(e);
-  // }
-
-  // public chartHovered(e: any): void {
-  //   console.log(e);
-  // }
+export class SalechartComponent implements OnInit, AfterViewInit {
+  @ViewChild(BaseChartDirective)
+  public chart: BaseChartDirective;
+  public DataSales = {
+    SaleOfYear: 0,
+    SalesOfMonth: 0,
+    SalesOfWeek: 0,
+    SalesOfDay: 0
+  }
+  Year: any;
+  Month: any;
+  Day: any;
+  TotalSaleMonth = 0;
+  TotalSaleYear = 0;
+  TotalSaleWeek = 0;
+  TotalSaleDay = 0;
+  TotalqtyMonth = 0;
+  //sales
+  DataForSaleYearTemp = []
+  DataForSaleMonthTemp = []
+  DataForSaleDayTemp = []
+  public DataSaleOfYear = []
+  public DataSaleOfMonth = []
+  public DataSaleOfDay = []
+  //quantity
+  DataForQtyYearTemp = []
+  DataForQtyMonthTemp = []
+  DataForQtyDayTemp = []
+  public LabelSaleOfYear = []
+  public LabelSaleOfMonth = []
+  public LabelSaleOfDay = []
+  public DataQuantityOfYear = []
+  public DataQuantityOfMonth = []
+  public DataQuantityOfDay = []
+  IsyearChart = false;
+  IsMonthChart = false;
+  IsDayChart = true;
+  IsyearQtyChart = false;
+  IsMonthQtyChart = false;
+  IsDayQtyChart = false;
+  constructor(
+    private FormBuilder: FormBuilder,
+    private orderService: OrderService,
+    private router: Router,
+    private modalService: NgbModal,
+    private alertService: AlertService
+  ) {
+    var DateCurrent = new Date();
+    this.Day = DateCurrent.getDate();
+    this.Month = DateCurrent.getUTCMonth() + 1;
+    this.Year = DateCurrent.getFullYear();
+    this.tranferData();
+  }
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
-
-  public barChartData: any[] = [
-    { data: [65, -59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-    { data: [28, 48, 40, 19, 86, 33, 20], label: 'Series C' }
+  public chartColorsOfYear: any[] = [
+    {
+      backgroundColor: "#0066cc"
+    },
   ];
-
-  // // events
-  // public chartClicked(e:any):void {
-  //   console.log(e);
-  // }
-
-  // public chartHovered(e:any):void {
-  //   console.log(e);
-  // }
-
-  public randomize(): void {
-    // Only Change 3 values
-    let data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      (Math.random() * 100),
-      56,
-      (Math.random() * 100),
-      40];
-    let clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    this.barChartData = clone;
+  public chartColorsOfMonth: any[] = [
+    {
+      backgroundColor: "#00802b"
+    },
+  ];
+  public chartColorsOfDay: any[] = [
+    {
+      backgroundColor: "#e69900"
+    },
+  ];
+  openModalSaleYear(modal) {
+    const modalRefCreate = this.modalService.open(modal);
   }
-  //
-  // Doughnut
-  public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-  public doughnutChartData: number[] = [350, 450, 100];
-  public doughnutChartType: string = 'doughnut';
+  GetDataAnalyzeSale() {
+    setTimeout(() => {
+      this.chart.ngOnChanges({} as SimpleChanges);
+    }, 500);
+  }
+  OpentChart(event) {
+    if (event == 'year') {
+      this.IsyearChart == true ? this.IsyearChart = false : this.IsyearChart = true;
+    }
+    if (event == 'month') {
+      this.IsMonthChart == true ? this.IsMonthChart = false : this.IsMonthChart = true;
+    }
+    if (event == 'day') {
+      this.IsDayChart == true ? this.IsDayChart = false : this.IsDayChart = true;
+    }
+    if (event == 'yearqty') {
+      this.IsyearQtyChart == true ? this.IsyearQtyChart = false : this.IsyearQtyChart = true;
+    }
+    if (event == 'monthqty') {
+      this.IsMonthQtyChart == true ? this.IsMonthQtyChart = false : this.IsMonthQtyChart = true;
+    }
+    if (event == 'dayqty') {
+      this.IsDayQtyChart == true ? this.IsDayQtyChart = false : this.IsDayQtyChart = true;
+    }
+  }
+  tranferData() {
+    this.DataForSaleYearTemp = []
+    this.DataForSaleMonthTemp = []
+    this.DataForSaleDayTemp = []
+    //quantity
+    this.DataForQtyYearTemp = []
+    this.DataForQtyMonthTemp = []
+    this.DataForQtyDayTemp = []
+    this.LabelSaleOfYear = []
+    this.LabelSaleOfMonth = []
+    this.LabelSaleOfDay = []
+    this.orderService.getDataOfSales((err, result) => {
+      if (err) {
+        this.alertService.error(err);
+      } else {
+        this.DataSales = result.data;
+        result.data.SaleOfYear.forEach(dataOfYear => {
+          if (dataOfYear != null || dataOfYear != undefined) {
+            this.LabelSaleOfYear.push(dataOfYear._id.year);
+            this.DataForSaleYearTemp.push(dataOfYear.totalSale)
+            this.DataForQtyYearTemp.push(dataOfYear.totalQuantity)
+          }
+        });
+        result.data.SalesOfMonth.forEach(dataOfMonth => {
+          if ((dataOfMonth != null || dataOfMonth != undefined) && (dataOfMonth._id.year == this.Year)) {
+            dataOfMonth.SalesOfMonth.forEach(monthData => {
+              if (monthData.month == this.Month) {
+                this.TotalSaleMonth = monthData.totalSale
+                this.TotalqtyMonth = monthData.totalQuantity
+              }
+              this.LabelSaleOfMonth.push(monthData.month);
+              this.DataForSaleMonthTemp.push(monthData.totalSale)
+              this.DataForQtyMonthTemp.push(monthData.totalQuantity)
 
+            });
+          }
+        });
+        result.data.SalesOfDay.forEach(dataOfDay => {
+          if ((dataOfDay != null || dataOfDay != undefined) && (dataOfDay._id.month == this.Month)&& (dataOfDay._id.year == this.Year)) {
+            dataOfDay.SalesOfDay.forEach(dayData => {
+              if (dayData.day == this.Day) {
+                this.TotalSaleDay = dayData.totalSale
+              }
+              this.LabelSaleOfDay.push(dayData.day);
+              this.DataForSaleDayTemp.push(dayData.totalSale)
+              this.DataForQtyDayTemp.push(dayData.totalQuantity)
+            });
+          }
+        });
+      }
+    })
+    //sale
+    this.DataSaleOfDay = [{
+      data: this.DataForSaleDayTemp,
+      label: 'Sale'
+    }]
+    this.DataSaleOfMonth = [{
+      data: this.DataForSaleMonthTemp,
+      label: 'Sale'
+    }]
+    this.DataSaleOfYear = [{
+      data: this.DataForSaleYearTemp,
+      label: 'Sale'
+    }]
+    //quantity
+    this.DataQuantityOfYear = [{
+      data: this.DataForQtyYearTemp,
+      label: 'Quantity'
+    }]
+    this.DataQuantityOfMonth = [{
+      data: this.DataForQtyMonthTemp,
+      label: 'Quantity'
+    }]
+    this.DataQuantityOfDay = [{
+      data: this.DataForQtyDayTemp,
+      label: 'Quantity'
+    }]
+  }
+  ChangeYear(e: any): void {
+    if (e == -1) {
+      this.Year > 2000 ? this.Year-- : 2000
+    }
+    if (e == 1) {
+      this.Year < 3000 ? this.Year++ : 3000
+    }
+    this.tranferData();
+    this.GetDataAnalyzeSale();
+  }
+  ChangeMonth(e: any): void {
+    if (e == -1) {
+      this.Month > 1 ? this.Month-- : 1
+    }
+    if (e == 1) {
+      this.Month < 12 ? this.Month++ : 12
+    }
+    this.tranferData();
+    this.GetDataAnalyzeSale();
+  }
+  ChangeDay(e: any): void {
+    if (e == -1) {
+      this.Day > 1 ? this.Day-- : 1
+    }
+    if (e == 1) {
+      this.Day < 31 ? this.Day++ : 31
+    }
+    this.tranferData();
+    this.GetDataAnalyzeSale();
+  }
   // events
   public chartClicked(e: any): void {
     console.log(e);
   }
-
   public chartHovered(e: any): void {
     console.log(e);
   }
-  // Radar
-  public radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
-
-  public radarChartData: any = [
-    { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
-  ];
-  public radarChartType: string = 'radar';
-  // Pie
-  public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-  public pieChartData: number[] = [300, 500, 100];
-  public pieChartType: string = 'pie';
-  // PolarArea
-  public polarAreaChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales'];
-  public polarAreaChartData: number[] = [300, 500, 100, 40, 120];
-  public polarAreaLegend: boolean = true;
-
-  public polarAreaChartType: string = 'polarArea';
-  //dimanic
-   // lineChart
-   public lineChartData:Array<any> = [
-    [65, -59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90]
-  ];
-  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChartType:string = 'line';
- 
-  // Pie
-    public randomizeType():void {
-      this.lineChartType = this.lineChartType === 'line' ? 'bar' : 'line';
-      this.pieChartType = this.pieChartType === 'doughnut' ? 'pie' : 'doughnut';
-    }
-   
   ngOnInit() {
+  }
+  ngAfterViewInit() {
+    this.GetDataAnalyzeSale();
   }
 
 }

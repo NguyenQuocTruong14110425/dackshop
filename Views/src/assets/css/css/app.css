@@ -1766,7 +1766,7 @@
     content: ""; }
 
     .card-order{
-    margin-top: 0;
+    margin: 20px 50px auto;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex; 
@@ -2849,7 +2849,11 @@
     border: 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
-
+    .modal .modal-content {
+    background: #FFF;
+    border: 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
     .modal .modal-content >.modal-header {
     border-top: 5px solid #69c773;
     font-family: UTMAptima;
@@ -3143,10 +3147,10 @@
     transform: scaleX(1); }
 
     #modal-media .modal-body {
-    min-height: 250px; }
+    min-height: 450px; }
 
     #modal-media .modal-tab-content {
-    min-height: 300px; }
+    min-height: 500px; }
 
 
     #modal-media .upload-container {

@@ -4,9 +4,9 @@
       <div class="iconimg" style="background:#0099CC">
         <img src="./assets/images/icon/icon-newcart.png">
       </div>
-      <div class="item-content">
+      <div class="item-content" style="color:#0099CC">
         <div class="title-item">Monthly Sales</div>
-        <div class="number-item" style="color:#0099CC">150</div>
+        <div class="number-item" style="color:#0099CC;font-size:20px">{{TotalSaleMonth| currency}}</div>
       </div>
     </div>
     <div class="card-item">
@@ -15,7 +15,7 @@
       </div>
       <div class="item-content">
         <div class="title-item">Weekly Sales</div>
-        <div class="number-item" style="color:#9200cc">150</div>
+        <div class="number-item" style="color:#9200cc;font-size:20px">{{TotalSaleWeek| currency}}</div>
       </div>
     </div>
     <div class="card-item">
@@ -24,7 +24,7 @@
       </div>
       <div class="item-content">
         <div class="title-item">Daily Sales</div>
-        <div class="number-item" style="color:#cc9c00">150</div>
+        <div class="number-item" style="color:#cc9c00;font-size:20px">{{TotalSaleDay| currency}}</div>
       </div>
     </div>
     <div class="card-item">
@@ -33,72 +33,330 @@
       </div>
       <div class="item-content">
         <div class="title-item">Inventory Quantity</div>
-        <div class="number-item" style="color:#cc4100">150</div>
+        <div class="number-item" style="color:#cc4100;font-size:20px">{{TotalqtyMonth}}</div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-6">
- 
-      <canvas baseChart
-                  [data]="lineChartData"
-                  [labels]="lineChartLabels"
-                  [options]="lineChartOptions"
-                  [chartType]="lineChartType"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
-    </div>
-    <div class="col-md-6">
-      <canvas baseChart
-                  [data]="pieChartData"
-                  [labels]="pieChartLabels"
-                  [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
-    </div>
-    <div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
-      <button (click)="randomizeType()" style="display: inline-block">Toggle</button>
-    </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div style="display: block;">
-        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-          [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
-    </div>
-    <div class="col-md-6" style="margin-bottom: 10px">
-      <table class="table table-responsive table-condensed">
-        <tr>
-          <th *ngFor="let label of lineChartLabels">{{label}}</th>
-        </tr>
-        <tr *ngFor="let d of lineChartData">
-          <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-        </tr>
-      </table>
-      <button (click)="randomize()">CLICK</button>
     </div>
   </div>
   <div>
-    <div style="display: block">
-      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-        [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label class="control-label">Year:</label>
+        <div class="input-group" style="width:150px;">
+          <span class="input-group-addon" (click)="ChangeYear(-1)">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </span>
+          <input disabled style="text-align: center" min="2000" min="3000" [(ngModel)]="Year" id="Year" name="Year" class="form-control underlined">
+          <span class="input-group-addon" (click)="ChangeYear(1)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label">Month:</label>
+        <div class="input-group" style="width:150px;">
+          <span class="input-group-addon" (click)="ChangeMonth(-1)">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </span>
+          <input disabled style="text-align: center" min="1" min="12" [(ngModel)]="Month" id="Month" name="Month" class="form-control underlined">
+          <span class="input-group-addon" (click)="ChangeMonth(1)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label">Day:</label>
+        <div class="input-group" style="width:150px;">
+          <span class="input-group-addon" (click)="ChangeDay(-1)">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </span>
+          <input disabled style="text-align: center" min="1" min="31" [(ngModel)]="Day" id="Day" name="Day" class="form-control underlined">
+          <span class="input-group-addon" (click)="ChangeDay(1)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
     </div>
-    <button (click)="randomize()">Update</button>
   </div>
-  <div style="display: block">
-    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" role="tab" href="#sales" data-toggle="tab">Sales</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#inventory" data-toggle="tab">Inventory</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#products" data-toggle="tab">Products</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" role="tab" href="#order" data-toggle="tab">Orther</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active fade show" id="sales">
+      <div class="row">
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Sales of Daily </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('day')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelforday)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsDayChart">
+            <canvas baseChart [colors]="chartColorsOfDay" [datasets]="DataSaleOfDay" [labels]="LabelSaleOfDay" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Sales of Monthly </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('month')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelformonth)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsMonthChart">
+            <canvas baseChart [colors]="chartColorsOfMonth" [datasets]="DataSaleOfMonth" [labels]="LabelSaleOfMonth" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Sales of Yearly </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('year')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelforyear)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsyearChart">
+            <canvas baseChart [datasets]="DataSaleOfYear" [colors]="chartColorsOfYear" [labels]="LabelSaleOfYear" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade " id="inventory">
+      <div class="row">
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Quantity of Daily </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('dayqty')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelforday)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsDayQtyChart">
+            <canvas baseChart [colors]="chartColorsOfDay" [datasets]="DataQuantityOfDay" [labels]="LabelSaleOfDay" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Quantity of Monthly </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('monthqty')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelformonth)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsMonthQtyChart">
+            <canvas baseChart [colors]="chartColorsOfMonth" [datasets]="DataQuantityOfMonth" [labels]="LabelSaleOfMonth" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card items col-md-6">
+          <div class="card-header bordered">
+            <div class="header-block">
+              <h3 class="title"> Quantity of Yearly </h3>
+            </div>
+            <div class="header-block pull-right">
+              <button type="button" (click)="OpentChart('yearqty')" class="btn btn-secondary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+              </button>
+              <button type="button" (click)="openModalSaleYear(modelforyear)" class="btn btn-secondary">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div style="display: block" *ngIf="IsyearQtyChart">
+            <canvas baseChart [datasets]="DataQuantityOfYear" [colors]="chartColorsOfYear" [labels]="LabelSaleOfYear" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade " id="products">
+    </div>
+    <div role="tabpanel" class="tab-pane fade " id="order">
+    </div>
   </div>
-  <div style="display: block">
-    <canvas baseChart [datasets]="radarChartData" [labels]="radarChartLabels" [chartType]="radarChartType" (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
-  </div>
-  <div style="display: block">
-    <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
-  </div>
-  <div style="display: block">
-    <canvas baseChart [data]="polarAreaChartData" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend" [chartType]="polarAreaChartType"
-      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-  </div>
+
 </article>
+
+<!-- modal analyze for year -->
+<ng-template #modelforyear let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-warning"></i> Statistical data by year</h4>
+    <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul class="item-list striped  " style="width:auto">
+      <li class="item item-list-header">
+        <div class="item-row">
+          <div class="item-col  item-col-conten">
+            <span>Year</span>
+          </div>
+          <div class="item-col  item-col-conten">
+            <span>Total Quantity </span>
+          </div>
+          <div class="item-col  item-col-conten">
+            <span>Total Sales </span>
+          </div>
+        </div>
+      </li>
+      <li class="item">
+        <div class="item-row" *ngFor="let label of LabelSaleOfYear; let j=index">
+          <div class="item-col  item-col-conten">
+            <span>{{label}}</span>
+          </div>
+          <div class="item-col  item-col-conten" *ngFor="let d of DataQuantityOfYear">
+            <span>{{d && d.data[j]}} </span>
+            <span>VND</span>
+          </div>
+          <div class="item-col  item-col-conten" *ngFor="let d of DataSaleOfYear">
+            <span>{{d && d.data[j]| currency}} </span>
+            <span>VND</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<!-- modal analyze for month -->
+<ng-template #modelformonth let-c="close" let-d="dismiss">
+  <div class="modal-content" style="width:600px">
+    <div class="modal-header">
+      <h4 class="modal-title">
+        <i class="fa fa-warning"></i> Statistical data by year</h4>
+      <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul class="item-list striped  " style="width:auto">
+        <li class="item item-list-header">
+          <div class="item-row">
+            <div class="item-col  item-col-conten">
+              <span>Month</span>
+            </div>
+            <div class="item-col  item-col-conten">
+              <span>Total Quantity </span>
+            </div>
+            <div class="item-col  item-col-conten">
+              <span>Total Sales </span>
+            </div>
+          </div>
+        </li>
+        <li class="item">
+          <div class="item-row" *ngFor="let label of LabelSaleOfMonth; let j=index">
+            <div class="item-col  item-col-conten">
+              <span>{{label}}</span>
+            </div>
+            <div class="item-col  item-col-conten" *ngFor="let d of DataQuantityOfMonth">
+              <span>{{d && d.data[j]}} </span>
+            </div>
+            <div class="item-col  item-col-conten" *ngFor="let d of DataSaleOfMonth">
+              <span>{{d && d.data[j]| currency}} </span>
+              <span>VND</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- modal analyze for day -->
+<ng-template #modelforday let-c="close" let-d="dismiss">
+  <div class="modal-content" style="width:800px">
+    <div class="modal-header">
+      <h4 class="modal-title">
+        <i class="fa fa-warning"></i> Statistical data by year</h4>
+      <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul class="item-list striped">
+        <li class="item item-list-header">
+          <div class="item-row">
+            <div class="item-col  item-col-conten">
+              <span>Day</span>
+            </div>
+            <div class="item-col  item-col-conten">
+              <span>Total Quantity </span>
+            </div>
+            <div class="item-col  item-col-conten">
+              <span>Total Sales </span>
+            </div>
+          </div>
+        </li>
+        <li class="item  ">
+          <div class="item-row" *ngFor="let label of LabelSaleOfDay; let j=index">
+            <div class="item-col  item-col-conten">
+              <span>{{label}}</span>
+            </div>
+            <div class="item-col  item-col-conten" *ngFor="let d of DataQuantityOfDay">
+              <span>{{d && d.data[j]}} </span>
+            </div>
+            <div class="item-col  item-col-conten" *ngFor="let d of DataSaleOfDay">
+              <span>{{d && d.data[j]| currency}} </span>
+              <span>VND</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+  </div>
+</ng-template>

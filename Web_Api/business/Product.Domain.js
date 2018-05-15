@@ -1,10 +1,11 @@
 const Product = require('../../Models/product');
+const Order = require('../../Models/Order');
 const async = require('async')
 class ProductDomain {
     constructor() {
     }
 
-    Getinit(callback) {
+    AnalyzeProduct(callback) {
         async.waterfall([
             function (callback) {
                 Product.count({
@@ -78,19 +79,150 @@ class ProductDomain {
             return callback(null, results)
         })
     }
-    SetCountTotalProduct(callback) {
-        Product.count({
-            IsDelete: false,
+    /// analyze sale
+    AnalyzeSale(callback) {
+        async.waterfall([
+            function (callback) {
+                Order.aggregate(
+                    {
+                        $match: { IsDelete: false }
+                    },
+                    {
+                        $group: {
+                            _id: { year: { $year: "$DateOrder" } },
+                            totalSale: { $sum: "$Cart.totalOrder" },
+                            totalQuantity: { $sum: "$Cart.totalQtyOrder" },
+                        }
+                    },
+                    { $sort: { "_id.year": 1 } }
+
+                )
+                    .execAsync()
+                    .then(function (dataCount) {
+                        var DataAnalyze = {
+                            SaleOfYear: 0,
+                            SalesOfMonth: 0,
+                            SalesOfWeek: 0,
+                            SalesOfDay: 0
+                        }
+                        DataAnalyze.SaleOfYear = dataCount;
+                        return callback(null, DataAnalyze);
+                    })
+            },
+            function (data, callback) {
+                Order.aggregate(
+                    {
+                        $match: { IsDelete: false }
+                    },
+                    {
+                        $group: {
+                            _id: { year: { $year: "$DateOrder" }, month: { $month: "$DateOrder" } },
+                            totalSale: { $sum: "$Cart.totalOrder" },
+                            totalQuantity: { $sum: "$Cart.totalQtyOrder" },
+                        }
+                    },
+                    { $sort: { "_id.month": 1 } },
+                    {
+                        $group: {
+                            _id: { year: "$_id.year" },
+                            SalesOfMonth: {
+                                $push:
+                                    {
+                                        month: "$_id.month",
+                                        totalSale: "$totalSale",
+                                        totalQuantity: "$totalQuantity",
+                                    }
+                            },
+                        },
+                    },
+                    { $sort: { "_id.year": 1 } }
+
+                )
+                    .execAsync()
+                    .then(function (dataCount) {
+                        data.SalesOfMonth = dataCount;
+                        return callback(null, data);
+                    })
+            },
+            function (data, callback) {
+                Order.aggregate(
+                    {
+                        $match: { IsDelete: false }
+                    },
+                    {
+                        $group: {
+                            _id: {
+                                year: { $year: "$DateOrder" },
+                                month: { $month: "$DateOrder" },
+                                week: { $week: "$DateOrder" },
+                            },
+                            totalSale: { $sum: "$Cart.totalOrder" },
+                            totalQuantity: { $sum: "$Cart.totalQtyOrder" },
+                        }
+                    },
+                    { $sort: { "_id.week": 1 } },
+                    {
+                        $group: {
+                            _id: { year: "$_id.year", month: "$_id.month" },
+                            SalesOfWeek: {
+                                $push:
+                                    {
+                                        week: "$_id.week",
+                                        totalSale: "$totalSale",
+                                        totalQuantity: "$totalQuantity",
+                                    }
+                            }
+                        },
+                    },
+                    { $sort: { "_id.year": 1, "_id.month": 1 } }
+
+
+                )
+                    .execAsync()
+                    .then(function (dataCount) {
+                        data.SalesOfWeek = dataCount;
+                        return callback(null, data);
+                    })
+            },
+            function (data, callback) {
+                Order.aggregate(
+                    {
+                        $match: { IsDelete: false }
+                    },
+                    {
+                        $group: {
+                            _id: { year: { $year: "$DateOrder" }, month: { $month: "$DateOrder" }, day: { $dayOfMonth: "$DateOrder" } },
+                            totalSale: { $sum: "$Cart.totalOrder" },
+                            totalQuantity: { $sum: "$Cart.totalQtyOrder" },
+                        }
+                    },
+                    { $sort: { "_id.day": 1 } },
+                    {
+                        $group: {
+                            _id: { year: "$_id.year", month: "$_id.month" },
+                            SalesOfDay: {
+                                $push:
+                                    {
+                                        day: "$_id.day",
+                                        totalSale: "$totalSale",
+                                        totalQuantity: "$totalQuantity",
+                                    }
+                            }
+                        },
+                    },
+                    { $sort: { "_id.year": 1, "_id.month": 1 } }
+                )
+                    .execAsync()
+                    .then(function (dataCount) {
+                        data.SalesOfDay = dataCount;
+                        return callback(null, data);
+                    })
+            }
+        ], function (err, results) {
+            if (err) return callback(err.message);
+            return callback(null, results)
         })
-            .execAsync()
-            .then(function (dataCount) {
-                return callback(null, dataCount);
-            })
-            .catch(err => {
-                return callback(err.message);
-            })
     }
 
 }
-
 module.exports = ProductDomain;

@@ -7,7 +7,7 @@ import { BranchService } from '../../webservice/branch.service';
 import { AlertService } from '../../webservice/alert.service';
 import { GeneralService } from '../../webservice/general.service';;
 import { CatalogService } from '../../webservice/catalog.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { TotalProductPipe } from '../../pipe/productpipe.pipe';
 import { SidebarComponent } from '../../partials/sidebar/sidebar.component';
 @Component({
@@ -30,6 +30,8 @@ export class SearchComponent implements OnInit {
   Isbranch = false;
   Iscatalog = false;
   progress = false;
+  listTempBranchForProduct;
+  listTempCatalogForProduct;
   paging = {
     step: 5,
     page: 1,
@@ -40,8 +42,8 @@ export class SearchComponent implements OnInit {
   DataFilter = {
     Branch: [],
     Catalog: [],
-    Size: [],
-    Color: [],
+    Size: '',
+    Color: '',
     PriceMin: 0,
     PiceMax: 9999 * 9999
   }
@@ -60,14 +62,6 @@ export class SearchComponent implements OnInit {
     this.productService.Listproduct;
     this.branchService.ListBranch;
     this.catalogService.ListCatalog;
-    this.createForm();
-  }
-  createForm() {
-    this.formsearch = this.FormBuilder.group({
-      searchname: ['', Validators.compose([
-        Validators.maxLength(50)
-      ])],
-    });
   }
   GetListColor() {
     this.colorService.GetListColor().subscribe(result => {
@@ -114,32 +108,120 @@ export class SearchComponent implements OnInit {
   }
   onChangePage(page) {
     this.paging.page = page;
-    this.productpost
+    this.productpost;
   }
-  AddToCart(idproduct) {
-    this.cartService.AddCart(idproduct).subscribe(data => {
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-      } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
-        window.location.reload();
-        this.getCart();
+  FilterProduct(listProduct, listData) {
+    var temp = [];
+    this.productpost = listProduct;
+    if (listData.length > 0) {
+      this.productpost.filter((result) => {
+        if (result.CatalogParent !== undefined) {
+          for (let index = 0; index <= listData.length; index++) {
+            if (result.CatalogParent._id == listData[index]) {
+              temp.push(result)
+            }
+          }
+        }
+      })
+      this.productpost = temp;
+    }
+    else {
+      if (this.DataFilter.Branch.length == 0) {
+        this.productpost = this.productService.Listproduct
       }
-
-    });
+    }
+    this.paging.size = this.totalPipe.transform(this.productpost, false)
+    this.paging.totalpage = this.productService.onGetMaxPage(this.paging.size, this.paging.step)
+  }
+  FilterProductForSize(listProduct, item) {
+    var temp = [];
+    this.productpost = listProduct;
+    if (item != null) {
+      this.productpost.filter((result) => {
+        if (result.Size !== undefined) {
+          for (let index = 0; index <= result.Size.length; index++) {
+            if (result.Size[index] != undefined && result.Size[index].IdSize != undefined && result.Size[index].IdSize._id == item) {
+              temp.push(result)
+            }
+          }
+        }
+      })
+      this.productpost = temp;
+    }
+    this.paging.size = this.totalPipe.transform(this.productpost, false)
+    this.paging.totalpage = this.productService.onGetMaxPage(this.paging.size, this.paging.step)
+  }
+  FilterProductForColor(listProduct, item) {
+    var temp = [];
+    this.productpost = listProduct;
+    if (item != null) {
+      this.productpost.filter((result) => {
+        if (result.Size !== undefined) {
+          for (let index = 0; index <= result.Color.length; index++) {
+            if (result.Color[index] != undefined && result.Color[index].IdColor != undefined && result.Color[index].IdColor._id == item) {
+              temp.push(result)
+            }
+          }
+        }
+      })
+      this.productpost = temp;
+    }
+    this.paging.size = this.totalPipe.transform(this.productpost, false)
+    this.paging.totalpage = this.productService.onGetMaxPage(this.paging.size, this.paging.step)
   }
   ChooseBranch(CatalogChild) {
-    this.DataFilter.Catalog = this.productService.TranferArrayToArray(CatalogChild, this.DataFilter.Catalog)
-    this.GetListCatalog();
+    this.DataFilter.Branch = this.productService.TranferArrayToArray(CatalogChild, this.DataFilter.Branch)
+    this.GetListFilterCatalog()
+    this.FilterProduct(this.productService.Listproduct, this.DataFilter.Branch);
+    this.listTempBranchForProduct = this.productpost;
+  }
+  ChooseCatalog(LstCatalog) {
+    this.DataFilter.Catalog = this.productService.TranferItemToArray(LstCatalog, this.DataFilter.Catalog)
+    if (this.DataFilter.Branch.length == 0) {
+      this.FilterProduct(this.productService.Listproduct, this.DataFilter.Catalog);
+    }
+    else {
+      if (this.DataFilter.Catalog.length == 0) {
+        this.FilterProduct(this.productService.Listproduct, this.DataFilter.Branch);
+      }
+      this.FilterProduct(this.listTempBranchForProduct, this.DataFilter.Catalog);
+    }
+    this.listTempCatalogForProduct = this.productpost;
   }
   ChooseSize(IdSize) {
-    this.DataFilter.Size = this.productService.TranferItemToArray(IdSize, this.DataFilter.Size)
-    console.log(this.DataFilter)
+    this.DataFilter.Size = IdSize;
+    if (this.DataFilter.Branch.length == 0 && this.DataFilter.Catalog.length == 0) {
+      this.FilterProductForSize(this.productService.Listproduct, this.DataFilter.Size);
+    }
+    else {
+      if (this.DataFilter.Branch.length > 0 && this.DataFilter.Catalog.length == 0) {
+        this.FilterProductForSize(this.listTempBranchForProduct, this.DataFilter.Size);
+      }
+      if (this.DataFilter.Branch.length > 0 && this.DataFilter.Catalog.length > 0) {
+        this.FilterProductForSize(this.listTempCatalogForProduct, this.DataFilter.Size);
+      }
+      if (this.DataFilter.Branch.length == 0 && this.DataFilter.Catalog.length > 0) {
+        this.FilterProductForSize(this.listTempCatalogForProduct, this.DataFilter.Size);
+      }
+    }
   }
+
   ChooseColor(IdColor) {
-    this.DataFilter.Color = this.productService.TranferItemToArray(IdColor, this.DataFilter.Color)
+    this.DataFilter.Color = IdColor
+    if (this.DataFilter.Branch.length == 0 && this.DataFilter.Catalog.length == 0) {
+      this.FilterProductForColor(this.productService.Listproduct, this.DataFilter.Color);
+    }
+    else {
+      if (this.DataFilter.Branch.length > 0 && this.DataFilter.Catalog.length == 0) {
+        this.FilterProductForColor(this.listTempBranchForProduct, this.DataFilter.Color);
+      }
+      if (this.DataFilter.Branch.length > 0 && this.DataFilter.Catalog.length > 0) {
+        this.FilterProductForColor(this.listTempCatalogForProduct, this.DataFilter.Color);
+      }
+      if (this.DataFilter.Branch.length == 0 && this.DataFilter.Catalog.length > 0) {
+        this.FilterProductForColor(this.listTempCatalogForProduct, this.DataFilter.Color);
+      }
+    }
   }
   getCart() {
     this.cartService.shoppingcart().subscribe(data => {
@@ -171,57 +253,84 @@ export class SearchComponent implements OnInit {
       })
     }
   }
-    //filter with branch
-    // FilterCatalog(idbranch) {
-    //   this.catalogService.GetListCatalog(idbranch).subscribe(result => {
-    //     this.catalogpost = result.data;
 
-    //   });
-    // }
-    // //filter with branch
-    // FilterProduct(idcatalog) {
-    //   this.productService.getListProduct(idcatalog).subscribe(data => {
-    //     this.productpost = data.products;
-    //   });
-    // }
-    //get list branch
-    GetListCatalog() {
-      if (this.catalogService.CheckExitCatalog() == 1) {
-        this.catalogpost = this.catalogService.ListCatalog;
-      }
-      else {
-        this.catalogService.getAllCatalogTemp((err, result) => {
-          if (err) {
-            this.alertService.error(err);
-          } else {
-            this.catalogpost = result.data;
-          }
-        })
-      }
-    }
-    // //filter with size
-    // FilterSize(size) {
-    //   this.productService.filterSize(size).subscribe(data => {
-    //     this.catalogpost = data.catalogs;
-    //     this.branchpost = data.branches;
-    //     this.productpost = data.products;
-    //   });
-    // }
-    // //filter with size
-    // FilterColor(color) {
-    //   this.productService.filterColor(color).subscribe(data => {
-    //     this.catalogpost = data.catalogs;
-    //     this.branchpost = data.branches;
-    //     this.productpost = data.products;
-    //   });
-    // }
-    ngOnInit() {
-      this.AllProduct();
-      this.GetListBranch(); // Get all blogs on component load
-      this.GetListCatalog();
-      this.GetListSize();
-      this.GetListColor();
-    }
-
-
+  GetListFilterCatalog() {
+    this.catalogService.GetAllCatalog().subscribe(result => {
+      this.catalogpost = result.data;
+    })
   }
+  GetListFilterProduct() {
+    this.productService.getAllProducts().subscribe(result => {
+      this.productpost = result.data;
+    })
+  }
+  GetListCatalog() {
+    if (this.catalogService.CheckExitCatalog() == 1) {
+      this.catalogpost = this.catalogService.ListCatalog;
+    }
+    else {
+      this.catalogService.getAllCatalogTemp((err, result) => {
+        if (err) {
+          this.alertService.error(err);
+        } else {
+          this.catalogpost = result.data;
+        }
+      })
+    }
+  }
+  AddToCart(product) {
+    var ItemProduct =
+      {
+        Product: {
+          _id: product._id,
+          ProductName: product.ProductName,
+          Image: product.Image.LeftImage.IdUrl,
+          ShortDescription: product.ShortDescription,
+          Price: product.Price,
+          Qty: 1,
+          Size: '40',
+          Color: 'red',
+        },
+        Promotion: {
+          _id: product.Promotion ? product.Promotion[0]._id : '',
+          PromotionName: product.Promotion ? product.Promotion[0].PromotionName : '',
+          Value: product.Promotion ? product.Promotion[0].Value : 0,
+          SaleEndDate: product.Promotion ? product.Promotion[0].SaleEndDate : null,
+          TypePromotion: product.Promotion ? product.Promotion[0].TypePromotion : '',
+        }
+      }
+    this.cartService.AddCart(ItemProduct).subscribe(result => {
+      if (!result.success) {
+        this.alertService.error(result.message);
+      } else {
+        this.alertService.success(result.message)
+        this.cartService.storage =
+          {
+            data: result.data,
+            TotalData: {
+              totalOrder: result.TotalData.totalOrder,
+              totalQtyOrder: result.TotalData.totalQtyOrder,
+            }
+          }
+        this.alertService.success(result.message)
+      }
+    });
+  }
+  onDetail(idparam) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        "Idproduct": idparam
+      }
+    };
+    this.router.navigate(["detailproduct"], navigationExtras);
+  }
+  ngOnInit() {
+    this.AllProduct();
+    this.GetListBranch(); // Get all blogs on component load
+    this.GetListCatalog();
+    this.GetListSize();
+    this.GetListColor();
+  }
+
+
+}

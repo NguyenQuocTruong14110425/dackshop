@@ -16,11 +16,11 @@ export class CheckoutComponent implements OnInit {
   ordermessage;
   messageClass;
   cartpost;
-  profile={
-    FullName:'',
-    Email:'',
-    Address:'',
-    NumberPhone:''
+  profile = {
+    FullName: '',
+    Email: '',
+    Address: '',
+    NumberPhone: ''
   };
   total
   Cart: Object
@@ -64,7 +64,6 @@ export class CheckoutComponent implements OnInit {
       if (!result.success) {
         this.alertService.error(result.message);
       } else {
-        console.log(result.data)
         this.profile = result.data
       }
     });
@@ -88,22 +87,27 @@ export class CheckoutComponent implements OnInit {
             totalQtyOrder: this.cartService.storage.TotalData.totalQtyOrder,
           }
         }
-        else
-        {
-          this.Cart = {
-            items: result.data,
-            totalOrder: result.TotalData.totalOrder,
-            totalQtyOrder: result.TotalData.totalQtyOrder,
+        else {
+          if (result != null || result != undefined) {
+            this.Cart = {
+              items: result.data,
+              totalOrder: result.TotalData.totalOrder,
+              totalQtyOrder: result.TotalData.totalQtyOrder,
+            }
           }
+          else {
+            this.Cart = null;
+          }
+
         }
       }
     })
     const order = {
       Cart: this.Cart,
-      FullName:  this.profile.FullName,
-      Address:  this.profile.Address,
-      PhoneNumber:  this.profile.NumberPhone,
-      Email:  this.profile.Email
+      FullName: this.profile.FullName,
+      Address: this.profile.Address,
+      PhoneNumber: this.profile.NumberPhone,
+      Email: this.profile.Email
     }
     this.orderService.createOrder(order).subscribe(result => {
       if (!result.success) {
@@ -111,7 +115,7 @@ export class CheckoutComponent implements OnInit {
       } else {
         this.alertService.success(result.message)
         this.removeAllCart();
-        this.router.navigate(['/home']);
+        this.router.navigate(["home"]);
       }
     });
   }
@@ -125,8 +129,8 @@ export class CheckoutComponent implements OnInit {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
         }
-        else
-        {
+        else {
+          console.log(result)
           this.cartpost = result.data;
           this.total = result.TotalData;
         }
@@ -143,8 +147,7 @@ export class CheckoutComponent implements OnInit {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
         }
-        else
-        {
+        else {
           this.cartpost = result.data;
           this.total = result.TotalData;
         }
@@ -162,8 +165,7 @@ export class CheckoutComponent implements OnInit {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
         }
-        else
-        {
+        else {
           this.cartpost = result.data;
           this.total = result.TotalData;
         }
@@ -181,8 +183,7 @@ export class CheckoutComponent implements OnInit {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
         }
-        else
-        {
+        else {
           this.cartpost = result.data;
           this.total = result.TotalData;
         }

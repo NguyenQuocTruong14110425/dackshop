@@ -10,7 +10,7 @@ module.exports = (router) => {
     // Tìm tất cả product có trong catalog có id catalog là  Idpram truyền vào
     router.get('/product/countproduct/', (req, res) => {
         var ProductConfig = new ProductDomain();
-        var Dataconfig =  ProductConfig.Getinit(function (err, result) {
+        var Dataconfig =  ProductConfig.AnalyzeProduct(function (err, result) {
             if (err) {
                 res.json({ success: false, message: err });
             } else {

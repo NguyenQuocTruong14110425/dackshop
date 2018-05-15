@@ -106,6 +106,8 @@ import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap/buttons/buttons.modul
 import { UserComponent } from './adminsite/user/user.component';
 import { SalechartComponent } from './adminsite/salechart/salechart.component';
 import { UserchartComponent } from './adminsite/userchart/userchart.component';
+//socket core
+import { WebsocketService } from './socketcore/websocket.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -209,7 +211,8 @@ import { UserchartComponent } from './adminsite/userchart/userchart.component';
     NgbButtonLabel,
     NgbDatepicker,
     AlertService,
-    TotalProductPipe
+    TotalProductPipe,
+    WebsocketService
   ],
   entryComponents: [EditmenuComponent, EditbranchComponent, EditcatalogComponent],
   bootstrap: [AppComponent]

@@ -2,6 +2,17 @@
   <div id="detail-display-wrapper" class="clearfix responsive-mid">
     <div id="detail-gallery-wrapper">
       <div id="detail-display-img-wrapper">
+          <div *ngIf="progress">
+              <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
+                <g>
+                  <rect class="bar" transform="translate(0,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(25,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(50,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(75,0)" y="15"></rect>
+                  <rect class="bar" transform="translate(100,0)" y="15"></rect>
+                </g>
+              </svg>
+            </div>
         <img *ngIf="!product?.Image.LeftImage.ImageLocal" class="primary-img" src='https://drive.google.com/uc?id={{product?.Image.LeftImageZoom.IdUrl}}'
           alt="" />
         <img *ngIf="product?.Image.LeftImage.ImageLocal" class="primary-img" src="data:image/png;base64,{{product?.Image.LeftImageZoom.ImageLocal?.data|decode64}}"

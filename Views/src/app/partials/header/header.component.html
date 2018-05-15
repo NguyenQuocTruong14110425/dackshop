@@ -321,9 +321,17 @@
 								</a>
 							</li>
 							<li>
-								<a (click)="openLogin(loginmodal)">
+								<a *ngIf="profileName!=null" routerLink='/profile'>
+									{{profileName}}
+									<i class="fa fa-angle-down"></i>
+								</a>
+								<a *ngIf="profileName==null" (click)="openLogin(loginmodal)">
 									<i class="fa fa-user" aria-hidden="true"></i>
 								</a>
+							</li>
+							<li>
+								<a *ngIf="profileName!=null" (click)="Logout()">
+									<i class="fa fa-user-plus" aria-hidden="true"></i>Logout</a>
 							</li>
 							<li class="checkout">
 								<a (click)="openCheckout(checkoutmodal)" id="cart">

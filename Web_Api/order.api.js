@@ -2,10 +2,22 @@ const OrderService = require('./controllers/orderService');
 var fs = require('fs');
 const EnumConstant = require('../Web_Config/EnumConstant.js');
 const config = require('../Web_Config/database');
+const ProductDomain = require('./business/Product.Domain');
+
 module.exports = (router) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
 
+    router.get('/order/analyzesale', (req, res) => {
+        var ProductConfig = new ProductDomain();
+        var Dataconfig =  ProductConfig.AnalyzeSale(function (err, result) {
+            if (err) {
+                res.json({ success: false, message: err });
+            } else {
+                res.json({ success: true, data: result });
+            }
+        })
+    });
     //Tìm tất cả Order và nhãn hiệu con nằm trong Order ||data:{dữ liệu trả về} message:{lỗi thông báo}
     router.get('/order/all/', (req, res) => {
         OrderService.findAllOrder(function (err, Orders) {

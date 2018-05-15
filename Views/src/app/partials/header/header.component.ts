@@ -49,14 +49,7 @@ export class HeaderComponent implements OnInit {
     this.cartService.storage;
     this.productService.Listproduct;
   }
-  openCheckout(checkout) {
-    const modalRefCreate = this.modalService.open(checkout);
-    modalRefCreate.result.then((data) => {
-    }, (reason) => {
-      this.productDetail = null;
-    });
-    this.getCart();
-  }
+
   openLogin(loginmodal) {
     const modalRefCreate = this.modalService.open(loginmodal);
     modalRefCreate.result.then((data) => {
@@ -163,19 +156,31 @@ export class HeaderComponent implements OnInit {
       this.productDetail = result.data;
     });
   }
+  openCheckout(checkout) {
+    this.getCart();
+    const modalRefCreate = this.modalService.open(checkout);
+    modalRefCreate.result.then((data) => {
+    }, (reason) => {
+      this.productDetail = null;
+    });
+  }
   getCart() {
     this.cartService.getCartDetail((err, result) => {
       if (err) {
-        this.alertService.error(err);
       } else {
-        console.log(this.cartService.storage)
         if (this.cartService.storage != undefined || this.cartService.storage != null) {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
         }
         else {
-          this.cartpost = result.data;
-          this.total = result.TotalData;
+          if (result != null || result != undefined) {
+            this.cartpost = result.data;
+            this.total = result.TotalData;
+          }
+          else {
+            this.cartpost = null
+            this.total = null
+          }
         }
       }
     })
@@ -185,7 +190,7 @@ export class HeaderComponent implements OnInit {
       if (err) {
         this.alertService.error(err);
       } else {
-        this.alertService.success(result.message)
+        this.alertService.success("Remove success")
         if (this.cartService.storage != undefined || this.cartService.storage != null) {
           this.cartpost = this.cartService.storage.data;
           this.total = this.cartService.storage.TotalData;
@@ -282,8 +287,6 @@ export class HeaderComponent implements OnInit {
         this.searchmess = result.message;
       } else {
         this.searchmess = result.message;
-        this.isLogin = false;
-        window.location.reload();
       }
     });
   };
