@@ -16,8 +16,7 @@
 
 
 /*************************** */
-$(document).ready(function () {
-});
+
 jQuery(document).ready(function ($) {
 	"use strict";
 
@@ -347,21 +346,21 @@ jQuery(document).ready(function ($) {
 	*/
 
 	function initSlider() {
-		if ($('.product_slider').length) {
-			var slider1 = $('.product_slider');
+		if ($('.row__inner').length) {
+			var slider1 = $('.row__inner');
 
 			slider1.owlCarousel({
-				loop: false,
+				loop: true,
 				dots: false,
 				nav: false,
 				responsive:
 					{
 						0: { items: 1 },
 						480: { items: 2 },
-						768: { items: 3 },
-						991: { items: 4 },
-						1280: { items: 5 },
-						1440: { items: 5 }
+						768: { items: 2 },
+						991: { items: 3 },
+						1280: { items: 4 },
+						1440: { items: 4 }
 					}
 			});
 

@@ -5,6 +5,7 @@ import { OrderService } from '../../webservice/order.service';
 import { AuthService } from '../../webservice/auth.service';
 import { AlertService } from '../../webservice/alert.service';
 import { CartService } from '../../webservice/cart.service';
+import { PaymentService } from '../../webservice/payment.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-checkout',
@@ -20,7 +21,8 @@ export class CheckoutComponent implements OnInit {
     FullName: '',
     Email: '',
     Address: '',
-    NumberPhone: ''
+    NumberPhone: '',
+    paymentMethod:''
   };
   total
   Cart: Object
@@ -30,41 +32,27 @@ export class CheckoutComponent implements OnInit {
     private AuthService: AuthService,
     private alertService: AlertService,
     private cartService: CartService,
+    private paymentService: PaymentService,
     private router: Router
   ) {
     // this.createForm();
     this.cartService.storage;
   }
   // createForm() {
-  //   this.AuthService.profile().subscribe(result => {
-  //     if (result.success) {
   //       this.orderform = this.FormBuilder.group({
-  //         FullName: result.data.FullName || '',
-  //         Address: result.data.Address || '',
-  //         Email: result.data.Email || '',
-  //         PhoneNumber: result.data.NumberPhone || '',
-  //         paymentcard: '',
-  //         Qty: ''
+  //         paymentMethod: '',
   //       })
-  //     } else {
-  //       this.orderform = this.FormBuilder.group({
-  //         FullName: '',
-  //         Address: '',
-  //         Email: '',
-  //         PhoneNumber: '',
-  //         paymentcard: '',
-  //         Qty: ''
-  //       })
-  //     }
-  //   });
-
   // }
+
   getProfile() {
     this.AuthService.profile().subscribe(result => {
       if (!result.success) {
         this.alertService.error(result.message);
       } else {
-        this.profile = result.data
+        if(result!=null)
+        {
+          this.profile = result.data
+        }
       }
     });
   }
@@ -107,17 +95,28 @@ export class CheckoutComponent implements OnInit {
       FullName: this.profile.FullName,
       Address: this.profile.Address,
       PhoneNumber: this.profile.NumberPhone,
-      Email: this.profile.Email
+      Email: this.profile.Email,
+      paymentMethod: this.profile.paymentMethod
     }
-    this.orderService.createOrder(order).subscribe(result => {
-      if (!result.success) {
-        this.alertService.error(result.message);
-      } else {
-        this.alertService.success(result.message)
-        this.removeAllCart();
-        this.router.navigate(["home"]);
-      }
-    });
+    this.paymentService.PaymentCheckout(order).subscribe(result => {
+        if (!result.success) {
+          this.alertService.error(result.message);
+          // window.location.href ='https://sandbox.nganluong.vn:8088/nl30/checkout/version31/index/token_code/64794-b9d1215f29350f0e8f6fe3f655ee9e5e'
+        } else {
+          console.log(result)
+          // this.alertService.success(result.message)
+          window.location.href = result.data;
+        }
+      });
+    // this.orderService.createOrder(order).subscribe(result => {
+    //   if (!result.success) {
+    //     this.alertService.error(result.message);
+    //   } else {
+    //     this.alertService.success(result.message)
+    //     this.removeAllCart();
+    //     this.router.navigate(["home"]);
+    //   }
+    // });
   }
   removeAllCart() {
     this.cartService.getreRemoveAllCart((err, result) => {
@@ -200,8 +199,11 @@ export class CheckoutComponent implements OnInit {
           this.total = this.cartService.storage.TotalData;
         }
         else {
-          this.cartpost = result.data;
-          this.total = result.TotalData;
+          if(result)
+          {
+            this.cartpost = result.data;
+            this.total = result.TotalData;
+          }
         }
       }
     })

@@ -107,9 +107,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.AllProduct();
-      this.productService.messages.subscribe(msg => {
-        console.log("test")
-        console.log('subcripb :' + msg);
-      });
+      // this.productService.messages.subscribe(msg => {
+      //   console.log("test")
+      //   console.log('subcripb :' + msg);
+      // });
   }
 }

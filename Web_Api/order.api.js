@@ -39,6 +39,17 @@ module.exports = (router) => {
 
         });
     });
+     //Tìm Order theo mã đơn hàng
+     router.get('/order/trackingcode/:codeparam', (req, res) => {
+        OrderService.findOrderByCode(req.params.codeparam, function (err, Orders) {
+            if (err) {
+                res.json({ success: false, message: err ? err : mess.SearchFail });
+            } else {
+                res.json({ success: true, message: mess.SearchSuccess, data: Orders });
+            }
+
+        });
+    });
     // tạo mới một đối tượng Order vào database
     // lưu ý : req.body truyền vào phải tương ứng với Entity name trong model
 

@@ -112,3 +112,24 @@ $max: 100px;
     height: 80px;
   }
 }
+.star {
+  font-size: 2rem;
+  color: #b0c4de;
+}
+.filled {
+  color: #ff0000;
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ffe600;
+}
+ngb-progressbar {
+  display: inline-block;
+  height: 12px;
+  margin: 10px 20px 10px 15px;
+  vertical-align: middle;
+  width: 250px;
+  border-radius: 10px;
+}

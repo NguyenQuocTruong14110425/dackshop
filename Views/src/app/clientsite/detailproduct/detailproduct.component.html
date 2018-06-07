@@ -2,17 +2,17 @@
   <div id="detail-display-wrapper" class="clearfix responsive-mid">
     <div id="detail-gallery-wrapper">
       <div id="detail-display-img-wrapper">
-          <div *ngIf="progress">
-              <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
-                <g>
-                  <rect class="bar" transform="translate(0,0)" y="15"></rect>
-                  <rect class="bar" transform="translate(25,0)" y="15"></rect>
-                  <rect class="bar" transform="translate(50,0)" y="15"></rect>
-                  <rect class="bar" transform="translate(75,0)" y="15"></rect>
-                  <rect class="bar" transform="translate(100,0)" y="15"></rect>
-                </g>
-              </svg>
-            </div>
+        <div *ngIf="progress">
+          <svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
+            <g>
+              <rect class="bar" transform="translate(0,0)" y="15"></rect>
+              <rect class="bar" transform="translate(25,0)" y="15"></rect>
+              <rect class="bar" transform="translate(50,0)" y="15"></rect>
+              <rect class="bar" transform="translate(75,0)" y="15"></rect>
+              <rect class="bar" transform="translate(100,0)" y="15"></rect>
+            </g>
+          </svg>
+        </div>
         <img *ngIf="!product?.Image.LeftImage.ImageLocal" class="primary-img" src='https://drive.google.com/uc?id={{product?.Image.LeftImageZoom.IdUrl}}'
           alt="" />
         <img *ngIf="product?.Image.LeftImage.ImageLocal" class="primary-img" src="data:image/png;base64,{{product?.Image.LeftImageZoom.ImageLocal?.data|decode64}}"
@@ -82,7 +82,7 @@
           <p>Color:</p>
           <ul id="detail-all-size" class="clearfix">
             <li *ngFor="let color of product?.Color">
-              <button *ngIf="color.IsActive==true" type="button"  (click)="changeColor(color.IdColor?.ColorName)" [ngStyle]="IsChangeColor==color.IdColor?.ColorName?{'background': '#66cc00','color':'#fff'}:{'background':color.IdColor?.ValueHex}">{{color.IdColor?.ColorName}}</button>
+              <button *ngIf="color.IsActive==true" type="button" (click)="changeColor(color.IdColor?.ColorName)" [ngStyle]="IsChangeColor==color.IdColor?.ColorName?{'background': '#66cc00','color':'#fff'}:{'background':color.IdColor?.ValueHex}">{{color.IdColor?.ColorName}}</button>
               <label *ngIf="color.IsActive==false" [ngStyle]="{'background':color.IdColor?.ValueHex}" class="colordisabled">
                 <input type="radio">
                 <i class="fa fa-minus-circle" aria-hidden="true"></i>
@@ -95,7 +95,7 @@
             <p>Size:</p>
             <ul id="detail-all-size" class="clearfix">
               <li *ngFor="let size of product?.Size">
-                  <button *ngIf="size.IsActive==true" type="button"  (click)="changeSize(size.IdSize?.SizeName)" [ngStyle]="IsChangeSize==size.IdSize?.SizeName?{'background': '#66cc00','color':'#fff'}:null">{{size.IdSize?.SizeName}}</button>
+                <button *ngIf="size.IsActive==true" type="button" (click)="changeSize(size.IdSize?.SizeName)" [ngStyle]="IsChangeSize==size.IdSize?.SizeName?{'background': '#66cc00','color':'#fff'}:null">{{size.IdSize?.SizeName}}</button>
                 <label class="disabled" *ngIf="size.IsActive==false">
                   <input type="radio">{{size.IdSize?.SizeName}}
                 </label>
@@ -111,7 +111,7 @@
               <i class="fa fa-minus" aria-hidden="true"></i>
             </span>
             <input style="text-align: center" min="1" [(ngModel)]="IsChangQty" id="IsChangQty" name="IsChangQty" class="form-control underlined">
-            <span class="input-group-addon"  (click)="ChangeQty(1)">
+            <span class="input-group-addon" (click)="ChangeQty(1)">
               <i class="fa fa-plus" aria-hidden="true"></i>
             </span>
           </div>
@@ -124,5 +124,302 @@
         </div>
       </form>
     </div>
+
+  </div>
+
+</div>
+<div class="wrap-comment">
+  <div class="product-customer-box">
+    <div class="product-customer-title">
+      <a id="review" name="goto_write_review">
+        <h2>Khách Hàng Nhận Xét</h2>
+      </a>
+    </div>
+    <div class="product-customer-content">
+
+      <div class="product-customer-col-1 hidden">
+        <h4>Đánh Giá Trung Bình</h4>
+        <p class="total-review-point">{{product?.Rate?.AvgRate}}/5</p>
+        <div class="item-rating" style="text-align: center">
+          <p class="rating">
+
+            <ngb-rating [readonly]="true" [rate]="product?.Rate?.AvgRate">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 2">
+                  &#9733;
+                </span>
+              </ng-template>
+            </ngb-rating>
+          </p>
+
+          <p class="comments-count">
+            <a>({{product?.Rate?.TotalRate}} comment)</a>
+          </p>
+        </div>
+      </div>
+      <div class="product-customer-col-2">
+        <div>
+          <span class="rating-num">
+            <ngb-rating [readonly]="true" [rate]="5"></ngb-rating>
+          </span>
+          <ngb-progressbar [value]="product?.Rate?.FiveStar"></ngb-progressbar>
+          <span class="rating-num-total">{{product?.Rate?.FiveStar}}%</span>
+        </div>
+        <div>
+          <span class="rating-num">
+            <ngb-rating [readonly]="true" [rate]="4"></ngb-rating>
+          </span>
+          <ngb-progressbar [value]="product?.Rate?.FourStar"></ngb-progressbar>
+          <span class="rating-num-total">{{product?.Rate?.FourStar}}%</span>
+        </div>
+        <div>
+          <span class="rating-num">
+            <ngb-rating [readonly]="true" [rate]="3"></ngb-rating>
+          </span>
+          <ngb-progressbar [value]="product?.Rate?.ThreeStar"></ngb-progressbar>
+          <span class="rating-num-total">{{product?.Rate?.ThreeStar}}%</span>
+        </div>
+        <div>
+          <span class="rating-num">
+            <ngb-rating [readonly]="true" [rate]="2"></ngb-rating>
+          </span>
+          <ngb-progressbar [value]="product?.Rate?.TwoStar"></ngb-progressbar>
+          <span class="rating-num-total">{{product?.Rate?.TwoStar}}%</span>
+        </div>
+        <div>
+          <span class="rating-num">
+            <ngb-rating [readonly]="true" [rate]="1"></ngb-rating>
+          </span>
+          <ngb-progressbar [value]="product?.Rate?.OneStar"></ngb-progressbar>
+          <span class="rating-num-total">{{product?.Rate?.OneStar}}%</span>
+        </div>
+      </div>
+      <div class="product-customer-col-3 hidden">
+        <h4>Chia sẻ nhận xét về sản phẩm</h4>
+
+        <button type="button" class="btn btn-default js-customer-button" (click)="openComment(commentmodal)">
+          Viết nhận xét của bạn
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="product-customer-box">
+    <div class="product-customer-content">
+      <div class="product-review-box">
+        <div class="review-filter">
+          <p>Chọn xem nhận xét</p>
+          <div class="btn-group dropdown">
+            <select class="form-control" placeholder="Choose a type shipping">
+              <option> Ship COD </option>
+              <option> Express Delivery </option>
+              <option> Delivery</option>
+            </select>
+          </div>
+          <div class="btn-group dropdown">
+            <select class="form-control" placeholder="Choose a type shipping">
+              <option> Ship COD </option>
+              <option> Express Delivery </option>
+              <option> Delivery</option>
+            </select>
+          </div>
+          <div class="btn-group dropdown">
+            <select class="form-control" placeholder="Choose a type shipping">
+              <option> Ship COD </option>
+              <option> Express Delivery </option>
+              <option> Delivery</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-review-box">
+        <div class="product-review-content">
+          <div class="item" *ngFor="let comment of commentpost|paginate:pagingComment.step:pagingComment.page:pagingComment.size">
+            <div class="product-col-1">
+              <div class="image">
+                <div class="avatar-img" style="background-image: url(&quot;https://graph.facebook.com/10208045575737322/picture?width=50&quot;);"></div>
+              </div>
+              <p class="name">{{comment?.User?.FullName}}</p>
+              <p class="from">Tp. HCM</p>
+              <p class="days">{{comment?.DatePosted| date:'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="product-col-2">
+              <div class="infomation">
+                <div class="rating">
+                  <ngb-rating [readonly]="true" [rate]="comment?.RateComment"></ngb-rating>
+                </div>
+                <p *ngIf="comment?.RateComment==5" class="review">Sản phẩm thật tốt!</p>
+                <p *ngIf="comment?.RateComment==4" class="review">Sản phẩm hữu ích!</p>
+                <p *ngIf="comment?.RateComment==3" class="review">Sản phẩm có thể sài được!</p>
+                <p *ngIf="comment?.RateComment==2" class="review">Sản phẩm không ổn!</p>
+                <p *ngIf="comment?.RateComment==1" class="review">Sản phẩm quá tệ!</p>
+                <p *ngIf="comment?.User!=null" class="buy-already">Đã mua sản phẩm này tại Dask web</p>
+                <p *ngIf="comment?.User==null" class="buy-already">Khách qua đường</p>
+                <div class="description js-description">
+                  <div class="review_detail">
+                    <span>
+                      {{comment?.Content}}
+                    </span>
+                  </div>
+                </div>
+                <div class="link">
+                  <div class="review_action">
+                    <a class="js-quick-reply">Gửi trả lời</a>
+                    <span>Nhận xét này hữu ích với bạn?</span>
+                    <ngb-rating class="star" ([rate])="currentRate"></ngb-rating>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="text-right">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" (click)="onChangePage(pagingComment.page-1)"> Prev </a>
+          </li>
+          <li class="page-item" *ngFor="let index of pagingComment.totalpage;">
+            <a class="page-link" (click)="onChangePage(index)"> {{index}}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" (click)="onChangePage(pagingComment.page+1)"> Next </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
+
+<!-- <div class="contain">
+
+    <div class="row-slider">
+      <div class="owl-carousel owl-theme row__inner">
+  
+        <div class="owl-item  tile">
+          <div class="tile__media">
+            <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+          </div>
+          <div class="tile__details">
+            <div class="tile__title">
+              Top Gear
+            </div>
+          </div>
+        </div>
+        <div class="owl-item  tile">
+            <div class="tile__media">
+              <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+            </div>
+            <div class="tile__details">
+              <div class="tile__title">
+                Top Gear
+              </div>
+            </div>
+          </div>
+          <div class="owl-item  tile">
+              <div class="tile__media">
+                <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+              </div>
+              <div class="tile__details">
+                <div class="tile__title">
+                  Top Gear
+                </div>
+              </div>
+            </div>
+            <div class="owl-item  tile">
+                <div class="tile__media">
+                  <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+                </div>
+                <div class="tile__details">
+                  <div class="tile__title">
+                    Top Gear
+                  </div>
+                </div>
+              </div>
+              <div class="owl-item  tile">
+                  <div class="tile__media">
+                    <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+                  </div>
+                  <div class="tile__details">
+                    <div class="tile__title">
+                      Top Gear
+                    </div>
+                  </div>
+                </div>
+                <div class="owl-item  tile">
+                    <div class="tile__media">
+                      <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+                    </div>
+                    <div class="tile__details">
+                      <div class="tile__title">
+                        Top Gear
+                      </div>
+                    </div>
+                  </div>
+                  <div class="owl-item  tile">
+                      <div class="tile__media">
+                        <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+                      </div>
+                      <div class="tile__details">
+                        <div class="tile__title">
+                          Top Gear
+                        </div>
+                      </div>
+                    </div>
+                    <div class="owl-item  tile">
+                        <div class="tile__media">
+                          <img class="tile__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/show-1.jpg" alt=""  />
+                        </div>
+                        <div class="tile__details">
+                          <div class="tile__title">
+                            Top Gear
+                          </div>
+                        </div>
+                      </div>
+
+
+      </div>
+      <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </div>
+        <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+    </div>
+  
+  </div> -->
+
+
+
+<!-- modal comment -->
+<ng-template #commentmodal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-warning"></i> Your comment</h4>
+    <button type="button" class="btn btn-secondary" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="formComment" (submit)="commentSubmit()">
+
+    <div class="modal-body">
+      <ngb-rating [(rate)]="commentRatePost">
+        <ng-template let-fill="fill" let-index="index">
+          <span class="star" [class.filled]="fill === 100" [class.bad]="index < 2">
+            &#9733;
+          </span>
+        </ng-template>
+      </ngb-rating>
+      <div class="form-group">
+        <label class="control-label">Comment</label>
+        <textarea type="text" rows="2" formControlName="comment" class="form-control underlined" placeholder="Enter 500 character for comment"></textarea>
+        <span class="has-success">100 character </span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" id="btncomment" name="btncomment" class="btn btn-info" (click)="c('Close click')">Comment</button>
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">cancel</button>
+    </div>
+  </form>
+</ng-template>

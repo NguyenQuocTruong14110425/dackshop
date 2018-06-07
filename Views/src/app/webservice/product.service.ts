@@ -17,13 +17,13 @@ export class ProductService {
     private http: Http,
     private websocket: WebsocketService
   ) {
-    this.messages = <Subject<string>>this.websocket
-    .connect(SERVER_URL)
-    .map((response: MessageEvent): any => {
-      let data = JSON.parse(response.data);
-      console.log('message data' + data);
-      return data;
-    });
+    // this.messages = <Subject<string>>this.websocket
+    // .connect(SERVER_URL)
+    // .map((response: MessageEvent): any => {
+    //   let data = JSON.parse(response.data);
+    //   console.log('message data' + data);
+    //   return data;
+    // });
    }
 
   //product
@@ -44,6 +44,9 @@ export class ProductService {
   }
   deleteProduct(id) {
     return this.http.delete(this.domain + '/product/delete/' + id).map(res => res.json());
+  }
+  commentProduct(comment) {
+    return this.http.put(this.domain + '/product/comment/', comment).map(res => res.json());
   }
   getListProduct(idcatalog) {
     return this.http.get(this.domain + '/product/allforcatalog/' + idcatalog).map(res => res.json());

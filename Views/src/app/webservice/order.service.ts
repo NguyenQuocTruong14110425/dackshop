@@ -30,6 +30,9 @@ export class OrderService {
   getDetailOrder(id) {
     return this.http.get(this.domain + '/order/detail/' + id).map(res => res.json());
   }
+  getOrderByCode(code) {
+    return this.http.get(this.domain + '/order/trackingcode/' + code).map(res => res.json());
+  }
   createOrder(order) {
     return this.http.post(this.domain + '/order/add/', order).map(res => res.json());
   }

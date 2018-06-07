@@ -30,6 +30,7 @@ var schema = new Schema({
         totalOrder: { type: Number, default: 0 },
         totalQtyOrder: { type: Number, default: 0 }
     },
+    Code:{ type: String, required: true },
     Address: { type: String, required: true },
     Email: { type: String, required: true },
     FullName: { type: String, required: true },

@@ -23,6 +23,7 @@ const shippingRouter = require('./Web_Api/shipping.api')(router);
 const promotionRouter = require('./Web_Api/promotion.api')(router);
 const orderRouter = require('./Web_Api/order.api')(router);
 const cartRouter = require('./Web_Api/cart.api')(router);
+const PaymentRouter = require('./Web_Api/payment.api')(router);
 const config = require('./Web_Config/database');
 var ws = require('nodejs-websocket');
 const port = process.env.PORT || 8080;
@@ -78,7 +79,8 @@ app.use(cors(corsOptions),
     promotionRouter,
     shippingRouter,
     orderRouter,
-    userRouter);
+    userRouter,
+    PaymentRouter);
 
 var corsOptions = {
     origin: angularHostting,
@@ -95,34 +97,34 @@ app.use(function (req, res, next) {
 });
 // development error handler
 // start server
-var chatServer = ws.createServer(function (conn) {
-	console.log('New Chat connection established.', new Date().toLocaleTimeString());
-	conn.on('text', function (msg) {
-		// simple object transformation (= add current time)
-		var msgObj = JSON.parse(msg);
-		msgObj.newDate = new Date().toLocaleTimeString();
-		var newMsg = JSON.stringify(msgObj);
+// var chatServer = ws.createServer(function (conn) {
+// 	console.log('New Chat connection established.', new Date().toLocaleTimeString());
+// 	conn.on('text', function (msg) {
+// 		// simple object transformation (= add current time)
+// 		var msgObj = JSON.parse(msg);
+// 		msgObj.newDate = new Date().toLocaleTimeString();
+// 		var newMsg = JSON.stringify(msgObj);
 
-		// echo message including the new field to all connected clients
-		chatServer.connections.forEach(function (conn) {
-			conn.sendText(newMsg);
-			console.log('server emit: ',newMsg);
-		});
-	});
-	conn.on('close', function (code, reason) {
-		console.log('Chat connection closed.', new Date().toLocaleTimeString(), 'code: ', code);
-	});
+// 		// echo message including the new field to all connected clients
+// 		chatServer.connections.forEach(function (conn) {
+// 			conn.sendText(newMsg);
+// 			console.log('server emit: ',newMsg);
+// 		});
+// 	});
+// 	conn.on('close', function (code, reason) {
+// 		console.log('Chat connection closed.', new Date().toLocaleTimeString(), 'code: ', code);
+// 	});
 
-	conn.on('error', function (err) {
-		// only throw if something else happens than Connection Reset
-		if (err.code !== 'ECONNRESET') {
-			console.log('Error in Chat Socket connection', err);
-			throw  err;
-		}
-	})
-}).listen(3000, function () {
-	console.log('Chat socketserver running on::' + config.domain + '::3000' );
-});
+// 	conn.on('error', function (err) {
+// 		// only throw if something else happens than Connection Reset
+// 		if (err.code !== 'ECONNRESET') {
+// 			console.log('Error in Chat Socket connection', err);
+// 			throw  err;
+// 		}
+// 	})
+// }).listen(3000, function () {
+// 	console.log('Chat socketserver running on::' + config.domain + '::3000' );
+// });
 
 var server = app.listen(port,config.domain, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);

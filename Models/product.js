@@ -36,7 +36,8 @@ var ProductSchema = new Schema({
         Content: { type: String, lowercase: true },
         DatePosted: { type: Date },
         Image: { type: String },
-        Rate: [{ type: Number }]
+        RateComment: { type: Number , default: 0},
+        Rate: { type: Number , default: 0}
     }],
     Rate: {
         OneStar: { type: Number, default: 0 },

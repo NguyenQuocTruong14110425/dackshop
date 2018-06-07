@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from '../../webservice/order.service';
 import { ProductService } from '../../webservice/product.service';
+import { AlertService } from '../../webservice/alert.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-tracking',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./tracking.component.css']
 })
 export class TrackingComponent implements OnInit {
-  orderpost;
+  DetailOrder;
   formsearch: FormGroup
   products;
   orderstatus=false;
@@ -22,6 +23,7 @@ export class TrackingComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private orderService: OrderService,
     private productService: ProductService,
+    private alertService: AlertService,
     private router: Router
   ) { this.createForm(); }
   createForm() {
@@ -31,18 +33,15 @@ export class TrackingComponent implements OnInit {
       ])],
     });
   }
-  GetphoneForOrder(phone) {
+  GetCodeForOrder(code) {
     this.orderdetailstatus=false;
-    this.orderService.getDetailOrder(phone).subscribe(data => {
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.orderstatus=false;
+    this.orderService.getOrderByCode(code).subscribe(result => {
+      if (!result.success) {
+        this.alertService.error(result.message);
       } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
+        this.alertService.success(result.message)
         this.orderstatus=true;
-        this.orderpost = data.orders;
+        this.DetailOrder = result.data;
       }
     });
   }

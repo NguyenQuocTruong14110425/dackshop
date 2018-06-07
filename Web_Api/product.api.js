@@ -77,16 +77,34 @@ module.exports = (router) => {
 
 
     //cập nhật một product bất kỳ với id là idparam truyên vào
-    router.put('/product/update/:idparam', (req, res) => {
-        ProductService.updateProduct(req.params.idparam, req.body, function (err, dataproducts) {
+    router.put('/product/update/', (req, res) => {
+        ProductService.updateProduct(req.body, function (err, dataproducts) {
             if (err) {
-                res.json({ message: err ? err : mess.UpdateFail });
+                res.json({ success: false,message: err ? err : mess.UpdateFail });
             } else {
-                ProductService.findProductById(req.params.idparam, function (err, products) {
+                ProductService.findProductById(req.body._id, function (err, products) {
                     if (err) {
-                        res.json({ message: err ? err : mess.UpdateFail });
+                        res.json({success: false, message: err ? err : mess.UpdateFail });
                     } else {
-                        res.json({ message: mess.UpdateSuccess, data: products });
+                        res.json({ success: true,message: mess.UpdateSuccess, data: products });
+                    }
+
+                });
+            }
+
+        });
+    });
+      //cập nhật một product bất kỳ với id là idparam truyên vào
+      router.put('/product/comment/', (req, res) => {
+        ProductService.commentProduct(req.body, function (err, dataproducts) {
+            if (err) {
+                res.json({ success: false,message: err ? err : mess.UpdateFail });
+            } else {
+                ProductService.findProductById(req.body._id, function (err, products) {
+                    if (err) {
+                        res.json({success: false, message: err ? err : mess.UpdateFail });
+                    } else {
+                        res.json({ success: true,message: mess.UpdateSuccess, data: products });
                     }
 
                 });
@@ -98,13 +116,13 @@ module.exports = (router) => {
     router.delete('/product/delete/:idparam', (req, res) => {
         ProductService.removeProduct(req.params.idparam, function (err, products) {
             if (err) {
-                res.json({ message: err ? err : mess.RemoveFail });
+                res.json({ success: false,message: err ? err : mess.RemoveFail });
             } else {
                 CatalogService.findCatalogById(products.idOldParent, function (err, catalogs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.RemoveFail });
+                        res.json({ success: false,message: err ? err : mess.RemoveFail });
                     } else {
-                        res.json({ message: mess.RemoveSuccess, data: catalogs });
+                        res.json({ success: true,message: mess.RemoveSuccess, data: catalogs });
                     }
 
                 });
@@ -116,13 +134,13 @@ module.exports = (router) => {
     router.delete('/product/removeall/:idparam', (req, res) => {
         ProductService.removeAllProduct(req.params.idparam, function (err, data) {
             if (err) {
-                res.json({ message: err ? err : mess.RemoveFail });
+                res.json({ success: false,message: err ? err : mess.RemoveFail });
             } else {
                 CatalogService.findCatalogById(req.params.idparam, function (err, catalogs) {
                     if (err) {
-                        res.json({ message: err ? err : mess.RemoveFail });
+                        res.json({ success: false,message: err ? err : mess.RemoveFail });
                     } else {
-                        res.json({ message: mess.RemoveSuccess, data: catalogs });
+                        res.json({ success: true,message: mess.RemoveSuccess, data: catalogs });
                     }
 
                 });

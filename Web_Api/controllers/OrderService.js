@@ -1,8 +1,8 @@
 const Order = require('../../Models/Order');
 const Valid = require('../lib/Valid.js');
+var Code = require('../lib/coupon.code');
 
 const EnumConstant = require('../../Web_Config/EnumConstant.js');
-
 var Enum = new EnumConstant();
 var mess = {} = Enum.DataMessage;
 
@@ -34,6 +34,19 @@ class OrderService {
                 return callback(err.message);
             })
     };
+        //hàm tìm một Order theo id tuyền vào
+        findOrderByCode(codeparam, callback) {
+            Order.findOne({Code:codeparam})
+                .populate({ path: "IdShipping" })
+                .execAsync()
+                .then(function (data) {
+                    if (data == null || data == undefined) return callback(mess.SearchFail);
+                    return callback(null, data);
+                })
+                .catch(err => {
+                    return callback(err.message);
+                })
+        };
     // hàm thêm một Order
     addOrder(OrderModel, callback) {
         let DataSet = this.getDataOrderForInsert(OrderModel);
@@ -72,8 +85,13 @@ class OrderService {
     //hàm lấy dữ liệu khi thêm mới
     getDataOrderForInsert(data) {
         let newOrder = new Order();
+        var objCode = Code.generate({
+            parts: 1,
+            partLen: 6,
+        })
         newOrder.Cart = data.Cart;
         newOrder.FullName = data.FullName,
+            newOrder.Code = objCode,
             newOrder.Address = data.Address,
             newOrder.PhoneNumber = data.PhoneNumber,
             newOrder.Email = data.Email,
@@ -91,6 +109,9 @@ class OrderService {
             }
         if (data.Cart) {
             Order.Cart = data.Cart;
+        }
+        if (data.Code) {
+            Order.Code = data.Code;
         }
         if (data.FullName) {
             Order.FullName = data.FullName;

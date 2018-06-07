@@ -9,7 +9,9 @@ import {
   NgbTimepickerConfig,
   NgbRadioGroup,
   NgbDatepicker,
-  NgbDateStruct
+  NgbDateStruct,
+  NgbRatingConfig,
+  NgbProgressbarConfig
 } from '@ng-bootstrap/ng-bootstrap';
 import 'hammerjs';
 import { AppComponent } from './app.component';
@@ -59,6 +61,7 @@ import { ProductService } from './webservice/product.service';
 import { GeneralService } from './webservice/general.service';
 import { ImageService } from './webservice/image.service';
 import { AlertService } from './webservice/alert.service';
+import { PaymentService } from './webservice/payment.service';
 
 //pipe
 import {
@@ -193,6 +196,7 @@ import { WebsocketService } from './socketcore/websocket.service';
   providers: [
     AuthService,
     MenuService,
+    PaymentService,
     BranchService,
     PromotionService,
     CatalogService,
@@ -212,7 +216,9 @@ import { WebsocketService } from './socketcore/websocket.service';
     NgbDatepicker,
     AlertService,
     TotalProductPipe,
-    WebsocketService
+    WebsocketService,
+    NgbRatingConfig,
+    NgbProgressbarConfig
   ],
   entryComponents: [EditmenuComponent, EditbranchComponent, EditcatalogComponent],
   bootstrap: [AppComponent]
