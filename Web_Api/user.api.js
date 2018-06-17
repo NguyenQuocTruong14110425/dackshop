@@ -3,7 +3,7 @@ const UserService = require('./controllers/UserService');
 var fs = require('fs');
 const EnumConstant = require('../Web_Config/EnumConstant.js');
 
-module.exports = (router) => {
+module.exports = (router,passport) => {
     var Enum = new EnumConstant();
     var mess = {} = Enum.DataMessage;
     //đăng ký tài khoản một user
@@ -122,6 +122,10 @@ module.exports = (router) => {
     // tìm thông tin của một người
     router.get('/user/profile/', (req, res) => {
         if (!req.session.customer) {
+            req.session.customer = {
+                user: req.user,
+                cart: null
+            }
             res.json({ success: false, message: mess.NotSignUser });
         }
         else {
@@ -175,8 +179,29 @@ module.exports = (router) => {
             }
         }
     });
+    // facebook -------------------------------
 
+    // send to facebook to do the authentication
+    router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
 
+    // handle the callback after facebook has authenticated the user
+    router.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect: '/#/profile',
+            failureRedirect: '/#/home'
+        }));
 
-    return router;
+    // google ---------------------------------
+
+    // send to google to do the authentication
+    router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+    router.get('/auth/google/callback',
+        passport.authenticate('google', {
+            successRedirect: '/#/profile',
+            failureRedirect: '/#/home'
+        }));
+
+return router;
 }

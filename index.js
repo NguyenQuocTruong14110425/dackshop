@@ -10,11 +10,12 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 const MongoStore = require('connect-mongo')(session);
-const userRouter = require('./Web_Api/user.api')(router);
+const userRouter = require('./Web_Api/user.api')(router,passport);
 const productRouter = require('./Web_Api/product.api')(router);
 const menuRouter = require('./Web_Api/menu.api')(router);
 const branchRouter = require('./Web_Api/branch.api')(router);
 const catalogRouter = require('./Web_Api/catalog.api')(router);
+const cartRouter = require('./Web_Api/cart.api')(router);
 const sizeRouter = require('./Web_Api/size.api')(router);
 const colorRouter = require('./Web_Api/color.api')(router);
 const folderRouter = require('./Web_Api/folder.api')(router);
@@ -22,7 +23,6 @@ const imageRouter = require('./Web_Api/image.api')(router);
 const shippingRouter = require('./Web_Api/shipping.api')(router);
 const promotionRouter = require('./Web_Api/promotion.api')(router);
 const orderRouter = require('./Web_Api/order.api')(router);
-const cartRouter = require('./Web_Api/cart.api')(router);
 const PaymentRouter = require('./Web_Api/payment.api')(router);
 const config = require('./Web_Config/database');
 var ws = require('nodejs-websocket');
@@ -58,6 +58,7 @@ app.use(function (req, res, next) {
     req.session.cookie.maxAge = 180 * 60 * 1000; // 3 hours
     next();
 });
+require('./Web_Config/passport')(passport); // pass passport for configuration
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,7 +67,6 @@ app.use(function (req, res, next) {
     next();
 });
 //
-
 app.use(cors(corsOptions),
     catalogRouter,
     branchRouter,
@@ -79,9 +79,9 @@ app.use(cors(corsOptions),
     promotionRouter,
     shippingRouter,
     orderRouter,
+    cartRouter,
     userRouter,
     PaymentRouter);
-
 var corsOptions = {
     origin: angularHostting,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 

@@ -4,8 +4,8 @@ const { VNPay } = require('vn-payments');
 const TEST_CONFIG = VNPay.TEST_CONFIG;
 const vnpayconfig = new VNPay({
 	paymentGateway: TEST_CONFIG.paymentGateway,
-	merchant: TEST_CONFIG.merchant,
-	secureSecret: TEST_CONFIG.secureSecret,
+	merchant: 'P40770BB',
+	secureSecret: 'OLHYZZAWJFTMSWJDHQHYIGXSMUPXMDQI',
 });
 class VNPayHandler {
 	constructor() { }

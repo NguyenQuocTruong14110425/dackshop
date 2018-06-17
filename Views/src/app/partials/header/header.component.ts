@@ -95,6 +95,12 @@ export class HeaderComponent implements OnInit {
       return { 'validatePassword': true }
     }
   }
+  loginfacebook() {
+    window.location.href = this.AuthService.loginFacebook()
+  }
+  logingoogle() {
+    window.location.href = this.AuthService.loginGoogle()
+  }
   getProfile() {
     this.AuthService.profile().subscribe(result => {
       if (result.success) {
@@ -123,6 +129,7 @@ export class HeaderComponent implements OnInit {
       } else {
         this.alertService.success(result.message)
         this.profileName = null
+        window.location.href = "#"
       }
     });
   };
@@ -269,7 +276,6 @@ export class HeaderComponent implements OnInit {
   }
   //get list branch
   GetListBranch(idmenu: string) {
-
     this.branchService.GetListBranch(idmenu).subscribe(result => {
       this.branchpost = result.data; // Assign array to use in HTML
 
@@ -281,15 +287,7 @@ export class HeaderComponent implements OnInit {
       this.catalogposts = result.data; // Assign array to use in HTML
     });
   }
-  logout() {
-    this.authService.logout().subscribe(result => {
-      if (!result.success) {
-        this.searchmess = result.message;
-      } else {
-        this.searchmess = result.message;
-      }
-    });
-  };
+
   ngOnInit() {
     this.getCart();
     this.GetAllCatalog();

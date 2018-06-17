@@ -80,42 +80,42 @@
               <label class="control-label">Select payment method: <label>{{profile.paymentMethod}}</label></label>
                 <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="onepayDomestic">
+                      <input ngbButton type="radio" value="VIETCOMBANK">
                     </label>
-                    <label>Onepay Domestic</label>
+                    <label>Ngân hàng VIETCOM BANK</label>
                   </div>
                   <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="onepayInternational">
+                      <input ngbButton type="radio" value="VIETINBANK">
                     </label>
-                    <label>Onepay International</label>
+                    <label>Ngân hàng VIETIN BANK</label>
                   </div>
                   <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="vnPay">
+                      <input ngbButton type="radio" value="DONGABANK">
                     </label>
-                    <label>vnPay</label>
+                    <label>DONGA BANK</label>
                   </div>
                   <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="sohaPay">
+                      <input ngbButton type="radio" value="AGRIBANK">
                     </label>
-                    <label>sohaPay</label>
+                    <label>Ngân hàng AGRIBANK</label>
                   </div>
                   <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="nganluong">
+                      <input ngbButton type="radio" value="NCB">
                     </label>
-                    <label>Ngân Lượng (ATM)</label>
+                    <label>Ngân hàng NCB</label>
                   </div>
                   <div>
                     <label ngbButtonLabel class="btn-radio">
-                      <input ngbButton type="radio" value="nganluongvisa">
+                      <input ngbButton type="radio" value="ACB">
                     </label>
-                    <label>Ngân Lượng (VISA)</label>
+                    <label>Ngân hàng ACB</label>
                   </div>
           </div>
-          
+          <form id="frmCreateOrder" action="http://sandbox.vnpayment.vn/button/websrc.html" method="POST" target="_top"> <input type="hidden" name="cmd" value="pay"> <input type="hidden" name="hosted_button_id" value="3GxLgAPmGD"> <input type="hidden" name="hosted_button_token" value="c14b9289995727b8591b38a7125af22d279e5584ca39c1f417121db84f8df390"> <img alt="VNPAY - Thanh toan online" border="0" class="btnPopup" src="http://sandbox.vnpayment.vn/button/Images/paynow-1.png"> </form><script src="https://merchant.vnpay.vn/Scripts/jquery-2.1.4.min.js"></script><link href="https://merchant.vnpay.vn/Scripts/lib/vnpayframe.css" rel="stylesheet"/> <script src="https://merchant.vnpay.vn/Scripts/lib/vnpayframe.js"></script><script src="https://merchant.vnpay.vn/Scripts/lib/openbutton.js"></script>
           <!-- <div class="radio" ngbRadioGroup [(ngModel)]="profile.paymentMethod">
               <label ngbButtonLabel>
                 <input class="radio squared" ngbButton type="radio" [value]="onepayDomestic"> Onepay Domestic

@@ -28,6 +28,10 @@ module.exports = (router) => {
             if (err) {
                 res.json({ success: false, message: err ? err : mess.SaveSuccess });
             } else {
+                req.session.customer = {
+                    user: req.user,
+                    cart: null
+                }
                 res.json({ success: true, message: mess.SearchSuccess, data: products });
             }
 

@@ -48,7 +48,19 @@ export class AuthService {
   logout() {
     return this.http.get(this.domain + '/user/logout/').map(res => res.json());
   }
-
-
-
+  //
+  loginGoogle() {
+    return this.domain + '/auth/google'
+  }
+  googlecallback()
+  {
+    return this.http.get(this.domain + '/auth/google/callback').map(res => res.json());
+  }
+  loginFacebook() {
+    return this.domain + '/auth/facebook'
+  }
+  facebookcallback()
+  {
+    return this.http.get(this.domain + '/auth/facebook/callback').map(res => res.json());
+  }
 }

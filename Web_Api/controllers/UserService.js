@@ -133,6 +133,7 @@ class UserService {
             newUser.NumberPhone = data.NumberPhone,
             newUser.Gender = data.Gender,
             newUser.Age = data.Age,
+            newUser.Avatar = data.Avatar,
             newUser.Promotion = Valid.getObjectIDIfValid(data.Promotion);
         newUser.DateCreate = new Date()
         return newUser;
@@ -154,6 +155,9 @@ class UserService {
         }
         if (data.Email) {
             User.Email = data.Email;
+        }
+        if (data.Avatar) {
+            User.Avatar = data.Avatar;
         }
         if (data.Address) {
             User.Address = data.Address;

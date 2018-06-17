@@ -55,7 +55,8 @@
                 <li class="item">
                   <div class="item-row">
                     <div class="item-col-image">
-                      <img class="avata-img" *ngIf="user?.Gender=='Male'" src="https://ptetutorials.com/images/user-profile.png">
+                    <img class="avata-img" *ngIf="user?.Avatar" src="{{user?.Avatar}}">
+                     <img class="avata-img" *ngIf="user?.Gender=='Male'" src="https://ptetutorials.com/images/user-profile.png">
                       <img class="avata-img" *ngIf="user?.Gender=='Female'" src="https://image.flaticon.com/icons/png/512/190/190680.png">
                     </div>
                     <div class="item-col">
@@ -109,6 +110,7 @@
         <ul class="item-list striped">
           <li class="item">
             <form (submit)="updateUserSubmit()">
+               <img *ngIf="DetailUser?.Avatar" src="{{DetailUser?.Avatar}}">
               <img *ngIf="DetailUser?.Gender=='Male'" src="https://ptetutorials.com/images/user-profile.png">
               <img *ngIf="DetailUser?.Gender=='Female'" src="https://image.flaticon.com/icons/png/512/190/190680.png">
               <div class="item-row">
@@ -143,24 +145,26 @@
                   </div>
                 </div>
               </div>
-              <div class="item-row">
-                <div class="item-col">
+                <div class="item-row">
+                <div class="item-col item-col-title">
                   <label *ngIf="isDetailUser">Number Phone: </label>
                   <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.NumberPhone}}</label>
                   <div class="form-group" *ngIf="!isDetailUser">
                     <label class="control-label">Number Phone:</label>
                     <input type="text" [(ngModel)]="DetailUser.NumberPhone" id="NumberPhone_edit" name="NumberPhone_edit" class="form-control underlined">
                   </div>
+                  </div>
                 </div>
-                <div class="item-col">
+                <div class="item-row">
+                <div class="item-col item-col-title">
                   <label *ngIf="isDetailUser">Email: </label>
                   <label style="padding-left: 10px " *ngIf="isDetailUser">{{DetailUser?.Email}}</label>
                   <div class="form-group" *ngIf="!isDetailUser">
                     <label class="control-label">Email</label>
                     <input type="email" [(ngModel)]="DetailUser.Email" id="Email_edit" name="Email_edit" class="form-control underlined">
                   </div>
+                  </div>
                 </div>
-              </div>
 
               <div class="item-row">
                 <div class="item-col item-col-title">

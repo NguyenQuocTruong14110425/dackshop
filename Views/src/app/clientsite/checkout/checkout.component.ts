@@ -101,10 +101,8 @@ export class CheckoutComponent implements OnInit {
     this.paymentService.PaymentCheckout(order).subscribe(result => {
         if (!result.success) {
           this.alertService.error(result.message);
-          // window.location.href ='https://sandbox.nganluong.vn:8088/nl30/checkout/version31/index/token_code/64794-b9d1215f29350f0e8f6fe3f655ee9e5e'
         } else {
           console.log(result)
-          // this.alertService.success(result.message)
           window.location.href = result.data;
         }
       });

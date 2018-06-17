@@ -10,12 +10,21 @@ var UserSchema = new Schema({
     Password: { type: String, require: true },
     Address: { type: String },
     Gender: { type: String },
+    Avatar: { type: String },
     Age: { type: Number },
     NumberPhone: { type: String },
     DaskPoint: { type: Number, default: 0 },
     DateCreate: { type: Date },
     DateUpdate: { type: Date },
     Promotion: { type: Schema.ObjectId, ref: 'Promotion' },
+    facebook         : {
+        id           : { type: String },
+        token        : { type: String }
+    },
+    google           : {
+        id           : { type: String },
+        token        : { type: String }
+    },
     TopSuggestion: {
         Products: [{
             IdProduct: { type: Schema.ObjectId, ref: 'Product' },

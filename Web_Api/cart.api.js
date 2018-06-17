@@ -7,6 +7,7 @@ module.exports = (router) => {
     var mess = {} = Enum.DataMessage;
     //add a item product
     router.post('/cart/addcart/', function (req, res, next) {
+        console.log("a")
         var cart = new CartService(req.session.cart ? req.session.cart : {});
         var ItemProduct =
             {
